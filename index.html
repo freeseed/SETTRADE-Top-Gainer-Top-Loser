@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="file:///app.css">
+
+    <title>SETTRADE Top Gainner/Top Losser</title>
+  </head>
+  <body>
+    <div id="resultContainer"  >
+        <div>
+          <div class="row">
+            <div class="col s3">
+                
+            </div>
+            <div class="col s6">
+              <h6 id="InforBar" class="center-align"></h6>
+            </div>
+            <div class="col s3">
+                <a id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</a>
+              <!-- Switch -->
+              <span class="switch right-align">
+                <label id="lbFilter" class="tooltipped" data-position="bottom" data-tooltip="I am a tooltip">Filter : </label>
+                <label>
+                  Off
+                  <input id="switchFilter" type="checkbox" checked>
+                  <span class="lever"></span>
+                  On
+                </label>
+              </span>
+              <!-- ---------------------- -->
+                <!-- Modal Trigger -->
+                <a class="modal-trigger waves-effect waves-teal btn-flat blue-text" href="#modal1"><i class="material-icons small">details</i></a>
+
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal modal-fixed-footer">
+                  <div class="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">SAVE</a>
+                  </div>
+                </div>
+              <!-- ---------------------- -->
+            </div>
+          </div>
+        </div>
+        <div id="divTopGain" class="row">
+            <div id="col1" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+            <div id="col2" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+            <div id="col3" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+            <div id="col4" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+        </div>
+        <div id="divTopLoss" class="row">
+          <div id="col5" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col6" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col7" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col8" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+      </div>
+    </div>
+    
+    <div class="center-align">
+        <p>
+            We are using node <script>document.write(process.versions.node)</script>,
+            Chrome <script>document.write(process.versions.chrome)</script>,
+            and Electron <script>document.write(process.versions.electron)</script>
+        </p>
+        <p>
+            This page will error if open on browser because process object is not defined. And if remove process object, it still error about cross-domain AJAX request.
+        </p>
+    </div>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="file:///app.js"></script>
+
+ 
+  </body> 
+</html>

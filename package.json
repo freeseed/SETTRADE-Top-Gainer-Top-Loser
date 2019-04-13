@@ -1,0 +1,22 @@
+{
+  "name": "settrade-top-gainer-top-loser",
+  "version": "1.0.0",
+  "description": "GET top gainer top loser from SETTRADE",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freeseed/SETTRADE-Top-Gainer-Top-Loser.git"
+  },
+  "author": "nevada",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freeseed/SETTRADE-Top-Gainer-Top-Loser/issues"
+  },
+  "homepage": "https://github.com/freeseed/SETTRADE-Top-Gainer-Top-Loser#readme",
+  "devDependencies": {
+    "electron": "^4.1.4"
+  }
+}
