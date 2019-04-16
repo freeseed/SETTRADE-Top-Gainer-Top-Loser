@@ -3,6 +3,19 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
 } */
+
+#resultContainer {
+    margin: 2.5em 0 0 0;
+}
+
+#nav {
+    background-color: black;
+    color: white;
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 2.5em;
+}
 .colorGreen {
     color:green;
     /* font-weight: bold; */
@@ -22,5 +35,11 @@ a.link-stt {
 }
 
 .moveDownAbit {
-    margin-top: 10px;
+    display: inline-block;
+    padding-top: 7px;
+    
+}
+
+#InforBar {
+    margin: 10px 0;
 }

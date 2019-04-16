@@ -25,7 +25,7 @@ let recToProcess = [
 
 function showInfo(strInfo){
   d= new Date()
-  document.getElementById("InforBar").innerHTML = "Date Time : " + d.toLocaleString() + " " + strInfo
+  document.getElementById("InforBar").innerHTML = "Data as of: " + d.toLocaleString() 
 
 }
 
@@ -223,8 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let elems = document.querySelectorAll('.tooltipped')
   let instances = M.Tooltip.init(elems)
 
-  elems = document.querySelectorAll('.modal');
-  instances = M.Modal.init(elems);
 
   document.getElementById("switchFilter").addEventListener("click", switchFilterClick)
 
