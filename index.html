@@ -7,32 +7,38 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="file:///app.css">
 
-    <title>SETTRADE Top Gainner/Top Losser</title>
+    <title>SETTRADE Top Gain/Loss</title>
   </head>
   <body>
-    <div id="resultContainer"  >
-        <div id="nav">
-          <div class="row">
-            <div class="col s3">
-              <!-- Switch -->
-              <span class="switch moveDownAbit">
-                <label id="lbFilter" class="tooltipped" data-position="bottom" data-tooltip="I am a tooltip">Filter : </label>
-                <label>
-                  Off
-                  <input id="switchFilter" type="checkbox" checked>
-                  <span class="lever"></span>
-                  On
-                </label>
-              </span>
-            </div>
-            <div class="col s6 center-align">
-              <h6 id="InforBar" ></h6>
-            </div>
-            <div class="col s3 right-align">
-                <a id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</a>
-            </div>
-          </div>
+    
+    <div id="testBlock"></div>
+
+    <div id="nav">
+      <div class="row">
+        <div class="col s3">
+          <!-- Switch -->
+          <span class="switch moveDownAbit">
+            <label id="lbFilter">Filter : </label>
+            <label>
+              Off
+              <input id="switchFilter" type="checkbox" checked>
+              <span class="lever"></span>
+              On
+            </label>
+          </span>
         </div>
+        <div class="col s6 center-align">
+          <h6 id="InforBar"></h6>
+        </div>
+        <div class="col s3 right-align">
+          <a id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="resultContainer"  >
+
+
         <div id="divTopGain" class="row">
             <div id="col1" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
             <div id="col2" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>

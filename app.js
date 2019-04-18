@@ -1,13 +1,14 @@
 
 (function(){
-let g_textResult=""
-let g_subString=""
-let g_switchFilter
-let g_arrResult
+
 const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
 const topVolume="<h3>����ҳ���͢�� 20 �ѹ�Ѻ</h3>"
-const topGain="<h3>�Ҥ�������� 20 �ѹ�Ѻ</h3>"
-const topLoss="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
+
+let topGain="<h3>�Ҥ�������� 20 �ѹ�Ѻ</h3>"
+let topLoss="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
+//const topGain="<h3>ราคาเพิ่มขึ้น 20 อันดับ</h3>"
+//const topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
+
 const endofTopLoss="</body>"
 const objFilterParam = {minVolume: 200000, minLastPrice: 0.1 ,minUpDownStep : 2 }
 
@@ -118,7 +119,7 @@ function DisplayFilterResult(arrFilterResult,subString,strPlusMinus){
 
 }
 
-function CreateDataObject(subString,strPlusMinus) {
+function GetTopGainTopLoss(subString,strPlusMinus) {
   let posBegin = subString.indexOf("<tbody>")
   let posEnd = subString.lastIndexOf("</tbody>")
   let strToprocess = subString.slice(posBegin + "<tbody>".length , posEnd)
@@ -149,36 +150,56 @@ function loadDoc(i,isFilter) {
       substringHTML(this.responseText,i,isFilter)
     }else if ( this.response && this.status == 0){
       substringHTML("Error cannot load data please check console log. url:" + recToProcess[i].url,i)
-      console.log("In else case of i=" + i)
     }
-  };
-  xhttp.open("GET", recToProcess[i].url, true)
-  xhttp.send()
+  }
+
+  try {
+    xhttp.open("GET", recToProcess[i].url, true)
+    xhttp.send()
+  }catch (err) {
+    console.log(err.message)
+  }
 }
 
-function substringHTML(textResult,i,isFilter) {
+function setFixdTextToSearch (textResult){
+  let posBegin = textResult.indexOf(topGain)
 
-    let posBegin = textResult.indexOf(topGain)
-    let posEnd = textResult.indexOf(topLoss)
-    //g_textResult = textResult
-    let subString = textResult.slice(posBegin ,posEnd)
+  if (posBegin < 0 ) {
+    topGain="<h3>ราคาเพิ่มขึ้น 20 อันดับ</h3>"
+    topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
+  }
 
-    let lastIndex = subString.lastIndexOf("</div>")
-    subString = subString.slice(0,lastIndex)
-    subString = replaceTextToReadable(subString,i,"G")
-    if (isFilter) subString = CreateDataObject(subString,"+")
-    document.getElementById(recToProcess[i].displayDiv).innerHTML = subString
+}
 
-    posBegin = textResult.indexOf(topLoss)
-    posEnd = textResult.indexOf(endofTopLoss)
-    subString = textResult.slice(posBegin ,posEnd)
-    subString = subString.replace(/<\/div>/g,"") + "</div>"
-    subString = replaceTextToReadable(subString,i,"L")
-    if (isFilter) subString = CreateDataObject(subString,"")
-    document.getElementById(recToProcess[i].displayDiv2).innerHTML = subString
-    //g_subString = subString
-    
+function substringHTML(textResult, i, isFilter) {
 
+  setFixdTextToSearch (textResult)
+  let posBegin = textResult.indexOf(topGain)
+  let posEnd = textResult.indexOf(topLoss)
+  let subString = textResult.slice(posBegin, posEnd)
+  let lastIndex = 0
+
+  if (subString != "") {
+    lastIndex = subString.lastIndexOf("</div>")
+    subString = subString.slice(0, lastIndex)
+    subString = replaceTextToReadable(subString, i, "G")
+    if (isFilter) subString = GetTopGainTopLoss(subString, "+")
+  }else {
+    subString = "error cannot get data from SETTrade"
+  }
+  document.getElementById(recToProcess[i].displayDiv).innerHTML = subString
+
+  posBegin = textResult.indexOf(topLoss)
+  posEnd = textResult.indexOf(endofTopLoss)
+  subString = textResult.slice(posBegin, posEnd)
+  if (subString != ""){
+    subString = subString.replace(/<\/div>/g, "") + "</div>"
+    subString = replaceTextToReadable(subString, i, "L")
+    if (isFilter) subString = GetTopGainTopLoss(subString, "")
+  }else {
+    subString = "error cannot get data from SETTrade"
+  }
+  document.getElementById(recToProcess[i].displayDiv2).innerHTML = subString
 }
 
 function replaceTextToReadable(subString,i,typeGorL) {
@@ -211,6 +232,7 @@ function switchFilterClick () {
 }
 
 function startProcessData(){
+  console.log(this)
   let switchFilter = document.getElementById("switchFilter")
   for(i=0;i<recToProcess.length;i++){
     loadDoc(i,switchFilter.checked)
@@ -218,19 +240,15 @@ function startProcessData(){
   showInfo("Complete laod data from SETTRADE.")
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-  let elems = document.querySelectorAll('.tooltipped')
-  let instances = M.Tooltip.init(elems)
-
-
+function startProgram() {
+  //console.log(this)  document
   document.getElementById("switchFilter").addEventListener("click", switchFilterClick)
-
   document.getElementById("btnRefresh").addEventListener("click", switchFilterClick)
-
-  document.getElementById("lbFilter").dataset.tooltip = "minVolume = " + objFilterParam.minVolume.toLocaleString() + "<br> minPrice = " + objFilterParam.minLastPrice.toFixed(2) + "<br> minUpDownStep = " + objFilterParam.minUpDownStep
-
   startProcessData()
-  }
-)
+
+}
+
+document.addEventListener('DOMContentLoaded', startProgram)
+//console.log(this) global
+
 })()
