@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://www.settrade.com https://fonts.gstatic.com 'unsafe-inline'">
     <meta charset="UTF-8">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -26,6 +27,8 @@
               On
             </label>
           </span>
+          <!--End Switch -->
+          <a id="btnAutoRefresh" class="waves-effect waves-teal btn-flat blue-text">Start Auto Refresh</a>
         </div>
         <div class="col s6 center-align">
           <h6 id="InforBar"></h6>
@@ -37,8 +40,6 @@
     </div>
 
     <div id="resultContainer"  >
-
-
         <div id="divTopGain" class="row">
             <div id="col1" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
             <div id="col2" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>

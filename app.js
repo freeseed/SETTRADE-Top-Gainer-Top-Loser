@@ -225,30 +225,53 @@ function replaceTextToReadable(subString,i,typeGorL) {
 }
 
 
-
+/*
 function switchFilterClick () {
   startProcessData()
-  console.log("Process Data " + Date().toString())
+
 }
+*/
 
 function startProcessData(){
-  console.log(this)
   let switchFilter = document.getElementById("switchFilter")
   for(i=0;i<recToProcess.length;i++){
     loadDoc(i,switchFilter.checked)
   }
   showInfo("Complete laod data from SETTRADE.")
+  console.log( 'startProcessData' )
+}
+
+let timeintervalID =  null
+
+function setAutoRefresh () {
+  const intervalMilliSec = 5 * 60000
+  const btnAutoRefresh = document.getElementById("btnAutoRefresh")
+
+  if (!timeintervalID) {
+    timeintervalID = setInterval(startProcessData, intervalMilliSec)
+    console.log('Start Auto Refresh', timeintervalID, intervalMilliSec )
+    btnAutoRefresh.textContent = 'Stop Auto Refresh'
+  } 
+  else {
+    clearInterval(timeintervalID)
+    timeintervalID =  null
+    console.log('Stop Auto Refresh',timeintervalID)
+    btnAutoRefresh.textContent = 'Start Auto Refresh'
+  }
+
 }
 
 function startProgram() {
-  //console.log(this)  document
-  document.getElementById("switchFilter").addEventListener("click", switchFilterClick)
-  document.getElementById("btnRefresh").addEventListener("click", switchFilterClick)
+
+  document.getElementById("switchFilter").addEventListener("click", startProcessData)
+  document.getElementById("btnRefresh").addEventListener("click", startProcessData)
+
+  document.getElementById("btnAutoRefresh").addEventListener("click", setAutoRefresh)
   startProcessData()
 
 }
 
 document.addEventListener('DOMContentLoaded', startProgram)
-//console.log(this) global
+
 
 })()
