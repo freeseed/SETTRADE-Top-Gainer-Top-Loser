@@ -224,15 +224,32 @@ function replaceTextToReadable(subString,i,typeGorL) {
   return subString
 }
 
+//setTimeout(function, milliseconds, param1, param2, ...)
+function clearData () {
 
-/*
-function switchFilterClick () {
-  startProcessData()
-
+  for(i=0;i<recToProcess.length;i++){
+    document.getElementById(recToProcess[i].displayDiv).innerHTML = '<p>Retriving Data..</p>'
+    document.getElementById(recToProcess[i].displayDiv2).innerHTML = '<p>Retriving Data..</p>'
+  }
+  
 }
-*/
+
+let lastProcessDateTime = null
+
+
+function startProcessDataWithDelay(){
+  nowDateTime = new Date()
+  //console.log(lastProcessDateTime, nowDateTime)
+  if (nowDateTime - lastProcessDateTime > 5*1000 || !lastProcessDateTime){
+    clearData()
+    setTimeout(startProcessData, 200)
+    lastProcessDateTime = nowDateTime
+  }
+}
+
 
 function startProcessData(){
+
   let switchFilter = document.getElementById("switchFilter")
   for(i=0;i<recToProcess.length;i++){
     loadDoc(i,switchFilter.checked)
@@ -248,7 +265,7 @@ function setAutoRefresh () {
   const btnAutoRefresh = document.getElementById("btnAutoRefresh")
 
   if (!timeintervalID) {
-    timeintervalID = setInterval(startProcessData, intervalMilliSec)
+    timeintervalID = setInterval(startProcessDataWithDelay, intervalMilliSec)
     console.log('Start Auto Refresh', timeintervalID, intervalMilliSec )
     btnAutoRefresh.textContent = 'Stop Auto Refresh'
   } 
@@ -263,11 +280,11 @@ function setAutoRefresh () {
 
 function startProgram() {
 
-  document.getElementById("switchFilter").addEventListener("click", startProcessData)
-  document.getElementById("btnRefresh").addEventListener("click", startProcessData)
+  document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
+  document.getElementById("btnRefresh").addEventListener("click", startProcessDataWithDelay)
 
   document.getElementById("btnAutoRefresh").addEventListener("click", setAutoRefresh)
-  startProcessData()
+  startProcessDataWithDelay()
 
 }
 
