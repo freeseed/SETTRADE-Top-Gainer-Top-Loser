@@ -1,3 +1,4 @@
+'use strict';
 const { app, BrowserWindow, net } = require('electron')
 
 let win

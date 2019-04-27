@@ -1,3 +1,4 @@
+'use strict';
 
 (function(){
 
@@ -25,7 +26,7 @@ let recToProcess = [
 ]
 
 function showInfo(strInfo){
-  d= new Date()
+  let d= new Date()
   document.getElementById("InforBar").innerHTML = "Data as of: " + d.toLocaleString() 
 
 }
@@ -227,7 +228,7 @@ function replaceTextToReadable(subString,i,typeGorL) {
 //setTimeout(function, milliseconds, param1, param2, ...)
 function clearData () {
 
-  for(i=0;i<recToProcess.length;i++){
+  for(let i=0;i<recToProcess.length;i++){
     document.getElementById(recToProcess[i].displayDiv).innerHTML = '<p>Retriving Data..</p>'
     document.getElementById(recToProcess[i].displayDiv2).innerHTML = '<p>Retriving Data..</p>'
   }
@@ -238,7 +239,7 @@ let lastProcessDateTime = null
 
 
 function startProcessDataWithDelay(){
-  nowDateTime = new Date()
+  let nowDateTime = new Date()
   //console.log(lastProcessDateTime, nowDateTime)
   if (nowDateTime - lastProcessDateTime > 5*1000 || !lastProcessDateTime){
     clearData()
@@ -251,7 +252,7 @@ function startProcessDataWithDelay(){
 function startProcessData(){
 
   let switchFilter = document.getElementById("switchFilter")
-  for(i=0;i<recToProcess.length;i++){
+  for(let i=0;i<recToProcess.length;i++){
     loadDoc(i,switchFilter.checked)
   }
   showInfo("Complete laod data from SETTRADE.")
