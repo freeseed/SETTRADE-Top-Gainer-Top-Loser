@@ -34,8 +34,14 @@ function showInfo(strInfo){
 function CheckVolume(obj) {
 
   //return obj.Volume > 1000000 && obj.LastPrice > 0.09 
-  return obj.Volume >= objFilterParam.minVolume && obj.LastPrice >= objFilterParam.minLastPrice && obj.UpDownStep >= objFilterParam.minUpDownStep
+  return obj.Volume >= objFilterParam.minVolume && obj.LastPrice >= objFilterParam.minLastPrice && obj.UpDownStep >= objFilterParam.minUpDownStep 
 
+}
+
+function getOnlyXRec(obj,index){
+  let switchFilter = document.getElementById("switchFilter")
+  let maxRec = switchFilter.checked ? 10 : 20
+  return index < maxRec
 }
 
 function ExtractValueToObject(strRow){
@@ -140,7 +146,7 @@ function GetTopGainTopLoss(subString,strPlusMinus) {
   }
 
 
-  return DisplayFilterResult(arrObject.filter(CheckVolume),subString,strPlusMinus)
+  return DisplayFilterResult(arrObject.filter(CheckVolume).filter(getOnlyXRec),subString,strPlusMinus)
 }
 
 function loadDoc(i,isFilter) {
@@ -208,17 +214,17 @@ function replaceTextToReadable(subString,i,typeGorL) {
   let newheader = ""
   if (typeGorL == 'G') {
     header = topGain
-    newheader = " 20 Top Gainer</h5>"
+    newheader = " 20 Top Gainer</h6>"
   }else {
     header = topLoss
-    newheader = " 20 Top Losser</h5>"
+    newheader = " 20 Top Losser</h6>"
   }
-  subString = subString.replace(header, "<h5 class='center-align'>" + recToProcess[i].header + newheader)
+  subString = subString.replace(header, "<h6 class='center-align'>" + recToProcess[i].header + newheader)
   subString = subString.replace("<th>��ѡ��Ѿ��</th>", "<th>หลักทรัพย์</th>")
-  subString = subString.replace("<th>����ҳ<br />(���)</th>", "<th>ปริมาณ<br />(หุ้น)</th>")
+  subString = subString.replace("<th>����ҳ<br />(���)</th>", "<th>ปริมาณ</th>")
   subString = subString.replace("<th>����ش</th>", "<th>ล่าสุด</th>")
-  subString = subString.replace("<th>����¹<br />�ŧ</th>", "<th>เปลี่ยน<br />แปลง</th>")
-  subString = subString.replace("<th>%����¹<br />�ŧ</th>", "<th>%เปลี่ยน<br />แปลง</th>")
+  subString = subString.replace("<th>����¹<br />�ŧ</th>", "<th>เปลี่ยน</th>")
+  subString = subString.replace("<th>%����¹<br />�ŧ</th>", "<th>%เปลี่ยน</th>")
   subString = subString.replace(/href=\"\/C13_FastQuote_Main.jsp\?txtSymbol=.*top\"/g, "")
   subString = subString.replace(/&nbsp;/g, "")
 
@@ -241,9 +247,11 @@ let lastProcessDateTime = null
 function startProcessDataWithDelay(){
   let nowDateTime = new Date()
   //console.log(lastProcessDateTime, nowDateTime)
-  if (nowDateTime - lastProcessDateTime > 5*1000 || !lastProcessDateTime){
+  if (nowDateTime - lastProcessDateTime > 2*1000 || !lastProcessDateTime){
     clearData()
     setTimeout(startProcessData, 200)
+    lastProcessDateTime = nowDateTime
+  }else {
     lastProcessDateTime = nowDateTime
   }
 }
