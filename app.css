@@ -1,11 +1,17 @@
-/* html {
+ html {
 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: black;
+    color: rgb(255, 217, 0) ;
+    /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
 
-} */
+} 
 
 #resultContainer {
-    margin: 2.5em 0 0 0;
+    margin: 2em 0 0 0;
+}
+
+#divTopGain,#divTopLoss {
+    margin: 0;
 }
 
 th {
@@ -26,17 +32,17 @@ td {
     height: 2.5em;
 }
 .colorGreen {
-    color:green;
-    /* font-weight: bold; */
+    color:rgb(0, 200, 0);
+    font-weight: bold; 
 }
 
 .colorRed {
-    color:red;
-    /* font-weight: bold; */
+    color:rgb(255, 70, 0);
+    font-weight: bold;
 }
 
 a.link-stt {
-    color:blue;
+    color:rgb(255, 217, 0);
 }
 
 .moveTopMaginNeg {

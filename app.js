@@ -40,7 +40,7 @@ function CheckVolume(obj) {
 
 function getOnlyXRec(obj,index){
   let switchFilter = document.getElementById("switchFilter")
-  let maxRec = switchFilter.checked ? 10 : 20
+  let maxRec = switchFilter.checked ? 15 : 20
   return index < maxRec
 }
 
