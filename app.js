@@ -5,6 +5,7 @@
 
 const newsToday = require('./htmlParserNewsToday')
 const newsPass = require('./htmlParserNewsPass')
+const newsStock = require('./htmlParserNewsStock')
 const shareFunc = require('./sharevariables')
 
 const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
@@ -355,6 +356,38 @@ async function processNewsPass(){
   showNewsPass(arrPassNews) 
 }
 
+function showNewsStock(arrNews){
+  
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> <td>${objNews.page}</td> </tr>`).join('')
+
+  const strTableNews = `
+      <table>
+        <thead>
+          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Page</th> </tr>
+        </thead>
+        <tbody>
+          ${strRows}
+        </tbody>
+        </table>
+  `
+  document.getElementById('newsstocklist').innerHTML = strTableNews
+}
+
+async function processNewsStock(){
+  const inputStock = document.getElementById('stocksymbol')
+  const errorMsg = document.getElementById('stocksymbolerrormsg')
+  if (inputStock.value === '') {
+    errorMsg.innerHTML ='Please input symbol'
+    return
+  }else{
+    errorMsg.innerHTML =''
+  }
+  //console.log(inputStock.value.toUpperCase())
+  showNewsStock([shareFunc.newsTodayObject('Retriving data..','','','','') ])
+  const arrPassNews = await newsStock.getAllNumberOfPageAndProcess(inputStock.value.toUpperCase())
+  showNewsStock(arrPassNews) 
+}
+
 function startProgram() {
 
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
@@ -363,9 +396,11 @@ function startProgram() {
   startProcessDataWithDelay()
 
   document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsToday)
-  processNewsToday()
+  //processNewsToday()
 
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
+
+  document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   
 
 }

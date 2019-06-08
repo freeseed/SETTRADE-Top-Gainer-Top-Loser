@@ -64,3 +64,15 @@ td {
 .newscontainer {
     margin: 0 0 0 2rem;
 }
+
+#stocksymbol {
+    color: rgb(218, 188, 71) ;
+    text-transform: uppercase;
+}
+
+#stocksymbolerrormsg {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+}
+

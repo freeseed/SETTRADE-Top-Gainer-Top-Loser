@@ -31,12 +31,13 @@ function isNeedTopics(str) {
       return false
 }
 
-function newsTodayObject(time, symbol, source, title){
+function newsTodayObject(time, symbol, source, title, page){
   return {
       time: time,
       symbol: symbol,
       source: source,
-      title: title
+      title: title,
+      page: page
   }
 }
 
