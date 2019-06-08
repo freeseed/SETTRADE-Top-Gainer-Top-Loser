@@ -2,6 +2,11 @@
 
 (function(){
 
+
+const newsToday = require('./htmlParserNewsToday')
+const newsPass = require('./htmlParserNewsPass')
+const shareFunc = require('./sharevariables')
+
 const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
 const topVolume="<h3>����ҳ���͢�� 20 �ѹ�Ѻ</h3>"
 
@@ -287,17 +292,86 @@ function setAutoRefresh () {
 
 }
 
+function showNewsToday(arrNewsToday){
+  
+  const strRows = arrNewsToday.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> </tr>`).join('')
+
+  const strTableNews = `
+      <table>
+        <thead>
+          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
+        </thead>
+        <tbody>
+          ${strRows}
+        </tbody>
+        </table>
+  `
+  document.getElementById('newstodaylist').innerHTML = strTableNews
+}
+
+function processNewsToday() {
+  let xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+
+      let arrNewsToday = newsToday.wrapHtmlParserNewsToday(this.responseText)
+      showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ])
+      setTimeout(showNewsToday, 500,arrNewsToday)
+
+    }else if ( this.response && this.status == 0){
+      console.log('Error : in processNewsToday')
+    }
+  }
+
+  try {
+    xhttp.open("GET", 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market=', true)
+    xhttp.send()
+  }catch (err) {
+    console.log(err.message)
+  }
+}
+
+function showNewsPass(arrNews){
+  
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> </tr>`).join('')
+
+  const strTableNews = `
+      <table>
+        <thead>
+          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
+        </thead>
+        <tbody>
+          ${strRows}
+        </tbody>
+        </table>
+  `
+  document.getElementById('newspasslist').innerHTML = strTableNews
+}
+
+async function processNewsPass(){
+  document.getElementById('btnRefreshPassNews').disabled =true
+  showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','') ])
+  const arrPassNews = await newsPass.getAllNumberOfPageAndProcess()
+  showNewsPass(arrPassNews) 
+}
+
 function startProgram() {
 
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
   document.getElementById("btnRefresh").addEventListener("click", startProcessDataWithDelay)
-
   document.getElementById("btnAutoRefresh").addEventListener("click", setAutoRefresh)
   startProcessDataWithDelay()
+
+  document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsToday)
+  processNewsToday()
+
+  document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
+  
 
 }
 
 document.addEventListener('DOMContentLoaded', startProgram)
+
 
 
 })()

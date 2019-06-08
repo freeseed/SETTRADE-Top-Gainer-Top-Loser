@@ -6,6 +6,10 @@
 
 } 
 
+body {
+    margin-bottom: 40rem;
+}
+
 #resultContainer {
     margin: 2em 0 0 0;
 }
@@ -42,9 +46,6 @@ td {
     /*font-weight: bold; */
 }
 
-a.link-stt {
-    /*color:rgb(255, 217, 0);*/
-}
 
 .moveTopMaginNeg {
     margin-top: -20px;
@@ -58,4 +59,8 @@ a.link-stt {
 
 #InforBar {
     margin: 10px 0;
+}
+
+.newscontainer {
+    margin: 0 0 0 2rem;
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://www.settrade.com https://fonts.gstatic.com 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://www.settrade.com https://fonts.gstatic.com https://www.set.or.th 'unsafe-inline'">
     <meta charset="UTF-8">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -54,7 +54,7 @@
       </div>
     </div>
     
-    <div class="center-align">
+    <!-- <div class="center-align">
         <p>
             We are using node <script>document.write(process.versions.node)</script>,
             Chrome <script>document.write(process.versions.chrome)</script>,
@@ -63,6 +63,21 @@
         <p>
             This page will error if open on browser because process object is not defined. And if remove process object, it still error about cross-domain AJAX request.
         </p>
+    </div> -->
+
+    <div class="newscontainer">
+      <div class="row">
+        <div class="col s12">
+            <h4>Today News <a id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</a> </h4>
+            <div id="newstodaylist"></div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col s12">
+              <h4>Pass News <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button> </h4>
+              <div id="newspasslist"></div>
+          </div>
+      </div>
     </div>
 
     <!-- Compiled and minified JavaScript -->
