@@ -3,7 +3,9 @@ const shareFunc = require('./sharevariables')
 
 
 
-function wrapHtmlParser (html) {
+function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
+
+    filterOutOnlyDWSETTSDmai = typeof filterOutOnlyDWSETTSDmai !== 'undefined' ? filterOutOnlyDWSETTSDmai : false
     let arrNewsToday = []
     const handler = new htmlparser.DomHandler(function (error, dom) {
       if (error)
@@ -42,10 +44,11 @@ function wrapHtmlParser (html) {
                           const strSource =  textintd[3].data.trim()
                           const strTitle =  textintd[4].data.trim()
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
-  
-                          if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
-                            //const rowString = `${strTime} ${strSymbol} ${strSource} ${strTitle}` //${itr} /
-                            
+
+                          //const rowString = `${strTime} ${strSymbol} ${strSource} ${strTitle}` //${itr} /
+                          if (filterOutOnlyDWSETTSDmai && !isDWSETTSDmai){
+                            arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle))
+                          }else if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
                             arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle))
                           }
   
