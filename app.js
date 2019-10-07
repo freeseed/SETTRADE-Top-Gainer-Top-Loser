@@ -198,7 +198,8 @@ function substringHTML(textResult, i, isFilter) {
     subString = replaceTextToReadable(subString, i, "G")
     if (isFilter) subString = GetTopGainTopLoss(subString, "+")
   }else {
-    subString = "error cannot get data from SETTrade"
+    subString = "error cannot get data from SETTrade (function substringHTML 1) subString is blank"
+    console.log(textResult)
   }
   document.getElementById(recToProcess[i].displayDiv).innerHTML = subString
 
@@ -210,7 +211,7 @@ function substringHTML(textResult, i, isFilter) {
     subString = replaceTextToReadable(subString, i, "L")
     if (isFilter) subString = GetTopGainTopLoss(subString, "")
   }else {
-    subString = "error cannot get data from SETTrade"
+    subString = "error cannot get data from SETTrade (function substringHTML 2) subString is blank"
   }
   document.getElementById(recToProcess[i].displayDiv2).innerHTML = subString
 }
@@ -276,7 +277,7 @@ function startProcessData(){
 let timeintervalID =  null
 
 function setAutoRefresh () {
-  const intervalMilliSec = 5 * 60000
+  const intervalMilliSec = 3 * 60000
   const btnAutoRefresh = document.getElementById("btnAutoRefresh")
 
   if (!timeintervalID) {

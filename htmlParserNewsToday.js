@@ -45,12 +45,18 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           const strTitle =  textintd[4].data.trim()
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
 
-                          //const rowString = `${strTime} ${strSymbol} ${strSource} ${strTitle}` //${itr} /
+                          let boolAddToArray = false
+
                           if (filterOutOnlyDWSETTSDmai && !isDWSETTSDmai){
-                            arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle))
-                          }else if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
-                            arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle))
+                            boolAddToArray = true
+                          }else if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai)  {
+                            boolAddToArray = true
+                          }else if (strTitle.match(/ต้อนรับ/)){
+                            boolAddToArray = true
+                            
                           }
+
+                          if (boolAddToArray)  arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle))
   
                         }
   
