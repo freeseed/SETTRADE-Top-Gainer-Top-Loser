@@ -17,7 +17,7 @@ let topLoss="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
 //const topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
 
 const endofTopLoss="</body>"
-const objFilterParam = {minVolume: 200000, minLastPrice: 0.1 ,minUpDownStep : 2 }
+const objFilterParam = {minVolume: 400000, minLastPrice: 0.1 ,minUpDownStep : 2 }
 
 const urlStockSET="https://www.settrade.com/C13_MarketSummary.jsp?order=Y"
 const urlStockMAI="https://www.settrade.com/C13_MarketSummary.jsp?order=Y&market=mai"
