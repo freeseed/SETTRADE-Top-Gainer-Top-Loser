@@ -186,7 +186,9 @@ function setFixdTextToSearch (textResult){
 
 function substringHTML(textResult, i, isFilter) {
 
-  setFixdTextToSearch (textResult)
+  //remove this because don't get completed data from settrade this function will change topGain topLoss text then cannot find anymore.
+  //setFixdTextToSearch (textResult) 
+  
   let posBegin = textResult.indexOf(topGain)
   let posEnd = textResult.indexOf(topLoss)
   let subString = textResult.slice(posBegin, posEnd)
@@ -198,8 +200,11 @@ function substringHTML(textResult, i, isFilter) {
     subString = replaceTextToReadable(subString, i, "G")
     if (isFilter) subString = GetTopGainTopLoss(subString, "+")
   }else {
-    subString = "error cannot get data from SETTrade (function substringHTML 1) subString is blank"
+    subString = "error (fn substringHTML 1) subString is blank"
     console.log(textResult)
+    console.log("Text topGain:" + topGain)
+    console.log("posBegin:" + posBegin)
+    console.log("posEnd:" + posEnd)
   }
   document.getElementById(recToProcess[i].displayDiv).innerHTML = subString
 
@@ -211,7 +216,10 @@ function substringHTML(textResult, i, isFilter) {
     subString = replaceTextToReadable(subString, i, "L")
     if (isFilter) subString = GetTopGainTopLoss(subString, "")
   }else {
-    subString = "error cannot get data from SETTrade (function substringHTML 2) subString is blank"
+    subString = "error (fn substringHTML 2) subString is blank"
+    console.log("Text topLoss" + topLoss)
+    console.log("posBegin:" + posBegin)
+    console.log("posEnd:" + posEnd)
   }
   document.getElementById(recToProcess[i].displayDiv2).innerHTML = subString
 }
