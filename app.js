@@ -8,13 +8,17 @@ const newsPass = require('./htmlParserNewsPass')
 const newsStock = require('./htmlParserNewsStock')
 const shareFunc = require('./sharevariables')
 
-const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
-const topVolume="<h3>����ҳ���͢�� 20 �ѹ�Ѻ</h3>"
+//const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
+//const topVolume="<h3>����ҳ���͢�� 20 �ѹ�Ѻ</h3>"
 
 let topGain="<h3>�Ҥ�������� 20 �ѹ�Ѻ</h3>"
 let topLoss="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
-//const topGain="<h3>ราคาเพิ่มขึ้น 20 อันดับ</h3>"
-//const topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
+
+//topGain="<h3>ราคาเพิ่มขึ้น 20 อันดับ</h3>"
+//topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
+
+//topGain="<h3>Top 20 Gainers</h3>"
+//topLoss="<h3>Top 20 Losers</h3>"
 
 const endofTopLoss="</body>"
 const objFilterParam = {minVolume: 900000, minLastPrice: 0.1 ,minUpDownStep : 2 }
@@ -175,19 +179,27 @@ function loadDoc(i,isFilter) {
 }
 
 function setFixdTextToSearch (textResult){
-  let posBegin = textResult.indexOf(topGain)
+  const constTopGainTh="<h3>�Ҥ�������� 20 �ѹ�Ѻ</h3>"
+  const constTopLossTh="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
+  const constTopGainEn="<h3>Top 20 Gainers</h3>"
+  const constTopLossEn="<h3>Top 20 Losers</h3>"
+
+  let posBegin = textResult.indexOf(constTopGainTh)
 
   if (posBegin < 0 ) {
-    topGain="<h3>ราคาเพิ่มขึ้น 20 อันดับ</h3>"
-    topLoss="<h3>ราคาลดลง 20 อันดับ</h3>"
+    topGain=constTopGainEn
+    topLoss=constTopLossEn
+  }else{
+    topGain=constTopGainTh
+    topLoss=constTopLossTh
   }
 
 }
 
 function substringHTML(textResult, i, isFilter) {
 
-  //remove this because don't get completed data from settrade this function will change topGain topLoss text then cannot find anymore.
-  //setFixdTextToSearch (textResult) 
+  //change concept of setFixdTextToSearch sometime result from setTrade is in english
+  setFixdTextToSearch (textResult) 
   
   let posBegin = textResult.indexOf(topGain)
   let posEnd = textResult.indexOf(topLoss)
