@@ -18,7 +18,8 @@ const regex8 = /เพิ่มสินค้า/
 const regex9 = /หุ้นที่ตรา/
 const regex10 = /SP/
 const regex11 = /กำกับการ/
-const regexNeedTopic = [regex1,regex2,regex3,regex4,regex5,regex6,regex7,regex8,regex9,regex10,regex11]
+const regex12 = /ซื้อหุ้นคืน/
+const regexNeedTopic = [regex1,regex2,regex3,regex4,regex5,regex6,regex7,regex8,regex9,regex10,regex11,regex12]
 
 function isDWSETTSDmai(str) {
     for(let i =0; i < regexNewsSource.length ; i++){

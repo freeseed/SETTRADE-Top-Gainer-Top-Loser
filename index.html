@@ -68,13 +68,19 @@
     <div class="newscontainer">
       <div class="row">
         <div class="col s12">
-            <h4>Today News <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</button> </h4>
+            <h4>Today News 
+              <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+            </h4>
+            
             <div id="newstodaylist"></div>
         </div>
       </div>
       <div class="row">
           <div class="col s12">
-              <h4>Pass News <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button> </h4>
+              <h4>Pass News
+                <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
+                <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              </h4>
               <div id="newspasslist"></div>
           </div>
       </div>
@@ -82,7 +88,7 @@
 
           <div class="col s12">
               <h4 style="display: inline-block">Stock News</h4>
-              <input placeholder="Symbol" id="stocksymbol" type="text" style="display: inline-block;width: 180px; margin-left: 1rem; ">
+              <input placeholder="Symbol" id="stocksymbol" type="text" style="display:inline-block;width:160px;margin-left:1rem;color: white;;font-size: 16px;">
               <small id="stocksymbolerrormsg" style="margin-left: 1rem;"></small>
               <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
           </div>

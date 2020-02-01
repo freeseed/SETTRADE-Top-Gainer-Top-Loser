@@ -5,7 +5,6 @@ const shareFunc = require('./sharevariables')
 let yesterdayDate = new Date()
 yesterdayDate.setDate(yesterdayDate.getDate()-1);
 let passdaysDate = new Date()
-passdaysDate.setDate(passdaysDate.getDate()-6);
 
 let fd=passdaysDate.getDate(), fm=passdaysDate.getMonth()+1 ,fy=passdaysDate.getFullYear()
 let td=yesterdayDate.getDate(), tm=yesterdayDate.getMonth()+1 ,ty=yesterdayDate.getFullYear()
@@ -108,7 +107,14 @@ async function processPassNews(intPage){
     
 }
 
-async function getAllNumberOfPageAndProcess(){
+async function getAllNumberOfPageAndProcess(inputPassDay){
+  passdaysDate = new Date()
+  passdaysDate.setDate(passdaysDate.getDate()-(inputPassDay));
+
+  fd=passdaysDate.getDate(), fm=passdaysDate.getMonth()+1 ,fy=passdaysDate.getFullYear()
+  td=yesterdayDate.getDate(), tm=yesterdayDate.getMonth()+1 ,ty=yesterdayDate.getFullYear()
+
+
     let paranews =  `&from=${fd}%2F${fm}%2F${fy}&to=${td}%2F${tm}%2F${ty}&currentpage=0`
 
     const res = await fetch(urlnews+paranews)

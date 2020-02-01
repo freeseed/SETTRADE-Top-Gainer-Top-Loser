@@ -373,8 +373,19 @@ function showNewsPass(arrNews){
 async function processNewsPass(){
   document.getElementById('btnRefreshPassNews').disabled =true
   showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','') ])
-  const arrPassNews = await newsPass.getAllNumberOfPageAndProcess()
+
+  const inputPassDay = document.getElementById('passday')
+  let intPassDay = 0
+  if (parseInt(inputPassDay.value) === NaN) {
+    intPassDay = 1
+  }else{
+    intPassDay = parseInt(inputPassDay.value)
+  }
+
+  const arrPassNews = await newsPass.getAllNumberOfPageAndProcess(intPassDay)
   showNewsPass(arrPassNews) 
+
+  document.getElementById('btnRefreshPassNews').disabled =false
 }
 
 function showNewsStock(arrNews){
