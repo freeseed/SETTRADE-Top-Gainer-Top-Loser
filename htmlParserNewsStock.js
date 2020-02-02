@@ -45,7 +45,7 @@ function wrapHtmlParser (html,intPage) {
                           //const rowString = `Page ${intPage+1}-${itr} / ${strTime} ${strSymbol} ${strTitle}`
   
                           if (shareFunc.isNeedTopics(strTitle)) { 
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol, '',strTitle, intPage+1))
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol, '',shareFunc.highlightNewsTopic(strTitle), intPage+1))
                             //console.log(rowString)
                           }
   

@@ -7,18 +7,18 @@ const regTHAINVDR = /THAINVDR/
 const regexNewsSource = [regexDW,regexSET,regexTSD,regexmai,regTHAINVDR]
 
 
-const regex1 = /เริ่มซื้อขาย/
-const regex2 = /-W/
-const regex3 = /วันซื้อขายวันสุดท้ายของ/
-const regex4 = /สรุปผลการดำเนินงาน/
-const regex5 = /การห้ามซื้อหรือขาย/
-const regex6 = /เพิ่มทุน/
-const regex7 = /พ้นเหตุ/
-const regex8 = /เพิ่มสินค้า/
-const regex9 = /หุ้นที่ตรา/
-const regex10 = /SP/
-const regex11 = /กำกับการ/
-const regex12 = /ซื้อหุ้นคืน/
+const regex1 = /(เริ่มซื้อขาย)/
+const regex2 = /(-W)/
+const regex3 = /(วันซื้อขายวันสุดท้ายของ)/
+const regex4 = /(สรุปผลการดำเนินงาน)/
+const regex5 = /(การห้ามซื้อหรือขาย)/
+const regex6 = /เพิ่มทุน-xx/
+const regex7 = /(พ้นเหตุ)/
+const regex8 = /(เพิ่มสินค้า)/
+const regex9 = /(หุ้นที่ตรา)/
+const regex10 = /(SP)/
+const regex11 = /(กำกับการ)/
+const regex12 = /(ซื้อหุ้นคืน)/
 const regexNeedTopic = [regex1,regex2,regex3,regex4,regex5,regex6,regex7,regex8,regex9,regex10,regex11,regex12]
 
 function isDWSETTSDmai(str) {
@@ -47,8 +47,20 @@ function newsTodayObject(time, symbol, source, title, page){
   }
 }
 
+function highlightNewsTopic(strTopic){
+  let res = strTopic
+  for(let i =0; i < regexNeedTopic.length ; i++){
+    res = res.replace(regexNeedTopic[i], '<b style="color:white;">$1</b>') 
+  }
+
+  return res
+
+}
+
 module.exports.isNeedTopics = isNeedTopics
 module.exports.isDWSETTSDmai = isDWSETTSDmai
 module.exports.newsTodayObject = newsTodayObject
+module.exports.highlightNewsTopic = highlightNewsTopic
+
 
 
