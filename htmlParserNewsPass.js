@@ -119,7 +119,13 @@ async function getAllNumberOfPageAndProcess(inputPassDay){
 
     const res = await fetch(urlnews+paranews)
     const body = await res.text()
-    const intPage = substringTogetPageNumber(body)
+    let intPage 
+    try {
+      intPage= substringTogetPageNumber(body)
+    } catch (error) {
+      intPage = 0
+    }
+    
 
     await processPassNews(intPage)
 

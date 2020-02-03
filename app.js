@@ -375,14 +375,11 @@ async function processNewsPass(){
   showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','') ])
 
   const inputPassDay = document.getElementById('passday')
-  let intPassDay = 0
-  if (parseInt(inputPassDay.value) === NaN) {
-    intPassDay = 1
-  }else{
-    intPassDay = parseInt(inputPassDay.value)
-  }
 
-  const arrPassNews = await newsPass.getAllNumberOfPageAndProcess(intPassDay)
+  const intPassDay = isNaN(parseInt(inputPassDay.value)) ? 0 : parseInt(inputPassDay.value)
+
+  const arrPassNews = intPassDay == 0 ? [shareFunc.newsTodayObject('Invalid number of days.','','','') ] : await newsPass.getAllNumberOfPageAndProcess(intPassDay)
+
   showNewsPass(arrPassNews) 
 
   document.getElementById('btnRefreshPassNews').disabled =false
