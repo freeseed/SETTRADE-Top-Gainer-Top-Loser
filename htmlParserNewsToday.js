@@ -32,17 +32,21 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                         //console.log('tds.lenth=', tds.length)
   
                         let textintd = htmlparser.DomUtils.find( (el)=> {
-                              return el.type === 'text'
+                              return el.type === 'text' || (el.type === 'tag' && el.name === 'a')
                             },tds, true, 50
                         )
   
                         //console.log('textintd.lenth=', textintd.length)
-                        if(textintd.length >= 8){
-  
+                        if(textintd.length == 9){
+                          //console.log('textintdObject=', textintd)
                           const strTime =  textintd[0].data.trim()
                           const strSymbol =  textintd[2].data.trim()
                           const strSource =  textintd[3].data.trim()
                           const strTitle =  textintd[4].data.trim()
+
+                          //console.log(textintd)
+                          const strLink = textintd[6].attribs.href
+
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
 
                           let boolAddToArray = false
@@ -56,7 +60,7 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                             
                           }
 
-                          if (boolAddToArray)  arrNewsToday.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle)))
+                          if (boolAddToArray)  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink) )
   
                         }
   

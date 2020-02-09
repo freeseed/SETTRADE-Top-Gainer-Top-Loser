@@ -30,22 +30,25 @@ function wrapHtmlParser (html,intPage) {
                         //console.log('tds.lenth=', tds.length)
   
                         let textintd = htmlparser.DomUtils.find( (el)=> {
-                              return el.type === 'text'
+                              return el.type === 'text' || (el.type === 'tag' && el.name === 'a')
                             },tds, true, 50
                         )
   
                         //console.log('textintd.lenth=', textintd.length)
-                        if(textintd.length >= 7){
+                        if(textintd.length == 8){
   
                           const strTime =  textintd[0].data.trim()
                           const strSymbol =  textintd[2].data.trim()
                           const strTitle =  textintd[3].data.trim()
+
+                          //console.log(textintd)
+                          const strLink = textintd[5].attribs.href
   
                           //console.log(textintd)
                           //const rowString = `Page ${intPage+1}-${itr} / ${strTime} ${strSymbol} ${strTitle}`
   
                           if (shareFunc.isNeedTopics(strTitle)) { 
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol, '',shareFunc.highlightNewsTopic(strTitle), intPage+1))
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol, '',shareFunc.highlightNewsTopic(strTitle), intPage+1,strLink))
                             //console.log(rowString)
                           }
   
@@ -103,7 +106,9 @@ async function processPassNews(intPage){
 }
 
 async function getAllNumberOfPageAndProcess(stockSymbol){
+    arrAllNews = []
     stockName = stockSymbol
+    //console.log('getAllNumberOfPageAndProcess',stockSymbol,stockName)
     let paranews =  `&symbol=${stockName}&currentpage=0`
     //console.log(urlnews+paranews)
 

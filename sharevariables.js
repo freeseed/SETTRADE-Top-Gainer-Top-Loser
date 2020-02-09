@@ -37,13 +37,14 @@ function isNeedTopics(str) {
       return false
 }
 
-function newsTodayObject(time, symbol, source, title, page){
+function newsTodayObject(time, symbol, source, title, page, link){
   return {
       time: time,
       symbol: symbol,
       source: source,
       title: title,
-      page: page
+      page: page,
+      link: link
   }
 }
 

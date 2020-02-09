@@ -37,24 +37,25 @@ function wrapHtmlParser (html,intPage) {
                         //console.log('tds.lenth=', tds.length)
   
                         let textintd = htmlparser.DomUtils.find( (el)=> {
-                              return el.type === 'text'
+                              return el.type === 'text' || (el.type === 'tag' && el.name === 'a')
                             },tds, true, 50
                         )
   
                         //console.log('textintd.lenth=', textintd.length)
-                        if(textintd.length >= 8){
+                        if(textintd.length == 9){
   
                           const strTime =  textintd[0].data.trim()
                           const strSymbol =  textintd[2].data.trim()
                           const strSource =  textintd[3].data.trim()
                           const strTitle =  textintd[4].data.trim()
-  
                           //console.log(textintd)
+                          const strLink = textintd[6].attribs.href
+  
                           //const rowString = `Page ${intPage+1}-${itr} / ${strTime} ${strSymbol} ${strSource} ${strTitle}`
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
   
                           if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle)))
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink))
                             //console.log(rowString)
                           }
   
@@ -108,6 +109,8 @@ async function processPassNews(intPage){
 }
 
 async function getAllNumberOfPageAndProcess(inputPassDay){
+  
+  arrAllPassNews = []
   passdaysDate = new Date()
   passdaysDate.setDate(passdaysDate.getDate()-(inputPassDay));
 

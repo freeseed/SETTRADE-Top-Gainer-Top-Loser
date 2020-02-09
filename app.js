@@ -316,7 +316,7 @@ function setAutoRefresh () {
 
 function showNewsToday(arrNewsToday){
   
-  const strRows = arrNewsToday.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> </tr>`).join('')
+  const strRows = arrNewsToday.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> <td><a href="https://www.set.or.th${objNews.link}" target="_blank">รายละเอียด</a></td> </tr>`).join('')
 
   const strTableNews = `
       <table>
@@ -355,7 +355,7 @@ function processNewsToday() {
 
 function showNewsPass(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> </tr>`).join('')
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> <td><a href="https://www.set.or.th${objNews.link}" target="_blank">รายละเอียด</a></td> </tr>`).join('')
 
   const strTableNews = `
       <table>
@@ -387,12 +387,12 @@ async function processNewsPass(){
 
 function showNewsStock(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> <td>${objNews.page}</td> </tr>`).join('')
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td>  <td><a href="https://www.set.or.th${objNews.link}" target="_blank">รายละเอียด</a></td> <td>${objNews.page}</td> </tr>`).join('')
 
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Page</th> </tr>
+          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th> <th>Page</th> </tr>
         </thead>
         <tbody>
           ${strRows}
@@ -403,7 +403,7 @@ function showNewsStock(arrNews){
 }
 
 async function processNewsStock(){
-  const inputStock = document.getElementById('stocksymbol')
+  let inputStock = document.getElementById('stocksymbol')
   const errorMsg = document.getElementById('stocksymbolerrormsg')
   if (inputStock.value === '') {
     errorMsg.innerHTML ='Please input symbol'
@@ -411,7 +411,7 @@ async function processNewsStock(){
   }else{
     errorMsg.innerHTML =''
   }
-  //console.log(inputStock.value.toUpperCase())
+  //console.log('processNewsStock',inputStock.value.toUpperCase())
   showNewsStock([shareFunc.newsTodayObject('Retriving data..','','','','') ])
   const arrPassNews = await newsStock.getAllNumberOfPageAndProcess(inputStock.value.toUpperCase())
   showNewsStock(arrPassNews) 

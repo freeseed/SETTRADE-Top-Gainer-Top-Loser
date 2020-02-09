@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/freeseed/SETTRADE-Top-Gainer-Top-Loser#readme",
   "devDependencies": {
-    "electron": "^5.0.2"
+    "electron": "^8.0.0"
   },
   "dependencies": {
     "htmlparser2": "^3.10.1"
