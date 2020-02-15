@@ -16,6 +16,8 @@ function createWindow() {
         win=null
     })
 
+    app.allowRendererProcessReuse = true
+
 
 }
 
