@@ -356,7 +356,9 @@ function processNewsToday() {
 
 function showNewsPass(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> <td><a href="https://www.set.or.th${objNews.link}" target="_blank">รายละเอียด</a></td> </tr>`).join('')
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> 
+                  <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
+
 
   const strTableNews = `
       <table>
@@ -388,7 +390,8 @@ async function processNewsPass(){
 
 function showNewsStock(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td>  <td><a href="https://www.set.or.th${objNews.link}" target="_blank">รายละเอียด</a></td> <td>${objNews.page}</td> </tr>`).join('')
+  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td>  
+                  <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด</a></td> <td>${objNews.page}</td> </tr>`).join('')
 
   const strTableNews = `
       <table>
