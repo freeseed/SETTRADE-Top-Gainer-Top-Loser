@@ -276,7 +276,7 @@ function startProcessDataWithDelay(){
   //console.log(lastProcessDateTime, nowDateTime)
   if (nowDateTime - lastProcessDateTime > 2*1000 || !lastProcessDateTime){
     clearData()
-    setTimeout(startProcessData, 200)
+    setTimeout(startProcessData, 100)
     lastProcessDateTime = nowDateTime
   }else {
     lastProcessDateTime = nowDateTime
@@ -409,15 +409,21 @@ function showNewsStock(arrNews){
 async function processNewsStock(){
   let inputStock = document.getElementById('stocksymbol')
   const errorMsg = document.getElementById('stocksymbolerrormsg')
+  let inputPagesearch = document.getElementById('pagesearch') 
+
   if (inputStock.value === '') {
     errorMsg.innerHTML ='Please input symbol'
     return
   }else{
     errorMsg.innerHTML =''
   }
-  //console.log('processNewsStock',inputStock.value.toUpperCase())
+
+  const intPagesearch = isNaN(parseInt(inputPagesearch.value)) ? 1 : parseInt(inputPagesearch.value)
+
+  console.log('processNewsStock',inputStock.value.toUpperCase(),intPagesearch)
+  
   showNewsStock([shareFunc.newsTodayObject('Retriving data..','','','','') ])
-  const arrPassNews = await newsStock.getAllNumberOfPageAndProcess(inputStock.value.toUpperCase())
+  const arrPassNews = await newsStock.getAllNumberOfPageAndProcess(inputStock.value.toUpperCase(),intPagesearch)
   showNewsStock(arrPassNews) 
 }
 
@@ -426,7 +432,7 @@ function startProgram() {
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
   document.getElementById("btnRefresh").addEventListener("click", startProcessDataWithDelay)
   document.getElementById("btnAutoRefresh").addEventListener("click", setAutoRefresh)
-  startProcessDataWithDelay()
+
 
   document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsToday)
   //processNewsToday()
@@ -434,7 +440,7 @@ function startProgram() {
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
 
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
-  
+  startProcessDataWithDelay()
 
 }
 

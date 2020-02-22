@@ -105,9 +105,10 @@ async function processPassNews(intPage){
   
 }
 
-async function getAllNumberOfPageAndProcess(stockSymbol){
+async function getAllNumberOfPageAndProcess(stockSymbol,intPagesearchParam){
     arrAllNews = []
     stockName = stockSymbol
+    let intPagesearch = 1
     //console.log('getAllNumberOfPageAndProcess',stockSymbol,stockName)
     let paranews =  `&symbol=${stockName}&currentpage=0`
     //console.log(urlnews+paranews)
@@ -116,7 +117,13 @@ async function getAllNumberOfPageAndProcess(stockSymbol){
     const body = await res.text()
     const intPage = substringTogetPageNumber(body)
 
-    await processPassNews(intPage)
+    if (intPagesearchParam < intPage) {
+      intPagesearch = intPagesearchParam
+    }else{
+      intPagesearch = intPage
+    }
+
+    await processPassNews(intPagesearch)
     // fetch(urlnews+paranews)
     // .then(res => res.text())
     // .then(body => substringTogetPageNumber(body) )  
