@@ -41,10 +41,10 @@
 
     <div id="resultContainer"  >
         <div id="divTopGain" class="row">
-            <div id="col1" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
-            <div id="col2" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
-            <div id="col3" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
-            <div id="col4" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col1" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col2" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col3" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
+          <div id="col4" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
         </div>
         <div id="divTopLoss" class="row">
           <div id="col5" class="col s12 m6 l6 xl3"><p>Retriving Data..</p></div>
@@ -68,23 +68,20 @@
     <div class="newscontainer">
       <div class="row">
         <div class="col s12">
-            <h4>Today News 
-              <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
-            </h4>
-            
+            <h4 style="display: inline-block">Today News</h4>
+            <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
             <div id="newstodaylist"></div>
         </div>
       </div>
       <div class="row">
           <div class="col s12">
-              <h4>Pass News
-                <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
-                <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-              </h4>
+              <h4 style="display: inline-block">Pass News</h4>
+              <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
+              <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
               <div id="newspasslist"></div>
           </div>
       </div>
-      <div class="row valign-wrapper">
+      <div class="row">
 
           <div class="col s12">
               <h4 style="display: inline-block">Stock News</h4>
@@ -92,11 +89,9 @@
               <input id="pagesearch" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (pages)
               <small id="stocksymbolerrormsg" style="margin-left: 1rem;"></small>
               <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <div id="newsstocklist"></div>
           </div>
 
-      </div>
-      <div class="row">
-          <div id="newsstocklist"></div>
       </div>
     </div>
 
