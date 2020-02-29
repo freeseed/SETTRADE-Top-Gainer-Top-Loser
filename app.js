@@ -484,7 +484,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   idDivLoss.innerHTML = strTableLoss
 }
 
-function processSet100Set50(url,idDivGain,idDivLoss){
+function processSet100Set50(url,idDivGain,idDivLoss,titleGain,titleLoss){
   let xhttp = new XMLHttpRequest()
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -492,7 +492,7 @@ function processSet100Set50(url,idDivGain,idDivLoss){
       let arrObjSet = set100.wrapHtmlParserSet100(this.responseText)
       arrObjSet.sort(function(a,b){ return b.percentChange - a.percentChange})
       //console.log(arrObjSet)
-      ShowSet100Set50(arrObjSet,idDivGain,idDivLoss)
+      ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss)
 
     }else if ( this.response && this.status == 0){
       console.log('Error : in processSet100Set50')
