@@ -49,6 +49,16 @@ function newsTodayObject(time, symbol, source, title, page, link){
   }
 }
 
+function stockObject(symbol, volume, price, change, percentChange){
+  return {
+      symbol: symbol,
+      volume: volume,
+      price: price,
+      change: change,
+      percentChange: percentChange
+  }
+}
+
 function highlightNewsTopic(strTopic){
   let res = strTopic
   for(let i =0; i < regexNeedTopic.length ; i++){
@@ -59,10 +69,20 @@ function highlightNewsTopic(strTopic){
 
 }
 
+function textToFloat(str){
+  return isNaN(parseFloat(str)) ? 0 : parseFloat(str)
+}
+
+function textToInt(str){
+  return isNaN(parseInt(str)) ? 0 : parseInt(str)
+}
+
 module.exports.isNeedTopics = isNeedTopics
 module.exports.isDWSETTSDmai = isDWSETTSDmai
 module.exports.newsTodayObject = newsTodayObject
 module.exports.highlightNewsTopic = highlightNewsTopic
-
+module.exports.stockObject = stockObject
+module.exports.textToFloat = textToFloat
+module.exports.textToInt = textToInt
 
 

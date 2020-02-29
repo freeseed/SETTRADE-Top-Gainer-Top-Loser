@@ -6,6 +6,7 @@
 const newsToday = require('./htmlParserNewsToday')
 const newsPass = require('./htmlParserNewsPass')
 const newsStock = require('./htmlParserNewsStock')
+const set100 = require('./htmlParserSet100')
 const shareFunc = require('./sharevariables')
 
 //const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
@@ -265,7 +266,11 @@ function clearData () {
     document.getElementById(recToProcess[i].displayDiv).innerHTML = '<p>Retriving Data..</p>'
     document.getElementById(recToProcess[i].displayDiv2).innerHTML = '<p>Retriving Data..</p>'
   }
-  
+
+  document.getElementById('set100col1').innerHTML = '<p>Retriving Data..</p>'
+  document.getElementById('set100col2').innerHTML = '<p>Retriving Data..</p>'
+  document.getElementById('set50col1').innerHTML = '<p>Retriving Data..</p>'
+  document.getElementById('set50col2').innerHTML = '<p>Retriving Data..</p>'
 }
 
 let lastProcessDateTime = null
@@ -277,6 +282,7 @@ function startProcessDataWithDelay(){
   if (nowDateTime - lastProcessDateTime > 2*1000 || !lastProcessDateTime){
     clearData()
     setTimeout(startProcessData, 100)
+    setTimeout(processSet100Set50Call, 100)
     lastProcessDateTime = nowDateTime
   }else {
     lastProcessDateTime = nowDateTime
@@ -427,6 +433,91 @@ async function processNewsStock(){
   showNewsStock(arrPassNews) 
 }
 
+
+function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
+
+  const strTableTemplate = `
+  <h6 class="center-align">Stock <title/></h6>
+
+  <table class="table table-info" width="100%">
+  <thead>
+    <tr>
+        <th>หลักทรัพย์</th>
+        <th>ปริมาณ</th>
+        <th>ล่าสุด</th>
+        <th>เปลี่ยน</th>
+        <th>%เปลี่ยน</th>
+    </tr>
+  </thead>
+  <tbody>                    
+      <tablerow/>
+  </tbody>
+  </table> `
+  
+  const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
+  const arrTop10Gain = arrTopGain.length >= 10 ? arrTopGain.slice(0,10) : arrTopGain
+  const strRowsGain = arrTop10Gain.map(obj => `<tr> 
+                                              <td><a class="link-stt">${obj.symbol}</a></td>
+                                              <td>${obj.volume}</td>
+                                              <td>${obj.price}</td>
+                                              <td class="colorGreen">${obj.change}</td>
+                                              <td class="colorGreen">+${obj.percentChange.toFixed(2)}</td>
+                                              </tr>`).join('')
+
+  let strTableGain = strTableTemplate.replace('<title/>',titleGain)
+  strTableGain = strTableGain.replace('<tablerow/>',strRowsGain)
+  idDivGain.innerHTML = strTableGain
+
+  const arrTopLoss = arrObjSet.filter(function(a){return a.percentChange < 0}).reverse()
+  const arrTop10Loss = arrTopLoss.length >= 10 ? arrTopLoss.slice(0,10) : arrTopLoss
+  const strRowsLoss = arrTop10Loss.map(obj => `<tr> 
+                                              <td><a class="link-stt">${obj.symbol}</a></td>
+                                              <td>${obj.volume}</td>
+                                              <td>${obj.price}</td>
+                                              <td class="colorRed">${obj.change}</td>
+                                              <td class="colorRed">${obj.percentChange.toFixed(2)}</td>
+                                            </tr>`).join('')
+
+  let strTableLoss = strTableTemplate.replace('<title/>',titleLoss)
+  strTableLoss = strTableLoss.replace('<tablerow/>',strRowsLoss)
+
+  idDivLoss.innerHTML = strTableLoss
+}
+
+function processSet100Set50(url,idDivGain,idDivLoss){
+  let xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+
+      let arrObjSet = set100.wrapHtmlParserSet100(this.responseText)
+      arrObjSet.sort(function(a,b){ return b.percentChange - a.percentChange})
+      //console.log(arrObjSet)
+      ShowSet100Set50(arrObjSet,idDivGain,idDivLoss)
+
+    }else if ( this.response && this.status == 0){
+      console.log('Error : in processSet100Set50')
+    }
+  }
+
+  try {
+    xhttp.open("GET", url, true)
+    xhttp.send()
+  }catch (err) {
+    console.log(err.message)
+  }
+}
+
+function processSet100Set50Call() {
+  const urlSet100 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET100&order=N&industry=&sector=&market=SET&sectorName=O_SET100'
+  const urlSet50 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET50&order=N&industry=&sector=&market=SET&sectorName=O_SET50'
+  const divSet100Gain = document.getElementById('set100col1')
+  const divSet100Loss = document.getElementById('set100col2')
+  const divSet50Gain = document.getElementById('set50col1')
+  const divSet50Loss = document.getElementById('set50col2')
+  processSet100Set50(urlSet100,divSet100Gain,divSet100Loss,'SET 100 Top Gainer','SET 100 Top Losser')
+  processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
+}
+
 function startProgram() {
 
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
@@ -435,12 +526,11 @@ function startProgram() {
 
 
   document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsToday)
-  //processNewsToday()
-
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
-
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
-  startProcessDataWithDelay()
+  document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
+  
+  //startProcessDataWithDelay()
 
 }
 
