@@ -47,7 +47,7 @@ function isNeedTopicsFR(str) {
     return false
 }
 
-function newsTodayObject(time, symbol, source, title, page, link, improvementFR){
+function newsTodayObject(time, symbol, source, title, page, link, improvementFR, lastProfit, curProfit, lastEPS, curEPS){
   return {
       time: time,
       symbol: symbol,
@@ -55,7 +55,11 @@ function newsTodayObject(time, symbol, source, title, page, link, improvementFR)
       title: title,
       page: page,
       link: link,
-      improvementFR : improvementFR
+      improvementFR : improvementFR,
+      lastProfit: lastProfit,
+      curProfit: curProfit,
+      lastEPS: lastEPS,
+      curEPS: curEPS
   }
 }
 

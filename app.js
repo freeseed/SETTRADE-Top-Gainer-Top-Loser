@@ -346,13 +346,15 @@ function showNewsToday(arrNewsToday){
 }
 
 function showNewsTodayFR(arrNewsToday){
+
+  arrNewsToday = arrNewsToday.sort(function(a,b){ return b.improvementFR - a.improvementFR})
   
   const strRows = arrNewsToday.map((objNews,i) => `<tr> 
                 <td>${i+1}</td> 
                 <td>${objNews.time}</td> 
                 <td>${objNews.symbol}</td> 
                 <td>${objNews.title}</td> 
-                <td>${objNews.improvementFR}</td>
+                <td>${objNews.improvementFR.toFixed(2)}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
 
   const strTableNews = `
@@ -376,47 +378,87 @@ function processNewsTodayNotFR() {
   processNewsToday(false)
 }
 
-function searchFRprofit(str) {
+function strToFloatFR(str) {
+  let strNum = str.replace(/,/g,'').replace(/(แก้ไข)/g,'')
+  const isNegative = (strNum.indexOf('(')>=0)? true : false
+  strNum = strNum.replace('(','').replace(')','')
+  let numFloat = shareFunc.textToFloat(strNum)
+  return (isNegative) ? -numFloat : numFloat
+}
+
+function searchFRprofit(str,element,i) {
   //search for  กำไร (ขาดทุน) เป็นพันบาท
   const strFix1 = '(ขาดทุน)'
   const strFixEPS = 'สุทธิ'
   let posBegin = str.indexOf(strFix1)
   let posEnd = str.indexOf('\n',posBegin)
   let subString = str.slice(posBegin + strFix1.length, posEnd).trim()
-  console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
+  //console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
   let posSpace = subString.indexOf(' ')
-  let strProfitCurrent = subString.slice(0,posSpace).trim().replace(/,/g,'')
-  let strProfitLast = subString.slice(posSpace).trim().replace(/,/g,'')
-  console.log('strProfitCurrent',strProfitCurrent,'strProfitLast',strProfitLast)
+  let strProfitCurrent = subString.slice(0,posSpace).trim()
+  let strProfitLast = subString.slice(posSpace).trim()
+  let numProfitCurrent = strToFloatFR(strProfitCurrent)
+  let numProfitLast = strToFloatFR(strProfitLast)
 
   //search for  กำไร (ขาดทุน) เป็นeps
-
   let posBeginEPS = str.indexOf(strFixEPS,posEnd)
   let posEndEPS = str.indexOf('\n',posBeginEPS)
   let subStringEPS = str.slice(posBeginEPS + strFixEPS.length, posEndEPS).trim()
-  console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
+  //console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
   let posSpaceEPS = subStringEPS.indexOf(' ')
-  let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim().replace(/,/g,'')
-  let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim().replace(/,/g,'')
-  console.log('strProfitCurrentEPS',strProfitCurrentEPS,'strProfitLastEPS',strProfitLastEPS)
+  let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim()
+  let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim()
+  let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
+  let numEPSLast = strToFloatFR(strProfitLastEPS)
+  console.log(i, element.symbol, 'numProfitCurrent',numProfitCurrent,'numProfitLast',numProfitLast, 'numEPSCurrent',numEPSCurrent,'numEPSLast',numEPSLast)
+
+  if (numProfitCurrent > 0) {
+    element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
+  } else {
+    element.improvementFR = parseFloat('-100.00')
+  }
+
+  element.improvementFR 
+  element.lastProfit = numProfitLast
+  element.curProfit = numProfitCurrent
+  element.lastEPS = numEPSLast
+  element.curEPS = numEPSCurrent
 }
 
-function getAndCalFRImprove(arr){
+// function sleep(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }
+
+/* function getFRDetail(element,i){
+  axios('https://www.set.or.th' + element.link).then(function (response){
+    //console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
+    searchFRprofit(response.data,element,i)
+  }).catch(function (error){
+    console.log(element.symbol, 'getAndCalFRImprove axios error',error.message)
+  })
+} */
+
+function getAndCalFRImprove(arr,delayGetDetailFR){
   arr.forEach((element,i) => {
-    if (element.symbol =='APEX') {
+    
+    setTimeout(() => {
       axios('https://www.set.or.th' + element.link).then(function (response){
-        console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
-        searchFRprofit(response.data)
+        //console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
+        searchFRprofit(response.data,element,i)
       }).catch(function (error){
-          console.log('getAndCalFRImprove axios error',error.message)
+        console.log(element.symbol, 'getAndCalFRImprove axios error',error.message)
       })
-    }
+    }, (i+2)*delayGetDetailFR);
+
 
   })
 }
 
 function processNewsToday(FRflag=false) {
   let xhttp = new XMLHttpRequest()
+  const delayGetDetailFR = 200 //milisecs
+  const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market='
+  const urlTodayNewsFR = 'https://www.set.or.th/set/searchtodaynews.do?source=&symbol=&securityType=&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
 
@@ -426,9 +468,10 @@ function processNewsToday(FRflag=false) {
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
         let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
-        showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','') ])
-        getAndCalFRImprove(arrNewsTodayFR)
-        setTimeout(showNewsTodayFR, 500,arrNewsTodayFR)
+        //arrNewsTodayFR = arrNewsTodayFR.slice(0,40)
+        showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'',0.00) ])
+        getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
+        setTimeout(showNewsTodayFR, (arrNewsTodayFR.length+4) * delayGetDetailFR,arrNewsTodayFR)
       }
 
 
@@ -438,7 +481,8 @@ function processNewsToday(FRflag=false) {
   }
 
   try {
-    xhttp.open("GET", 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market=', true)
+    const url = (FRflag)? urlTodayNewsFR : urlTodayNews 
+    xhttp.open("GET", url, true)
     xhttp.send()
   }catch (err) {
     console.log(err.message)
