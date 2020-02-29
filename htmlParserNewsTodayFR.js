@@ -1,4 +1,4 @@
-const htmlparser = require('htmlparser2');
+const htmlparser = require("htmlparser2");
 const shareFunc = require('./sharevariables')
 
 
@@ -22,7 +22,7 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
         alltr.forEach(
           (tr,itr)=> {
                       if(itr < 1000){ 
-                        //console.log(tr)
+                        //console.log('itr',itr)
   
                          let tds = htmlparser.DomUtils.find( (el)=> {
                               return el.type === 'tag' && el.name === 'td'
@@ -47,17 +47,12 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           //console.log(textintd)
                           const strLink = textintd[6].attribs.href
 
-                          const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
+                          //const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
 
                           let boolAddToArray = false
 
-                          if (filterOutOnlyDWSETTSDmai && !isDWSETTSDmai){
+                          if ( shareFunc.isNeedTopicsFR(strTitle) )  {
                             boolAddToArray = true
-                          }else if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai)  {
-                            boolAddToArray = true
-                          }else if (strTitle.match(/ต้อนรับ/)){
-                            boolAddToArray = true
-                            
                           }
 
                           if (boolAddToArray)  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink) )
@@ -79,4 +74,4 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
 
 }
 
-module.exports.wrapHtmlParserNewsToday = wrapHtmlParser
+module.exports.wrapHtmlParserNewsTodayFR = wrapHtmlParser

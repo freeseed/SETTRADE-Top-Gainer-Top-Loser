@@ -2,8 +2,9 @@
 
 (function(){
 
-
+const axios = require('axios')
 const newsToday = require('./htmlParserNewsToday')
+const newsTodayFR = require('./htmlParserNewsTodayFR')
 const newsPass = require('./htmlParserNewsPass')
 const newsStock = require('./htmlParserNewsStock')
 const set100 = require('./htmlParserSet100')
@@ -320,15 +321,21 @@ function setAutoRefresh () {
 
 }
 
+
+
 function showNewsToday(arrNewsToday){
   
-  const strRows = arrNewsToday.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> 
+  const strRows = arrNewsToday.map((objNews,i) => `<tr> 
+                <td>${i+1}</td>
+                <td>${objNews.time}</td> 
+                <td>${objNews.symbol}</td> 
+                <td>${objNews.title}</td> 
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
 
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
+          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
         </thead>
         <tbody>
           ${strRows}
@@ -338,17 +345,95 @@ function showNewsToday(arrNewsToday){
   document.getElementById('newstodaylist').innerHTML = strTableNews
 }
 
-function processNewsToday() {
+function showNewsTodayFR(arrNewsToday){
+  
+  const strRows = arrNewsToday.map((objNews,i) => `<tr> 
+                <td>${i+1}</td> 
+                <td>${objNews.time}</td> 
+                <td>${objNews.symbol}</td> 
+                <td>${objNews.title}</td> 
+                <td>${objNews.improvementFR}</td>
+                <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
+
+  const strTableNews = `
+      <table>
+        <thead>
+          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>%Improvement</th> <th>Link</th></tr>
+        </thead>
+        <tbody>
+          ${strRows}
+        </tbody>
+        </table>
+  `
+  document.getElementById('newstodaylistFR').innerHTML = strTableNews
+}
+
+function processNewsTodayFR() {
+  processNewsToday(true)
+}
+
+function processNewsTodayNotFR() {
+  processNewsToday(false)
+}
+
+function searchFRprofit(str) {
+  //search for  กำไร (ขาดทุน) เป็นพันบาท
+  const strFix1 = '(ขาดทุน)'
+  const strFixEPS = 'สุทธิ'
+  let posBegin = str.indexOf(strFix1)
+  let posEnd = str.indexOf('\n',posBegin)
+  let subString = str.slice(posBegin + strFix1.length, posEnd).trim()
+  console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
+  let posSpace = subString.indexOf(' ')
+  let strProfitCurrent = subString.slice(0,posSpace).trim().replace(/,/g,'')
+  let strProfitLast = subString.slice(posSpace).trim().replace(/,/g,'')
+  console.log('strProfitCurrent',strProfitCurrent,'strProfitLast',strProfitLast)
+
+  //search for  กำไร (ขาดทุน) เป็นeps
+
+  let posBeginEPS = str.indexOf(strFixEPS,posEnd)
+  let posEndEPS = str.indexOf('\n',posBeginEPS)
+  let subStringEPS = str.slice(posBeginEPS + strFixEPS.length, posEndEPS).trim()
+  console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
+  let posSpaceEPS = subStringEPS.indexOf(' ')
+  let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim().replace(/,/g,'')
+  let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim().replace(/,/g,'')
+  console.log('strProfitCurrentEPS',strProfitCurrentEPS,'strProfitLastEPS',strProfitLastEPS)
+}
+
+function getAndCalFRImprove(arr){
+  arr.forEach((element,i) => {
+    if (element.symbol =='APEX') {
+      axios('https://www.set.or.th' + element.link).then(function (response){
+        console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
+        searchFRprofit(response.data)
+      }).catch(function (error){
+          console.log('getAndCalFRImprove axios error',error.message)
+      })
+    }
+
+  })
+}
+
+function processNewsToday(FRflag=false) {
   let xhttp = new XMLHttpRequest()
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
 
-      let arrNewsToday = newsToday.wrapHtmlParserNewsToday(this.responseText)
-      showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ])
-      setTimeout(showNewsToday, 500,arrNewsToday)
+      if(!FRflag){
+        let arrNewsToday = newsToday.wrapHtmlParserNewsToday(this.responseText)
+        showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ])
+        setTimeout(showNewsToday, 500,arrNewsToday)
+      }else{
+        let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
+        showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','') ])
+        getAndCalFRImprove(arrNewsTodayFR)
+        setTimeout(showNewsTodayFR, 500,arrNewsTodayFR)
+      }
+
 
     }else if ( this.response && this.status == 0){
-      console.log('Error : in processNewsToday')
+      console.log('Error : in processNewsToday',FRflag)
     }
   }
 
@@ -362,14 +447,18 @@ function processNewsToday() {
 
 function showNewsPass(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td> 
+  const strRows = arrNews.map((objNews,i) => `<tr> 
+                  <td>${i+1}</td>
+                  <td>${objNews.time}</td> 
+                  <td>${objNews.symbol}</td> 
+                  <td>${objNews.title}</td> 
                   <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
 
 
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
+          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
         </thead>
         <tbody>
           ${strRows}
@@ -396,13 +485,15 @@ async function processNewsPass(){
 
 function showNewsStock(arrNews){
   
-  const strRows = arrNews.map(objNews => `<tr> <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td>  
+  const strRows = arrNews.map((objNews,i) => `<tr> 
+                  <td>${i+1}</td>
+                  <td>${objNews.time}</td> <td>${objNews.symbol}</td> <td>${objNews.title}</td>  
                   <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด</a></td> <td>${objNews.page}</td> </tr>`).join('')
 
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th> <th>Page</th> </tr>
+          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th> <th>Page</th> </tr>
         </thead>
         <tbody>
           ${strRows}
@@ -525,10 +616,11 @@ function startProgram() {
   document.getElementById("btnAutoRefresh").addEventListener("click", setAutoRefresh)
 
 
-  document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsToday)
+  document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsTodayNotFR)
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
+  document.getElementById("btnRefreshTodayNewsFR").addEventListener("click", processNewsTodayFR)
   
   //startProcessDataWithDelay()
 

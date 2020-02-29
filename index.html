@@ -74,7 +74,7 @@
       <div class="row">
         <div class="col s12">
             <h6 style="display: inline-block">Today News</h6>
-            <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+            <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
             <div id="newstodaylist"></div>
         </div>
       </div>
@@ -87,7 +87,6 @@
           </div>
       </div>
       <div class="row">
-
           <div class="col s12">
               <h6 style="display: inline-block">Stock News</h6>
               <input placeholder="Symbol" id="stocksymbol" type="text" style="display:inline-block;width:160px;margin-left:1rem;color: white;;font-size: 16px;">
@@ -96,7 +95,14 @@
               <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
               <div id="newsstocklist"></div>
           </div>
-
+      </div>
+      <div class="row">
+        <div class="col s12">
+            <h6 style="display: inline-block">ค้นหา ข่าว สรุปผลการดำเนินงานของ Today News</h6>
+            <input id="percentGain" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="25"> (%)
+            <button id="btnRefreshTodayNewsFR" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+            <div id="newstodaylistFR"></div>
+        </div>
       </div>
     </div>
 

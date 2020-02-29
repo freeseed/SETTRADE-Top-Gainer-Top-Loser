@@ -1,5 +1,5 @@
 const urlnews =  'https://www.set.or.th/set/companynews.do?ssoPageId=8&language=th&country=TH'
-const htmlparser = require("htmlparser2")
+const htmlparser = require('htmlparser2')
 const shareFunc = require('./sharevariables')
 
 let arrAllNews = []

@@ -1,5 +1,5 @@
 const urlnews =  'https://www.set.or.th/set/newslist.do?headline=&source=&symbol=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&newsGroupId=&securityType=&language=th&country=TH'
-const htmlparser = require("htmlparser2")
+const htmlparser = require('htmlparser2')
 const shareFunc = require('./sharevariables')
 
 let yesterdayDate = new Date()

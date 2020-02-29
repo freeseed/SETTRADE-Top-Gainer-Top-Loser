@@ -22,6 +22,8 @@ const regex12 = /(ซื้อหุ้นคืน)/
 //const regex13 = /(เพิ่มทุน-xx)/
 const regexNeedTopic = [regex1,regex2,regex3,regex4,regex5,regex6,regex7,regex8,regex9,regex10,regex11,regex12]
 
+const regexFR = /สรุปผลการดำเนินงาน/
+
 function isDWSETTSDmai(str) {
     for(let i =0; i < regexNewsSource.length ; i++){
       if (str.match(regexNewsSource[i])) return true
@@ -31,21 +33,29 @@ function isDWSETTSDmai(str) {
 }
 
 function isNeedTopics(str) {
-    for(let i =0; i < regexNeedTopic.length ; i++){
-        if (str.match(regexNeedTopic[i])) return true
-      }
-    
-      return false
+  for(let i =0; i < regexNeedTopic.length ; i++){
+      if (str.match(regexNeedTopic[i])) return true
+    }
+  
+    return false
 }
 
-function newsTodayObject(time, symbol, source, title, page, link){
+function isNeedTopicsFR(str) {
+  if (str.match(regexFR)) 
+    return true 
+  else 
+    return false
+}
+
+function newsTodayObject(time, symbol, source, title, page, link, improvementFR){
   return {
       time: time,
       symbol: symbol,
       source: source,
       title: title,
       page: page,
-      link: link
+      link: link,
+      improvementFR : improvementFR
   }
 }
 
@@ -78,6 +88,7 @@ function textToInt(str){
 }
 
 module.exports.isNeedTopics = isNeedTopics
+module.exports.isNeedTopicsFR = isNeedTopicsFR
 module.exports.isDWSETTSDmai = isDWSETTSDmai
 module.exports.newsTodayObject = newsTodayObject
 module.exports.highlightNewsTopic = highlightNewsTopic
