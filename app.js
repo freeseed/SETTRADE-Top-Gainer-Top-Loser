@@ -360,6 +360,8 @@ function showNewsTodayFR(arrNewsToday){
                 <td>${numberWithCommas(objNews.lastProfit.toFixed(2))}</td>
                 <td>${numberWithCommas(objNews.curProfit.toFixed(2))}</td>
                 <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${numberWithCommas(objNews.improvementFR.toFixed(2))}</td>
+                <td>${objNews.curPE.toFixed(2)}</td>
+                <td>${objNews.price.toFixed(2)}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
 
@@ -374,6 +376,8 @@ function showNewsTodayFR(arrNewsToday){
           <th>Profit From</th>
           <th>Profit To</th> 
           <th>%Improvement</th>
+          <th>Cur PE</th>
+          <th>Price</th>
           <th>Link</th>
           </tr>
         </thead>
@@ -401,6 +405,12 @@ function strToFloatFR(str) {
   return (isNegative) ? -numFloat : numFloat
 }
 
+function getStockPrice(symbol){
+  const regex1 = new RegExp(symbol)
+  const objStock = arrAllStockPrice.find(function (e){ return regex1.test(e.symbol) })
+  return objStock
+}
+
 function searchFRprofit(str,element,i) {
   //search for  กำไร (ขาดทุน) เป็นพันบาท
   const strFix1 = '(ขาดทุน)'
@@ -425,12 +435,15 @@ function searchFRprofit(str,element,i) {
   let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim()
   let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
   let numEPSLast = strToFloatFR(strProfitLastEPS)
-  console.log(i, element.symbol, 'numProfitCurrent',numProfitCurrent,'numProfitLast',numProfitLast, 'numEPSCurrent',numEPSCurrent,'numEPSLast',numEPSLast)
+  let stockPrice = getStockPrice(element.symbol).price
+
 
   if (numProfitCurrent > 0) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
+    element.curPE = (stockPrice >0)? stockPrice/numEPSCurrent : 0
   } else {
     element.improvementFR = parseFloat('-100.00')
+    element.curPE = parseFloat('-10.00')
   }
 
   element.improvementFR 
@@ -438,6 +451,10 @@ function searchFRprofit(str,element,i) {
   element.curProfit = numProfitCurrent
   element.lastEPS = numEPSLast
   element.curEPS = numEPSCurrent
+  element.price = stockPrice
+
+  console.log(i, element.symbol,'element.lastProfit',element.lastProfit,'element.curProfit',element.curProfit,'element.lastEPS',element.lastEPS,'element.curEPS',element.curEPS,'element.improvementFR',element.improvementFR,'element.curPE',element.curPE,'stockPrice',stockPrice)
+
 }
 
 
@@ -463,16 +480,26 @@ function getAndCalFRImprove(arr,delayGetDetailFR){
 }
 
 function getAllStockLastPrice(){
-  const url = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=SET&type=S'
+  const url1 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=SET&type=S'
+  const url2 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=mai&type=S'
   arrAllStockPrice = []
-  axios(url).then(function (response){
+  axios(url1).then(function (response){
 
-        arrAllStockPrice = set100.wrapHtmlParserSet100(response.data)
-        console.log('arrAllStockPrice',arrAllStockPrice)
+      arrAllStockPrice = arrAllStockPrice.concat(set100.wrapHtmlParserSet100(response.data))
+      console.log('arrAllStockPrice',arrAllStockPrice)
 
-      }).catch(function (error){
-        console.log('getAllStockLastPrice axios error',error.message)
-      })
+  }).catch(function (error){
+      console.log('getAllStockLastPrice axios error 1',error.message,url1)
+  })
+
+  axios(url2).then(function (response){
+
+    arrAllStockPrice = arrAllStockPrice.concat(set100.wrapHtmlParserSet100(response.data)) 
+    console.log('arrAllStockPrice',arrAllStockPrice)
+
+  }).catch(function (error){
+    console.log('getAllStockLastPrice axios error 2',error.message,url2)
+  })
 
 }
 
@@ -490,7 +517,7 @@ function processNewsToday(FRflag=false) {
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
         let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
-        arrNewsTodayFR = arrNewsTodayFR.slice(0,5)
+        //arrNewsTodayFR = arrNewsTodayFR.slice(0,5)
         getAllStockLastPrice()
         console.log('onreadystatechange arrAllStockPrice',arrAllStockPrice)
         getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
