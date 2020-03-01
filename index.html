@@ -75,6 +75,7 @@
         <div class="col s12">
             <h6 style="display: inline-block">Today News</h6>
             <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+            <span id="numOfTodayNews">0 news</span>
             <div id="newstodaylist"></div>
         </div>
       </div>
@@ -83,6 +84,8 @@
               <h6 style="display: inline-block">Pass News</h6>
               <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
               <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <span id="numOfPassNews">0 news</span>
+              <span>ต้องค้นหาย้อนมากกว่า 1 วัน ถ้าวันนี้เป็นวันหยุด ย้อนไม่พอจะไม่เจอข้อมูล</span>
               <div id="newspasslist"></div>
           </div>
       </div>
@@ -93,6 +96,7 @@
               <input id="pagesearch" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (pages)
               <small id="stocksymbolerrormsg" style="margin-left: 1rem;"></small>
               <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <span id="numOfStockNews">0 news</span>
               <div id="newsstocklist"></div>
           </div>
       </div>
@@ -101,6 +105,7 @@
             <h6 style="display: inline-block">ค้นหา ข่าว สรุปผลการดำเนินงานของ Today News</h6>
             <input id="percentGain" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="25"> (%)
             <button id="btnRefreshTodayNewsFR" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+            <span id="progressFR">0/0</span>
             <div id="newstodaylistFR"></div>
         </div>
       </div>

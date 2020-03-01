@@ -84,10 +84,12 @@ function highlightNewsTopic(strTopic){
 }
 
 function textToFloat(str){
-  return isNaN(parseFloat(str)) ? 0 : parseFloat(str)
+  str = str.trim().replace(/,/g,'')
+  return isNaN(parseFloat(str)) ? 0.00 : parseFloat(str)
 }
 
 function textToInt(str){
+  str = str.trim().replace(/,/g,'')
   return isNaN(parseInt(str)) ? 0 : parseInt(str)
 }
 

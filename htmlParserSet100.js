@@ -44,7 +44,7 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           
                           const strSymbol =  textintd[0].data.trim()
                           const strVolume =  textintd[10].data.trim()
-                          const strPrice =  textintd[5].data.trim()
+                          const strPrice =  shareFunc.textToFloat(textintd[5].data.trim())
                           const strChange =  textintd[6].data.trim()
                           const strPercentChange =  shareFunc.textToFloat(textintd[7].data.trim()) 
 

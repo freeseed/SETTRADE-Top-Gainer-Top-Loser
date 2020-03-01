@@ -37,6 +37,8 @@ let recToProcess = [
   {url:urlWrMAI,header:"Warrent MAI",displayDiv:"col4",displayDiv2:"col8"}
 ]
 
+let arrAllStockPrice = []
+
 function showInfo(strInfo){
   let d= new Date()
   document.getElementById("InforBar").innerHTML = "Data as of: " + d.toLocaleString() 
@@ -343,6 +345,7 @@ function showNewsToday(arrNewsToday){
         </table>
   `
   document.getElementById('newstodaylist').innerHTML = strTableNews
+  document.getElementById('numOfTodayNews').innerHTML = arrNewsToday.length.toString() + ' news'
 }
 
 function showNewsTodayFR(arrNewsToday){
@@ -354,13 +357,25 @@ function showNewsTodayFR(arrNewsToday){
                 <td>${objNews.time}</td> 
                 <td>${objNews.symbol}</td> 
                 <td>${objNews.title}</td> 
-                <td>${objNews.improvementFR.toFixed(2)}</td>
-                <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> </tr>`).join('')
+                <td>${numberWithCommas(objNews.lastProfit.toFixed(2))}</td>
+                <td>${numberWithCommas(objNews.curProfit.toFixed(2))}</td>
+                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${numberWithCommas(objNews.improvementFR.toFixed(2))}</td>
+                <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
+                </tr>`).join('')
 
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>%Improvement</th> <th>Link</th></tr>
+          <tr> 
+          <th>No.</th>
+          <th style="width:150px;">Time</th>
+          <th style="width:60px;">Symbol</th>
+          <th>Title</th>
+          <th>Profit From</th>
+          <th>Profit To</th> 
+          <th>%Improvement</th>
+          <th>Link</th>
+          </tr>
         </thead>
         <tbody>
           ${strRows}
@@ -425,26 +440,19 @@ function searchFRprofit(str,element,i) {
   element.curEPS = numEPSCurrent
 }
 
-// function sleep(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
-/* function getFRDetail(element,i){
-  axios('https://www.set.or.th' + element.link).then(function (response){
-    //console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
-    searchFRprofit(response.data,element,i)
-  }).catch(function (error){
-    console.log(element.symbol, 'getAndCalFRImprove axios error',error.message)
-  })
-} */
 
 function getAndCalFRImprove(arr,delayGetDetailFR){
+
+  const progressFR = document.getElementById('progressFR')
+  const lenFR = arr.length
   arr.forEach((element,i) => {
     
     setTimeout(() => {
       axios('https://www.set.or.th' + element.link).then(function (response){
-        //console.log('i', i, element.symbol, element.time, 'url','https://www.set.or.th' + element.link,'response.data', response.data)
+
         searchFRprofit(response.data,element,i)
+        progressFR.innerHTML=(i+1).toString() + '/' + lenFR.toString()
+
       }).catch(function (error){
         console.log(element.symbol, 'getAndCalFRImprove axios error',error.message)
       })
@@ -452,6 +460,20 @@ function getAndCalFRImprove(arr,delayGetDetailFR){
 
 
   })
+}
+
+function getAllStockLastPrice(){
+  const url = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=SET&type=S'
+  arrAllStockPrice = []
+  axios(url).then(function (response){
+
+        arrAllStockPrice = set100.wrapHtmlParserSet100(response.data)
+        console.log('arrAllStockPrice',arrAllStockPrice)
+
+      }).catch(function (error){
+        console.log('getAllStockLastPrice axios error',error.message)
+      })
+
 }
 
 function processNewsToday(FRflag=false) {
@@ -468,8 +490,9 @@ function processNewsToday(FRflag=false) {
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
         let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
-        //arrNewsTodayFR = arrNewsTodayFR.slice(0,40)
-        showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'',0.00) ])
+        arrNewsTodayFR = arrNewsTodayFR.slice(0,5)
+        getAllStockLastPrice()
+        console.log('onreadystatechange arrAllStockPrice',arrAllStockPrice)
         getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
         setTimeout(showNewsTodayFR, (arrNewsTodayFR.length+4) * delayGetDetailFR,arrNewsTodayFR)
       }
@@ -510,9 +533,11 @@ function showNewsPass(arrNews){
         </table>
   `
   document.getElementById('newspasslist').innerHTML = strTableNews
+  document.getElementById('numOfPassNews').innerHTML = arrNews.length.toString() + ' news'
 }
 
 async function processNewsPass(){
+  // know bug เนื่องจากหน้าจอ ค้นหาของจริง จะใส่วันหยุด เป็น from to ไม่ได้ แต่ program กำหนดวันเอง จากจำนวนวันย้อนหลัง ทำให้มีวันหยุด ทำให้ข้อมูลเบิ้ล เช่น วันนี้วันอาทิตย์แล้วค้นย้อน 2 วันใน เพื่อให้ได้ข้อมูลวันศุกร์ เอ๊ะ หรือว่าเพราะ 29-feb-2020 
   document.getElementById('btnRefreshPassNews').disabled =true
   showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','') ])
 
@@ -545,6 +570,8 @@ function showNewsStock(arrNews){
         </table>
   `
   document.getElementById('newsstocklist').innerHTML = strTableNews
+  document.getElementById('numOfStockNews').innerHTML = arrNews.length.toString() + ' news'
+  
 }
 
 async function processNewsStock(){

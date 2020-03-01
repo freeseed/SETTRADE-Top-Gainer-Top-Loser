@@ -119,6 +119,7 @@ async function getAllNumberOfPageAndProcess(inputPassDay){
 
 
     let paranews =  `&from=${fd}%2F${fm}%2F${fy}&to=${td}%2F${tm}%2F${ty}&currentpage=0`
+    //console.log('param', paranews)
 
     const res = await fetch(urlnews+paranews)
     const body = await res.text()
