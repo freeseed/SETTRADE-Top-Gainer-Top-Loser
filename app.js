@@ -357,11 +357,11 @@ function showNewsTodayFR(arrNewsToday){
                 <td>${objNews.time}</td> 
                 <td>${objNews.symbol}</td> 
                 <td>${objNews.title}</td> 
-                <td>${numberWithCommas(objNews.lastProfit.toFixed(2))}</td>
-                <td>${numberWithCommas(objNews.curProfit.toFixed(2))}</td>
-                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${numberWithCommas(objNews.improvementFR.toFixed(2))}</td>
+                <td>${objNews.lastProfit}</td>
+                <td>${objNews.curProfit}</td>
+                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR.toFixed(2)}</td>
                 <td>${objNews.curPE.toFixed(2)}</td>
-                <td>${objNews.price.toFixed(2)}</td>
+                <td>${objNews.price}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
 
@@ -406,7 +406,7 @@ function strToFloatFR(str) {
 }
 
 function getStockPrice(symbol){
-  const regex1 = new RegExp(symbol)
+  const regex1 = new RegExp('^' + symbol + '$') //fix bug THAI SITHAI STHAI and JCK JCKH
   const objStock = arrAllStockPrice.find(function (e){ return regex1.test(e.symbol) })
   return objStock
 }
@@ -418,7 +418,7 @@ function searchFRprofit(str,element,i) {
   let posBegin = str.indexOf(strFix1)
   let posEnd = str.indexOf('\n',posBegin)
   let subString = str.slice(posBegin + strFix1.length, posEnd).trim()
-  //console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
+  console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
   let posSpace = subString.indexOf(' ')
   let strProfitCurrent = subString.slice(0,posSpace).trim()
   let strProfitLast = subString.slice(posSpace).trim()
@@ -429,13 +429,15 @@ function searchFRprofit(str,element,i) {
   let posBeginEPS = str.indexOf(strFixEPS,posEnd)
   let posEndEPS = str.indexOf('\n',posBeginEPS)
   let subStringEPS = str.slice(posBeginEPS + strFixEPS.length, posEndEPS).trim()
-  //console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
+  console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
   let posSpaceEPS = subStringEPS.indexOf(' ')
   let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim()
   let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim()
   let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
   let numEPSLast = strToFloatFR(strProfitLastEPS)
-  let stockPrice = getStockPrice(element.symbol).price
+  let objStock = getStockPrice(element.symbol)
+  console.log('objStock',objStock)
+  let stockPrice = ( objStock != undefined)? objStock.price : 0
 
 
   if (numProfitCurrent > 0) {
@@ -467,7 +469,9 @@ function getAndCalFRImprove(arr,delayGetDetailFR){
     setTimeout(() => {
       axios('https://www.set.or.th' + element.link).then(function (response){
 
+
         searchFRprofit(response.data,element,i)
+
         progressFR.innerHTML=(i+1).toString() + '/' + lenFR.toString()
 
       }).catch(function (error){
@@ -517,7 +521,7 @@ function processNewsToday(FRflag=false) {
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
         let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
-        //arrNewsTodayFR = arrNewsTodayFR.slice(0,5)
+        //arrNewsTodayFR = arrNewsTodayFR.filter(function(s) { return s.symbol == 'WORLD'})
         getAllStockLastPrice()
         console.log('onreadystatechange arrAllStockPrice',arrAllStockPrice)
         getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
@@ -648,7 +652,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
                                               <td><a class="link-stt">${obj.symbol}</a></td>
                                               <td>${obj.volume}</td>
-                                              <td>${obj.price}</td>
+                                              <td>${obj.price.toFixed(2)}</td>
                                               <td class="colorGreen">${obj.change}</td>
                                               <td class="colorGreen">+${obj.percentChange.toFixed(2)}</td>
                                               </tr>`).join('')
