@@ -666,7 +666,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   const strRowsLoss = arrTop10Loss.map(obj => `<tr> 
                                               <td><a class="link-stt">${obj.symbol}</a></td>
                                               <td>${obj.volume}</td>
-                                              <td>${obj.price}</td>
+                                              <td>${obj.price.toFixed(2)}</td>
                                               <td class="colorRed">${obj.change}</td>
                                               <td class="colorRed">${obj.percentChange.toFixed(2)}</td>
                                             </tr>`).join('')
