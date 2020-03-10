@@ -1,4 +1,4 @@
-const htmlparser = require("htmlparser2");
+const htmlparser = require('htmlparser2');
 const shareFunc = require('./sharevariables')
 
 

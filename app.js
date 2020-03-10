@@ -359,8 +359,8 @@ function showNewsTodayFR(arrNewsToday){
                 <td>${objNews.title}</td> 
                 <td>${objNews.lastProfit}</td>
                 <td>${objNews.curProfit}</td>
-                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR.toFixed(2)}</td>
-                <td>${objNews.curPE.toFixed(2)}</td>
+                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR}</td>
+                <td>${objNews.curPE}</td>
                 <td>${objNews.price}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
@@ -650,7 +650,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
   const arrTop10Gain = arrTopGain.length >= 10 ? arrTopGain.slice(0,10) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
-                                              <td><a class="link-stt">${obj.symbol}</a></td>
+                                              <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
                                               <td>${obj.volume}</td>
                                               <td>${obj.price.toFixed(2)}</td>
                                               <td class="colorGreen">${obj.change}</td>
@@ -664,7 +664,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   const arrTopLoss = arrObjSet.filter(function(a){return a.percentChange < 0}).reverse()
   const arrTop10Loss = arrTopLoss.length >= 10 ? arrTopLoss.slice(0,10) : arrTopLoss
   const strRowsLoss = arrTop10Loss.map(obj => `<tr> 
-                                              <td><a class="link-stt">${obj.symbol}</a></td>
+                                              <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
                                               <td>${obj.volume}</td>
                                               <td>${obj.price.toFixed(2)}</td>
                                               <td class="colorRed">${obj.change}</td>

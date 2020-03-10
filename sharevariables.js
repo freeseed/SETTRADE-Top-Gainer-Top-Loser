@@ -65,13 +65,14 @@ function newsTodayObject(time, symbol, source, title, page, link, improvementFR,
   }
 }
 
-function stockObject(symbol, volume, price, change, percentChange){
+function stockObject(symbol, volume, price, change, percentChange,flag){
   return {
       symbol: symbol,
       volume: volume,
       price: price,
       change: change,
-      percentChange: percentChange
+      percentChange: percentChange,
+      flag: flag
   }
 }
 

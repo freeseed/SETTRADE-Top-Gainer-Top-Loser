@@ -1,8 +1,8 @@
-const htmlparser = require("htmlparser2");
+const htmlparser = require('htmlparser2');
 const shareFunc = require('./sharevariables')
 
 
-
+//parse price table get from settrade.com
 function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
 
     filterOutOnlyDWSETTSDmai = typeof filterOutOnlyDWSETTSDmai !== 'undefined' ? filterOutOnlyDWSETTSDmai : false
@@ -43,12 +43,13 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           //console.log('textintdObject=', textintd)
                           
                           const strSymbol =  textintd[0].data.trim()
+                          const strFlag =  textintd[1].data.trim()
                           const strVolume =  textintd[10].data.trim()
                           const strPrice =  shareFunc.textToFloat(textintd[5].data.trim())
                           const strChange =  textintd[6].data.trim()
                           const strPercentChange =  shareFunc.textToFloat(textintd[7].data.trim()) 
 
-                          arrStock.push( shareFunc.stockObject(strSymbol,strVolume,strPrice,strChange,strPercentChange) )
+                          arrStock.push( shareFunc.stockObject(strSymbol,strVolume,strPrice,strChange,strPercentChange,strFlag) )
   
                         }
   
