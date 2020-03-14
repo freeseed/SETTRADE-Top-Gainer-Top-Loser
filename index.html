@@ -28,18 +28,26 @@
             </label>
           </span>
           <!--End Switch -->
-          <a id="btnAutoRefresh" class="waves-effect waves-teal btn-flat blue-text">Start Auto Refresh</a>
+          <button id="btnAutoRefresh" class="waves-effect waves-teal btn-flat blue-text">Start Auto Refresh</button>
         </div>
         <div class="col s6 center-align">
           <h6 id="InforBar"></h6>
         </div>
         <div class="col s3 right-align">
-          <a id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</a>
+          <button id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
         </div>
       </div>
     </div>
 
     <div id="resultContainer"  >
+        <div>
+          <div class="col s12 center-align">
+            <h6 style="display: inline-block">Set/Mai Top Gain/Loss</h6>
+            <button id="btnRefreshSetMai" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+            <button id="btnHideSetMai" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
+          </div>
+        </div>
+
         <div id="divTopGain" class="row">
           <div id="col1" class="col s12 m6 l6 xl3"><p>Refresh to Retrive Data.</p></div>
           <div id="col2" class="col s12 m6 l6 xl3"><p>Refresh to Retrive Data.</p></div>
@@ -55,13 +63,15 @@
     </div>
 
     <div id="set100tContainer"  >
-      <div id="divTopGainSet100" class="row">
-        
+      <div>
         <div class="col s12 center-align">
           <h6 style="display: inline-block">Set 100 Top Gain/Loss</h6>
           <button id="btnRefreshSet100" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+          <button id="btnHideSet100" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
         </div>
-
+      </div>
+      
+      <div id="divTopGainSet100" class="row">
         <div id="set100col1" class="col s12 m6 l6 xl3"><p>Refresh to Retrive Data.</p></div>
         <div id="set100col2" class="col s12 m6 l6 xl3"><p>Refresh to Retrive Data.</p></div>
         <div id="set50col1" class="col s12 m6 l6 xl3"><p>Refresh to Retrive Data.</p></div>
@@ -71,6 +81,7 @@
     </div>
 
     <div class="newscontainer">
+
       <div class="row">
         <div class="col s12">
             <h6 style="display: inline-block">Today News</h6>
@@ -109,6 +120,20 @@
             <div id="newstodaylistFR"></div>
         </div>
       </div>
+
+
+      <div class="row">
+        <div class="col s12">
+            <h6 style="display: inline-block">SET100 Top swing</h6>
+            <button id="btnRefreshset100swing" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+            <div id="set100topswing"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div id="set100swingcol1" class="col s12 m6 l6 xl6"><p>Refresh to Retrive Data.</p></div>
+        <div id="set100swingcol2" class="col s12 m6 l6 xl6"><p>Refresh to Retrive Data.</p></div>
+      </div>
+      
     </div>
 
         

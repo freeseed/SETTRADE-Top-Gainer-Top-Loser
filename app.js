@@ -646,9 +646,9 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
       <tablerow/>
   </tbody>
   </table> `
-  
+  const rectoshow = 15
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
-  const arrTop10Gain = arrTopGain.length >= 10 ? arrTopGain.slice(0,10) : arrTopGain
+  const arrTop10Gain = arrTopGain.length >= rectoshow ? arrTopGain.slice(0,rectoshow) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
                                               <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
                                               <td>${obj.volume}</td>
@@ -662,7 +662,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
   idDivGain.innerHTML = strTableGain
 
   const arrTopLoss = arrObjSet.filter(function(a){return a.percentChange < 0}).reverse()
-  const arrTop10Loss = arrTopLoss.length >= 10 ? arrTopLoss.slice(0,10) : arrTopLoss
+  const arrTop10Loss = arrTopLoss.length >= rectoshow ? arrTopLoss.slice(0,rectoshow) : arrTopLoss
   const strRowsLoss = arrTop10Loss.map(obj => `<tr> 
                                               <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
                                               <td>${obj.volume}</td>
@@ -700,6 +700,33 @@ function processSet100Set50(url,idDivGain,idDivLoss,titleGain,titleLoss){
   }
 }
 
+function hideunhidediv(arrdiv) {
+  arrdiv.forEach ( (x)=> {
+    if (x.style.display === "none") {
+      x.style.display = "block"
+    } else {
+      x.style.display = "none"
+    }
+  })
+
+}
+
+function hideunhideSetMai() {
+  const divSetMaiGain = document.getElementById("divTopGain")
+  const divSetMaiLoss = document.getElementById("divTopLoss")
+  hideunhidediv([divSetMaiGain,divSetMaiLoss])
+}
+
+function hideunhideSet100() {
+  const divSet100 = document.getElementById("divTopGainSet100")
+  hideunhidediv([divSet100])
+
+}
+
+function refreshSetMai() {
+  startProcessData()
+}
+
 function processSet100Set50Call() {
   const urlSet100 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET100&order=N&industry=&sector=&market=SET&sectorName=O_SET100'
   const urlSet50 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET50&order=N&industry=&sector=&market=SET&sectorName=O_SET50'
@@ -709,6 +736,100 @@ function processSet100Set50Call() {
   const divSet50Loss = document.getElementById('set50col2')
   processSet100Set50(urlSet100,divSet100Gain,divSet100Loss,'SET 100 Top Gainer','SET 100 Top Losser')
   processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
+}
+
+
+function ShowSet100Set50Swing(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
+
+  const strTableTemplate = `
+  <h6 class="center-align">Stock <title/></h6>
+
+  <table class="table table-info" width="100%">
+  <thead>
+    <tr>
+        <th>No.</th>
+        <th>หลักทรัพย์</th>
+        <th>ปริมาณ</th>
+        <th>ล่าสุด</th>
+        <th>เปลี่ยน</th>
+        <th>%เปลี่ยน</th>
+        <th>%Swing</th>
+        <th>Low</th>
+        <th>High</th>
+        <th>จำนวนช่อง</th>
+    </tr>
+  </thead>
+  <tbody>                    
+      <tablerow/>
+  </tbody>
+  </table> `
+  const rectoshow = 50
+  //const arrTopGain = arrObjSet.filter(function(a){return a.swingPercent > 0})
+  const arrTopSwing = arrObjSet.length >= rectoshow ? arrObjSet.slice(0,rectoshow) : arrObjSet
+  const strRowsGain = arrTopSwing.map((obj,i) => `<tr> 
+                                              <td>${i+1}</td>
+                                              <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
+                                              <td>${obj.volume}</td>
+                                              <td>${obj.price.toFixed(2)}</td>
+                                              <td class="${(obj.percentChange>=0)? 'colorGreen':'colorRed'}">${obj.change}</td>
+                                              <td class="${(obj.percentChange>=0)? 'colorGreen':'colorRed'}">${(obj.percentChange>0)? '+':''}${obj.percentChange.toFixed(2)}</td>
+                                              <td class="colorGreen">${obj.swingPercent.toFixed(2)}</td>
+                                              <td>${obj.low.toFixed(2)}</td>
+                                              <td>${obj.high.toFixed(2)}</td>
+                                              <td>${obj.stepPrice}</td>
+                                              </tr>`).join('')
+
+  let strTableGain = strTableTemplate.replace('<title/>',titleGain)
+  strTableGain = strTableGain.replace('<tablerow/>',strRowsGain)
+  idDivGain.innerHTML = strTableGain
+
+  const arrTopLoss = arrObjSet
+  const arrTopLowSwing = arrTopLoss.length >= rectoshow ? arrTopLoss.slice(rectoshow) : arrTopLoss
+  const strRowsLoss = arrTopLowSwing.map((obj,i)=> `<tr>
+                                              <td>${rectoshow+i+1}</td>
+                                              <td><a class="link-stt">${obj.symbol}${obj.flag}</a></td>
+                                              <td>${obj.volume}</td>
+                                              <td>${obj.price.toFixed(2)}</td>
+                                              <td class="${(obj.percentChange>=0)? 'colorGreen':'colorRed'}">${obj.change}</td>
+                                              <td class="${(obj.percentChange>=0)? 'colorGreen':'colorRed'}">${(obj.percentChange>0)? '+':''}${obj.percentChange.toFixed(2)}</td>
+                                              <td class="colorGreen">${obj.swingPercent.toFixed(2)}</td>
+                                              <td>${obj.low.toFixed(2)}</td>
+                                              <td>${obj.high.toFixed(2)}</td>
+                                              <td>${obj.stepPrice}</td>
+                                            </tr>`).join('')
+
+  let strTableLoss = strTableTemplate.replace('<title/>',titleLoss)
+  strTableLoss = strTableLoss.replace('<tablerow/>',strRowsLoss) 
+
+  idDivLoss.innerHTML = strTableLoss
+}
+
+function refreshSet100Swing(){
+  const urlSet100 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET100&order=N&industry=&sector=&market=SET&sectorName=O_SET100'
+  const divSet100Swing = document.getElementById('set100swingcol1')
+  const divSet100Swing2 = document.getElementById('set100swingcol2')
+
+  let xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+
+      let arrObjSet = set100.wrapHtmlParserSet100(this.responseText)
+      arrObjSet.sort(function(a,b){ return b.swingPercent - a.swingPercent})
+      //arrObjSet.sort(function(a,b){ return b.stepPrice - a.stepPrice})
+      //console.log(arrObjSet)
+      ShowSet100Set50Swing(arrObjSet,divSet100Swing,divSet100Swing2,'Set 100 Swing','Set 100 Swing')
+
+    }else if ( this.response && this.status == 0){
+      console.log('Error : in processSet100Set50')
+    }
+  }
+
+  try {
+    xhttp.open("GET", urlSet100, true)
+    xhttp.send()
+  }catch (err) {
+    console.log(err.message)
+  }
 }
 
 function startProgram() {
@@ -723,8 +844,16 @@ function startProgram() {
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
   document.getElementById("btnRefreshTodayNewsFR").addEventListener("click", processNewsTodayFR)
+
+  document.getElementById("btnHideSetMai").addEventListener("click", hideunhideSetMai)
+  document.getElementById("btnHideSet100").addEventListener("click", hideunhideSet100)
+
+  document.getElementById("btnRefreshSetMai").addEventListener("click", refreshSetMai)
+
+  document.getElementById("btnRefreshset100swing").addEventListener("click", refreshSet100Swing)
   
-  //startProcessDataWithDelay()
+  
+  //startProcessDataWithDelay() 
 
 }
 
