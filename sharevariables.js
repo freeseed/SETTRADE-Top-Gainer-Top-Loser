@@ -80,6 +80,15 @@ function stockObject(symbol, volume, price, change, percentChange, flag, high, l
   }
 }
 
+function calendarObject(symbol, xx, xdate,url){
+  return {
+      symbol: symbol,
+      xx: xx,
+      xdate: xdate,
+      url: url
+  }
+}
+
 function highlightNewsTopic(strTopic){
   let res = strTopic
   for(let i =0; i < regexNeedTopic.length ; i++){
@@ -108,5 +117,6 @@ module.exports.highlightNewsTopic = highlightNewsTopic
 module.exports.stockObject = stockObject
 module.exports.textToFloat = textToFloat
 module.exports.textToInt = textToInt
+module.exports.calendarObject = calendarObject
 
 

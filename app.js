@@ -7,6 +7,7 @@ const newsToday = require('./htmlParserNewsToday')
 const newsTodayFR = require('./htmlParserNewsTodayFR')
 const newsPass = require('./htmlParserNewsPass')
 const newsStock = require('./htmlParserNewsStock')
+const stockCalendar = require('./htmlParserStockCalendar')
 const set100 = require('./htmlParserSet100')
 const shareFunc = require('./sharevariables')
 
@@ -832,6 +833,82 @@ function refreshSet100Swing(){
   }
 }
 
+function showSet100Calendar(arr){
+  
+  const strRows = arr.map((obj,i) => `<tr> 
+                  <td>${i+1}</td>
+                  <td>${obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
+                  <td>${obj.symbol}</td> 
+                  <td>${obj.xx}</td>  
+                  <td><a href="${obj.url}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด</a></td>  </tr>`).join('')
+
+  const strTableNews = `
+      <table>
+        <thead>
+          <tr> <th>No.</th> <th>Date</th> <th >Symbol</th> <th>XType</th> <th>Link</th></tr>
+        </thead>
+        <tbody>
+          ${strRows}
+        </tbody>
+        </table>
+  `
+  document.getElementById('stockCalendar').innerHTML = strTableNews
+  
+}
+function filterStockSet100andShow(arrAllStockCalendarXD){
+  const url1 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET100&order=N&industry=&sector=&market=SET&sectorName=O_SET100'
+
+  let arrStockSet100 = []
+  axios(url1).then(function (response){
+
+      arrStockSet100 = set100.wrapHtmlParserSet100(response.data)
+      let arrStockSet100CalendarXD = arrAllStockCalendarXD.filter( (x)=>{ return arrStockSet100.findIndex((s)=>{return s.symbol === x.symbol})>=0 }) 
+      arrStockSet100CalendarXD = arrStockSet100CalendarXD.filter( (x) => {
+              const today = new Date()
+              const yesterday = today.setDate(today.getDate()-1)
+              return x.xdate > yesterday})
+      arrStockSet100CalendarXD = arrStockSet100CalendarXD.sort( (a,b) => a.xdate - b.xdate)
+
+      showSet100Calendar(arrStockSet100CalendarXD)
+
+  }).catch(function (error){
+      console.log('filterStockSet100andShow axios error ',error.message,url1)
+  })
+  return arrStockSet100
+
+}
+
+function refreshStockCalendar() {
+  const urlStockCalendar = 'https://www.set.or.th/set/xcalendar.do?language=th&country=TH'
+  const urlStockCalendar2 = 'https://www.set.or.th/set/xcalendar.do?eventType=&index=2&language=th&country=TH'
+
+  let allhtml = ''
+  
+  console.log('hello refreshStockCalendar')
+  axios(urlStockCalendar).then(function (response){
+
+    allhtml = response.data
+
+
+  }).then( function(){
+    axios(urlStockCalendar2).then(function (response){
+        allhtml = allhtml + response.data
+        
+        let arrAllStockCalendar = stockCalendar.wrapHtmlParserStockCalendar(allhtml)
+        let arrAllStockCalendarXD = arrAllStockCalendar.filter((obj)=>{ return obj.xx !== 'XM' && obj.xx !== 'P'  }) 
+
+        //console.log('arrAllStockCalendar',arrAllStockCalendar)
+        //console.log('arrAllStockCalendarXD',arrAllStockCalendarXD)
+        filterStockSet100andShow(arrAllStockCalendarXD) 
+
+    }).catch( function(error){ console.log('refreshStockCalendar axios2 error',error.message) })
+
+  }).catch(function (error){
+      console.log('refreshStockCalendar axios error',error.message)
+  })
+}
+
+
 function startProgram() {
 
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
@@ -851,6 +928,8 @@ function startProgram() {
   document.getElementById("btnRefreshSetMai").addEventListener("click", refreshSetMai)
 
   document.getElementById("btnRefreshset100swing").addEventListener("click", refreshSet100Swing)
+  
+  document.getElementById("btnRefreshStockCalendar").addEventListener("click", refreshStockCalendar)
   
   
   //startProcessDataWithDelay() 
