@@ -647,7 +647,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
       <tablerow/>
   </tbody>
   </table> `
-  const rectoshow = 15
+  const rectoshow = 20
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
   const arrTop10Gain = arrTopGain.length >= rectoshow ? arrTopGain.slice(0,rectoshow) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
@@ -833,11 +833,19 @@ function refreshSet100Swing(){
   }
 }
 
+function nameDayofWeek(intDay){
+  const daysofweek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+  if (intDay >=0 && intDay <=6) 
+    return daysofweek[intDay]
+  else
+    return ''
+}
+
 function showSet100Calendar(arr){
   
   const strRows = arr.map((obj,i) => `<tr> 
                   <td>${i+1}</td>
-                  <td>${obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
+                  <td>${ nameDayofWeek(obj.xdate.getDay()) + ' ' + obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
                   <td>${obj.symbol}</td> 
                   <td>${obj.xx}</td>  
                   <td><a href="${obj.url}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด</a></td>  </tr>`).join('')
@@ -908,6 +916,17 @@ function refreshStockCalendar() {
   })
 }
 
+function clearAllData() {
+  for(let i=0;i<recToProcess.length;i++){
+    document.getElementById(recToProcess[i].displayDiv).innerHTML = ''
+    document.getElementById(recToProcess[i].displayDiv2).innerHTML = ''
+  }
+
+  const arrDivToShowData = ['set100col1','set100col12','set50col1','set50col2','newstodaylist','newspasslist','newsstocklist','newstodaylistFR','set100swingcol1','set100swingcol2','stockCalendar']
+  arrDivToShowData.forEach(div => document.getElementById(div).innerHTML = '')
+
+
+}
 
 function startProgram() {
 
@@ -931,6 +950,8 @@ function startProgram() {
   
   document.getElementById("btnRefreshStockCalendar").addEventListener("click", refreshStockCalendar)
   
+
+  document.getElementById("btnClear").addEventListener("click", clearAllData)
   
   //startProcessDataWithDelay() 
 
