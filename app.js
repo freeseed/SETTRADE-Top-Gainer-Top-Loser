@@ -922,8 +922,8 @@ function clearAllData() {
     document.getElementById(recToProcess[i].displayDiv2).innerHTML = ''
   }
 
-  const arrDivToShowData = ['set100col1','set100col12','set50col1','set50col2','newstodaylist','newspasslist','newsstocklist','newstodaylistFR','set100swingcol1','set100swingcol2','stockCalendar']
-  arrDivToShowData.forEach(div => document.getElementById(div).innerHTML = '')
+  const arrDivToShowData = ['set100col1','set100col2','set50col1','set50col2','newstodaylist','newspasslist','newsstocklist','newstodaylistFR','set100swingcol1','set100swingcol2','stockCalendar']
+  arrDivToShowData.forEach(div => document.getElementById(div).innerHTML = '' )
 
 
 }
