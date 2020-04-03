@@ -42,7 +42,7 @@ let arrAllStockPrice = []
 
 function showInfo(strInfo){
   let d= new Date()
-  document.getElementById("InforBar").innerHTML = "Data as of: " + d.toLocaleString() 
+  document.getElementById("labelTimeSetMai").innerHTML = "Data as of: " + d.toLocaleString()
 
 }
 
@@ -301,7 +301,7 @@ function startProcessData(){
     loadDoc(i,switchFilter.checked)
   }
   showInfo("Complete laod data from SETTRADE.")
-  console.log( 'startProcessData' )
+
 }
 
 let timeintervalID =  null
@@ -677,6 +677,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
 
   idDivLoss.innerHTML = strTableLoss
 }
+const arrFixSet50 = ['ADVANC','AOT','AWC','BANPU','BBL','BDMS','BEM','BGRIM','BH','BJC','BTS','CBG','CPALL','CPF','CPN','CRC','DELTA','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','TCAP','TISCO','TMB','TOA','TOP','TRUE','TU','VGI','WHA']
 
 function processSet100Set50(url,idDivGain,idDivLoss,titleGain,titleLoss){
   let xhttp = new XMLHttpRequest()
@@ -684,6 +685,10 @@ function processSet100Set50(url,idDivGain,idDivLoss,titleGain,titleLoss){
     if (this.readyState == 4 && this.status == 200) {
 
       let arrObjSet = set100.wrapHtmlParserSet100(this.responseText)
+      
+      if (titleGain === 'SET 100 Top Gainer') {
+        arrObjSet = arrObjSet.filter((x)=>{ return (arrFixSet50.findIndex( (a)=>{ return a === x.symbol } ) < 0)  })
+      }
       arrObjSet.sort(function(a,b){ return b.percentChange - a.percentChange})
       //console.log(arrObjSet)
       ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss)
@@ -737,6 +742,8 @@ function processSet100Set50Call() {
   const divSet50Loss = document.getElementById('set50col2')
   processSet100Set50(urlSet100,divSet100Gain,divSet100Loss,'SET 100 Top Gainer','SET 100 Top Losser')
   processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
+  const d = new Date()
+  document.getElementById("labelTimeSet100").innerHTML = "Data as of: " + d.toLocaleString()
 }
 
 
@@ -864,6 +871,7 @@ function showSet100Calendar(arr){
   
 }
 function filterStockSet100andShow(arrAllStockCalendarXD){
+  //use in xd xm calendar to filter only set100 stock
   const url1 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=SET100&order=N&industry=&sector=&market=SET&sectorName=O_SET100'
 
   let arrStockSet100 = []
