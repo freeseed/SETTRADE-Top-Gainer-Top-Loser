@@ -18,7 +18,6 @@ function createWindow() {
 
     app.allowRendererProcessReuse = true
 
-
 }
 
 function getData() {

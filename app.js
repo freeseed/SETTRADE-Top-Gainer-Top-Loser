@@ -10,6 +10,7 @@ const newsStock = require('./htmlParserNewsStock')
 const stockCalendar = require('./htmlParserStockCalendar')
 const set100 = require('./htmlParserSet100')
 const shareFunc = require('./sharevariables')
+const planArr = require('./plan')
 
 //const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
 //const topVolume="<h3>����ҳ���͢�� 20 �ѹ�Ѻ</h3>"
@@ -962,6 +963,8 @@ function startProgram() {
   document.getElementById("btnClear").addEventListener("click", clearAllData)
   
   //startProcessDataWithDelay() 
+
+  console.log(planArr.planArr)
 
 }
 
