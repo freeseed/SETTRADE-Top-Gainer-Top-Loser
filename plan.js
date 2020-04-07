@@ -1,15 +1,34 @@
-const setupArr = [
+const buySetupArr = [
     '0-พักตัวรอพุ่ง มาเช้า 11โมง เที่ยง เปิดบ่าย บ่ายสาม บ่ายสี่ มาเย็นต้องเข้า(WHA,AAV)',
     '1-กำลังทำ low ต้องหาจังหวะดราม่า เทแรงห่อเย็น(PTG)',
     '2-รอย่อเช้า แล้วเข้า(PTG)',
-    '3-หุ้น Floor รอเล่นเด้งจาก Floor (ACE,THANI)',
+    '3-หุ้น Floor รอเล่นเด้งจาก Floor (ACE,THANI,META)',
     '4-หุ้น เด้งจาก floor รอเทขอสอง รับเล่นเด้งอีกที (ACE)',
     '5-ลงแรงรับที่แนวรับ (PLANB)',
     '6-มันกำลังวิ่ง อะไรไม่รู้ volume เข้า',
     '7-มีปันผลเยอะ ถ้าตลาดลงแรง มันจะเด้งได้ดี หรือมีจังหวะเล่นวิ่งขึ้นเพื่อโดดลงวัน XD',
-    '8-หุ้นมีข่าว วิเคราะห์ดีๆ จะเปิดโดดแล้ววิ่ง ข่าวเย็น เช้า เที่ยง'
-
+    '8-หุ้นมีข่าว วิเคราะห์ดีๆ จะเปิดโดดแล้ววิ่ง ข่าวเย็น เช้า เที่ยง',
+    '9-หุ้นเปิดโดดจากพักต้องเล่น ยิ่งตลาด break ต้องเล่น(7-Apr-2020)'
 ]
+
+const errorNotFollowBuySetup = [
+    {date:'7-Apr-2020',desc:'META floor ที่่ 8 ยิงสองแท่งย่อไม่เล่น ไม่รอ 0.37 c.beer ซื้อที่ 0.37',setup: buySetupArr[3]},
+    {date:'7-Apr-2020',desc:'GPSC BGRIM AOT GULF เปิดโดดจากพักมาหลายแท่ง ไม่เล่นอีก',setup: buySetupArr[9]}
+]
+
+const saleSetupArr = [
+    '0-วิ่งแต่เช้าขาย บ่ายสี่โมง',
+    '1-บ่ายวิ่งต่อขายก่อน',
+    '2-',
+    '3-',
+    '4-',
+    '5-',
+    '6-',
+    '7-',
+    '8-'
+]
+
+
 const planArr =[
     {symbol: 'ADVANC',date:'06-04-2020',plan: 'none'},
     {symbol: 'AEONTS',date:'06-04-2020',plan: 'none'},
@@ -117,4 +136,5 @@ const planArr =[
 ]
 
 module.exports.planArr = planArr
-module.exports.setup = setupArr
+module.exports.buysetup = buySetupArr
+module.exports.salesetup = saleSetupArr
