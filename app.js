@@ -849,11 +849,20 @@ function nameDayofWeek(intDay){
     return ''
 }
 
+function diffofDay(xdate){
+  const today = new Date()
+  const diff = parseInt( Math.ceil((xdate-today)/(24*3600*1000)) )
+  if (diff > 0) 
+    return '+' + diff.toString()
+  else
+    return  diff.toString()
+}
+
 function showSet100Calendar(arr){
   
   const strRows = arr.map((obj,i) => `<tr> 
                   <td>${i+1}</td>
-                  <td>${ nameDayofWeek(obj.xdate.getDay()) + ' ' + obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
+                  <td>${ diffofDay(obj.xdate) + ' : ' + nameDayofWeek(obj.xdate.getDay()) + ' ' + obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
                   <td>${obj.symbol}</td> 
                   <td>${obj.xx}</td>  
                   <td><a href="${obj.url}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด</a></td>  </tr>`).join('')
@@ -879,10 +888,13 @@ function filterStockSet100andShow(arrAllStockCalendarXD){
   axios(url1).then(function (response){
 
       arrStockSet100 = set100.wrapHtmlParserSet100(response.data)
+      // add special BAM
+      arrStockSet100.push(shareFunc.stockObject('BAM','strVolume',0,'strChange',0,'strFlag',0,0,0,0))
+
       let arrStockSet100CalendarXD = arrAllStockCalendarXD.filter( (x)=>{ return arrStockSet100.findIndex((s)=>{return s.symbol === x.symbol})>=0 }) 
       arrStockSet100CalendarXD = arrStockSet100CalendarXD.filter( (x) => {
               const today = new Date()
-              const yesterday = today.setDate(today.getDate()-1)
+              const yesterday = today.setDate(today.getDate()-5)
               return x.xdate > yesterday})
       arrStockSet100CalendarXD = arrStockSet100CalendarXD.sort( (a,b) => a.xdate - b.xdate)
 
