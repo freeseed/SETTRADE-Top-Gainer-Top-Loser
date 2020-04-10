@@ -31,7 +31,12 @@ function wrapHtmlParser (html) {
     
         alllink.forEach((alink,itr)=> {
             const strOnClick = alink.attribs.onclick.replace("calendarDetailLoad('",'').replace("');",'').replace(/amp;/g,'')
-            const [strSymbol,strxx] =  alink.children[0].nodeValue.replace(/[\n\s]/g,'').split('-')
+            //console.log(alink.children[0].nodeValue.replace(/[\n\s]/g,''))
+            var [strSymbol,strxx,strspecial] =  alink.children[0].nodeValue.replace(/[\n\s]/g,'').split('-')  
+            if (strspecial != undefined){
+              strSymbol = strSymbol +'-' + strxx
+              strxx = strspecial
+            }
             const xDate = new Date( parseInt( strOnClick.split('&')[3].replace('xDate=','') ) )
             const strUrl =  'https://www.set.or.th/' + strOnClick
 

@@ -891,7 +891,7 @@ function filterStockSet100andShow(arrAllStockCalendarXD){
       // add special BAM
       arrStockSet100.push(shareFunc.stockObject('BAM','strVolume',0,'strChange',0,'strFlag',0,0,0,0))
 
-      let arrStockSet100CalendarXD = arrAllStockCalendarXD.filter( (x)=>{ return arrStockSet100.findIndex((s)=>{return s.symbol === x.symbol})>=0 }) 
+      let arrStockSet100CalendarXD = arrAllStockCalendarXD.filter( (x)=>{ return arrStockSet100.findIndex((s)=>{return s.symbol === x.symbol})>=0 || x.xx.match(/^XE/)}) 
       arrStockSet100CalendarXD = arrStockSet100CalendarXD.filter( (x) => {
               const today = new Date()
               const yesterday = today.setDate(today.getDate()-5)
@@ -924,7 +924,7 @@ function refreshStockCalendar() {
         allhtml = allhtml + response.data
         
         let arrAllStockCalendar = stockCalendar.wrapHtmlParserStockCalendar(allhtml)
-        let arrAllStockCalendarXD = arrAllStockCalendar.filter((obj)=>{ return obj.xx !== 'XM' && obj.xx !== 'P'  }) 
+        let arrAllStockCalendarXD = arrAllStockCalendar.filter((obj)=>{ return obj.xx !== 'XM' && !obj.xx.match(/^P/)  }) 
 
         //console.log('arrAllStockCalendar',arrAllStockCalendar)
         //console.log('arrAllStockCalendarXD',arrAllStockCalendarXD)
@@ -976,7 +976,7 @@ function startProgram() {
   
   //startProcessDataWithDelay() 
 
-  console.log(planArr.planArr)
+  //console.log(planArr.planArr)
 
 }
 
