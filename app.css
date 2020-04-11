@@ -9,9 +9,12 @@
 body {
     margin-bottom: 40rem;
 }
+#set100tContainer {
+    margin: 0 0 0 0;
+}
 
 #resultContainer {
-    margin: 2em 0 0 0;
+    margin: 0 0 0 0;
 }
 
 #divTopGain,#divTopLoss {
@@ -46,16 +49,6 @@ td {
     /*font-weight: bold; */
 }
 
-
-.moveTopMaginNeg {
-    margin-top: -20px;
-}
-
-.moveDownAbit {
-    display: inline-block;
-    padding-top: 7px;
-    
-}
 
 #InforBar {
     margin: 10px 0;

@@ -12,13 +12,11 @@
   </head>
   <body>
     
-    <div id="testBlock"></div>
-
     <div id="nav">
       <div class="row">
         <div class="col s3">
           <!-- Switch -->
-          <span class="switch moveDownAbit">
+          <span class="switch">
             <label id="lbFilter">Filter : </label>
             <label>
               Off
@@ -40,39 +38,17 @@
       </div>
     </div>
 
-    <div id="resultContainer"  >
-        <div>
-          <div class="col s12 center-align">
-            <h6 style="display: inline-block">Set/Mai Top Gain/Loss</h6>
-            <button id="btnRefreshSetMai" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
-            <button id="btnHideSetMai" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
-            <span id="labelTimeSetMai"></span>
-          </div>
-        </div>
 
-        <div id="divTopGain" class="row">
-          <div id="col1" class="col s12 m6 l6 xl3"></div>
-          <div id="col2" class="col s12 m6 l6 xl3"></div>
-          <div id="col3" class="col s12 m6 l6 xl3"></div>
-          <div id="col4" class="col s12 m6 l6 xl3"></div>
-        </div>
-        <div id="divTopLoss" class="row">
-          <div id="col5" class="col s12 m6 l6 xl3"></div>
-          <div id="col6" class="col s12 m6 l6 xl3"></div>
-          <div id="col7" class="col s12 m6 l6 xl3"></div>
-          <div id="col8" class="col s12 m6 l6 xl3"></div>
-        </div>
-    </div>
 
     <div id="set100tContainer"  >
-      <div>
-        <div class="col s12 center-align">
-          <h6 style="display: inline-block">Set 100 Top Gain/Loss</h6>
-          <button id="btnRefreshSet100" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
-          <button id="btnHideSet100" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
-          <span id="labelTimeSet100"></span>
-        </div>
+
+      <div class="center-align">
+        <h6 style="display: inline-block">Set 100 Top Gain/Loss</h6>
+        <button id="btnRefreshSet100" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+        <button id="btnHideSet100" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
+        <span id="labelTimeSet100"></span>
       </div>
+
       
       <div id="divTopGainSet100" class="row">
         <div id="set50col1" class="col s12 m6 l6 xl3"></div>
@@ -82,7 +58,38 @@
       </div>
     </div>
 
+    <div id="resultContainer"  >
+
+      <div class="center-align">
+        <h6 style="display: inline-block">Set/Mai Top Gain/Loss</h6>
+        <button id="btnRefreshSetMai" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+        <button id="btnHideSetMai" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
+        <span id="labelTimeSetMai"></span>
+      </div>
+
+      <div id="divTopGain" class="row">
+        <div id="col1" class="col s12 m6 l6 xl3"></div>
+        <div id="col2" class="col s12 m6 l6 xl3"></div>
+        <div id="col3" class="col s12 m6 l6 xl3"></div>
+        <div id="col4" class="col s12 m6 l6 xl3"></div>
+      </div>
+      <div id="divTopLoss" class="row">
+        <div id="col5" class="col s12 m6 l6 xl3"></div>
+        <div id="col6" class="col s12 m6 l6 xl3"></div>
+        <div id="col7" class="col s12 m6 l6 xl3"></div>
+        <div id="col8" class="col s12 m6 l6 xl3"></div>
+      </div>
+    </div>
+
     <div class="newscontainer">
+      
+      <div class="row">
+        <div class="col s12">
+            <h6 style="display: inline-block">Scan Stock Calendar</h6>
+            <button id="btnRefreshStockCalendar" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+            <div id="stockCalendar"></div>
+        </div>
+      </div>
 
       <div class="row">
         <div class="col s12">
@@ -136,15 +143,6 @@
         <div id="set100swingcol2" class="col s12 m6 l6 xl6"></div>
       </div>
 
-
-      <div class="row">
-        <div class="col s12">
-            <h6 style="display: inline-block">Scan Stock Calendar</h6>
-            <button id="btnRefreshStockCalendar" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-            <div id="stockCalendar"></div>
-        </div>
-      </div>
-
     </div>
 
         
@@ -156,6 +154,8 @@
       </p>
       <p>
           This page will error if open on browser because process object is not defined. And if remove process object, it still error about cross-domain AJAX request.
+          CORS จริงๆ ขึ้นกับ server ว่าอนุญาติให้ สร้าง ajax request จาก JavaScript ของ web อื่นไปขอ resource ได้หรือไม่ อย่างตัว App นี้ ตัว web เป็น local host ทำการ request ไปยัง settrade 
+          ซึ่ง server ของ settrade ไม่ได้ setup CORS อนุญาติไว้ ทำให้ browser block แต่ ตัว electron ไม่ block
       </p>
     </div> 
 
