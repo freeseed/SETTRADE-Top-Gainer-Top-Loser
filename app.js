@@ -858,9 +858,16 @@ function diffofDay(xdate){
     return  diff.toString()
 }
 
+function colorForRowCalendar(xx){
+  if (xx=='XE')
+    return 'colorRed'
+  else
+    return 'colorBlue'
+}
+
 function showSet100Calendar(arr){
   
-  const strRows = arr.map((obj,i) => `<tr> 
+  const strRows = arr.map((obj,i) => `<tr class="${colorForRowCalendar(obj.xx)}"> 
                   <td>${i+1}</td>
                   <td>${ diffofDay(obj.xdate) + ' : ' + nameDayofWeek(obj.xdate.getDay()) + ' ' + obj.xdate.getDate() +'-'+ (obj.xdate.getMonth()+1) +'-'+ obj.xdate.getFullYear()}</td> 
                   <td>${obj.symbol}</td> 
