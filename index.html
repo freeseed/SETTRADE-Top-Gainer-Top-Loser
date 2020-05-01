@@ -28,125 +28,128 @@
           <!--End Switch -->
           <button id="btnAutoRefresh" class="waves-effect waves-teal btn-flat blue-text">Start Auto Refresh</button>
         </div>
-        <div class="col s6 center-align">
+        <div class="col s4 center-align">
           <h6 id="InforBar"></h6>
         </div>
-        <div class="col s3 right-align">
+        <div class="col s5 right-align">
+          <button id="btnShowSet100" class="waves-effect waves-teal btn-flat blue-text">SET100</button>
+          <button id="btnShowSetMai" class="waves-effect waves-teal btn-flat blue-text">SET/Mai</button>
+          <button id="btnShowNews" class="waves-effect waves-teal btn-flat blue-text">News</button>
           <button id="btnClear" class="waves-effect waves-teal btn-flat blue-text">clear</button>
           <button id="btnRefresh" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
         </div>
       </div>
     </div>
 
+    <div id="topContainer">
 
+      <div id="set100tContainer" class="row hide" >
 
-    <div id="set100tContainer"  >
-
-      <div class="center-align">
-        <h6 style="display: inline-block">Set 100 Top Gain/Loss</h6>
-        <button id="btnRefreshSet100" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
-        <button id="btnHideSet100" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
-        <span id="labelTimeSet100"></span>
-      </div>
-
-      
-      <div id="divTopGainSet100" class="row">
-        <div id="set50col1" class="col s12 m6 l6 xl3"></div>
-        <div id="set100col1" class="col s12 m6 l6 xl3"></div>
-        <div id="set50col2" class="col s12 m6 l6 xl3"></div>
-        <div id="set100col2" class="col s12 m6 l6 xl3"></div>
-      </div>
-    </div>
-
-    <div id="resultContainer"  >
-
-      <div class="center-align">
-        <h6 style="display: inline-block">Set/Mai Top Gain/Loss</h6>
-        <button id="btnRefreshSetMai" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
-        <button id="btnHideSetMai" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
-        <span id="labelTimeSetMai"></span>
-      </div>
-
-      <div id="divTopGain" class="row">
-        <div id="col1" class="col s12 m6 l6 xl3"></div>
-        <div id="col2" class="col s12 m6 l6 xl3"></div>
-        <div id="col3" class="col s12 m6 l6 xl3"></div>
-        <div id="col4" class="col s12 m6 l6 xl3"></div>
-      </div>
-      <div id="divTopLoss" class="row">
-        <div id="col5" class="col s12 m6 l6 xl3"></div>
-        <div id="col6" class="col s12 m6 l6 xl3"></div>
-        <div id="col7" class="col s12 m6 l6 xl3"></div>
-        <div id="col8" class="col s12 m6 l6 xl3"></div>
-      </div>
-    </div>
-
-    <div class="newscontainer">
-      
-      <div class="row">
-        <div class="col s12">
-            <h6 style="display: inline-block">Scan Stock Calendar</h6>
-            <button id="btnRefreshStockCalendar" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-            <div id="stockCalendar"></div>
+        <div class="center-align">
+          <h6 style="display: inline-block">Set 100 Top Gain/Loss</h6>
+          <button id="btnRefreshSet100" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+          <button id="btnHideSet100" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
+          <span id="labelTimeSet100"></span>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-            <h6 style="display: inline-block">Today News</h6>
-            <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-            <span id="numOfTodayNews">0 news</span>
-            <div id="newstodaylist"></div>
-        </div>
-      </div>
-
-      <div class="row">
-          <div class="col s12">
-              <h6 style="display: inline-block">Pass News</h6>
-              <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
-              <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-              <span id="numOfPassNews">0 news</span>
-              <span>ต้องค้นหาย้อนมากกว่า 1 วัน ถ้าวันนี้เป็นวันหยุด ย้อนไม่พอจะไม่เจอข้อมูล</span>
-              <div id="newspasslist"></div>
-          </div>
-      </div>
-
-      <div class="row">
-          <div class="col s12">
-              <h6 style="display: inline-block">Stock News</h6>
-              <input placeholder="Symbol" id="stocksymbol" type="text" style="display:inline-block;width:160px;margin-left:1rem;color: white;;font-size: 16px;">
-              <input id="pagesearch" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (pages)
-              <small id="stocksymbolerrormsg" style="margin-left: 1rem;"></small>
-              <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-              <span id="numOfStockNews">0 news</span>
-              <div id="newsstocklist"></div>
-          </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-            <h6 style="display: inline-block">ค้นหา ข่าว สรุปผลการดำเนินงานของ Today News</h6>
-            <input id="percentGain" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="25"> (%)
-            <button id="btnRefreshTodayNewsFR" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-            <span id="progressFR">0/0</span>
-            <div id="newstodaylistFR"></div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-            <h6 style="display: inline-block">SET100 Top swing</h6>
-            <button id="btnRefreshset100swing" class="waves-effect waves-teal btn-flat blue-text">Load</button>
-
-        </div>
-        <div id="set100swingcol1" class="col s12 m6 l6 xl6"></div>
-        <div id="set100swingcol2" class="col s12 m6 l6 xl6"></div>
-      </div>
-
-    </div>
 
         
-    <div class="center-align">
+        <div id="divTopGainSet100" class="row">
+          <div id="set50col1" class="col s12 m6 l6 xl3"></div>
+          <div id="set100col1" class="col s12 m6 l6 xl3"></div>
+          <div id="set50col2" class="col s12 m6 l6 xl3"></div>
+          <div id="set100col2" class="col s12 m6 l6 xl3"></div>
+        </div>
+      </div>
+
+      <div id="resultContainer" class="hide" >
+
+        <div class="center-align">
+          <h6 style="display: inline-block">Set/Mai Top Gain/Loss</h6>
+          <button id="btnRefreshSetMai" class="waves-effect waves-teal btn-flat blue-text">Refresh</button>
+          <button id="btnHideSetMai" class="waves-effect waves-teal btn-flat blue-text">Hide/Unhide</button>
+          <span id="labelTimeSetMai"></span>
+        </div>
+
+        <div id="divTopGain" class="row">
+          <div id="col1" class="col s12 m6 l6 xl3"></div>
+          <div id="col2" class="col s12 m6 l6 xl3"></div>
+          <div id="col3" class="col s12 m6 l6 xl3"></div>
+          <div id="col4" class="col s12 m6 l6 xl3"></div>
+        </div>
+        <div id="divTopLoss" class="row">
+          <div id="col5" class="col s12 m6 l6 xl3"></div>
+          <div id="col6" class="col s12 m6 l6 xl3"></div>
+          <div id="col7" class="col s12 m6 l6 xl3"></div>
+          <div id="col8" class="col s12 m6 l6 xl3"></div>
+        </div>
+      </div>
+
+      <div id="newscontainer" class="newscontainer hide" >
+        
+        <div class="row">
+          <div class="col s12">
+              <h6 style="display: inline-block">Scan Stock Calendar</h6>
+              <button id="btnRefreshStockCalendar" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <div id="stockCalendar"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+              <h6 style="display: inline-block">Today News</h6>
+              <button id="btnRefreshTodayNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <span id="numOfTodayNews">0 news</span>
+              <div id="newstodaylist"></div>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h6 style="display: inline-block">Pass News</h6>
+                <input id="passday" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (days)
+                <button id="btnRefreshPassNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+                <span id="numOfPassNews">0 news</span>
+                <span>ต้องค้นหาย้อนมากกว่า 1 วัน ถ้าวันนี้เป็นวันหยุด ย้อนไม่พอจะไม่เจอข้อมูล</span>
+                <div id="newspasslist"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h6 style="display: inline-block">Stock News</h6>
+                <input placeholder="Symbol" id="stocksymbol" type="text" style="display:inline-block;width:160px;margin-left:1rem;color: white;;font-size: 16px;">
+                <input id="pagesearch" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="1"> (pages)
+                <small id="stocksymbolerrormsg" style="margin-left: 1rem;"></small>
+                <button id="btnRefreshStockNews" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+                <span id="numOfStockNews">0 news</span>
+                <div id="newsstocklist"></div>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+              <h6 style="display: inline-block">ค้นหา ข่าว สรุปผลการดำเนินงานของ Today News</h6>
+              <input id="percentGain" type="text" style="display:inline-block;width:120px;margin-left: 1rem;color: white;font-size: 16px;" value="25"> (%)
+              <button id="btnRefreshTodayNewsFR" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+              <span id="progressFR">0/0</span>
+              <div id="newstodaylistFR"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+              <h6 style="display: inline-block">SET100 Top swing</h6>
+              <button id="btnRefreshset100swing" class="waves-effect waves-teal btn-flat blue-text">Load</button>
+
+          </div>
+          <div id="set100swingcol1" class="col s12 m6 l6 xl6"></div>
+          <div id="set100swingcol2" class="col s12 m6 l6 xl6"></div>
+        </div>
+
+      </div>
+    </div>
+        
+    <div class="center-align hide">
       <p>
           We are using node <script>document.write(process.versions.node)</script>,
           Chrome <script>document.write(process.versions.chrome)</script>,

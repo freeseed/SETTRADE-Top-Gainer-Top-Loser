@@ -956,6 +956,37 @@ function clearAllData() {
 
 }
 
+function Showtab(tabName){
+  const tabSet100 = document.getElementById("set100tContainer")
+  const tabSetMai = document.getElementById("resultContainer")
+  const tabNews = document.getElementById("newscontainer")
+   tabSet100.classList.add('hide')
+  tabSetMai.classList.add('hide')
+  tabNews.classList.add('hide')
+
+  if (tabName === 'SET100') 
+    tabSet100.classList.remove('hide')
+  else if (tabName ==='SETMAI')
+    tabSetMai.classList.remove('hide')
+  else if (tabName ==='NEWS')
+    tabNews.classList.remove('hide')
+
+}
+
+function ShowSet100Tab() {
+  Showtab('SET100')
+}
+
+function ShowSetMaiTab() {
+  console.log('click  ShowSetMaiTab')
+  Showtab('SETMAI')
+}
+
+function ShowNewsTab () {
+  Showtab('NEWS')
+}
+
+
 function startProgram() {
 
   document.getElementById("switchFilter").addEventListener("click", startProcessDataWithDelay)
@@ -980,7 +1011,14 @@ function startProgram() {
   
 
   document.getElementById("btnClear").addEventListener("click", clearAllData)
+
+  document.getElementById("btnShowSet100").addEventListener("click", ShowSet100Tab)
+
+  document.getElementById("btnShowSetMai").addEventListener("click", ShowSetMaiTab)
+
+  document.getElementById("btnShowNews").addEventListener("click", ShowNewsTab)
   
+  Showtab('SET100')
   //startProcessDataWithDelay() 
 
   //console.log(planArr.planArr)

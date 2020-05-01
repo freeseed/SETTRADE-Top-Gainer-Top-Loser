@@ -6,15 +6,30 @@
 
 } 
 
-body {
-    margin-bottom: 40rem;
+/* body {
+    margin-bottom: 10rem;
+} */
+
+#topContainer {
+    /* height: 95vh; */
+    width: 95vw;
 }
+
 #set100tContainer {
     margin: 0 0 0 0;
+    position: absolute;
+    width: 100%;
 }
 
 #resultContainer {
     margin: 0 0 0 0;
+    position: absolute;
+    width: 100%;
+}
+
+.newscontainer {
+    margin: 0 0 0 2rem;
+    position: absolute;
 }
 
 #divTopGain,#divTopLoss {
@@ -57,10 +72,6 @@ td {
 
 #InforBar {
     margin: 10px 0;
-}
-
-.newscontainer {
-    margin: 0 0 0 2rem;
 }
 
 #stocksymbol {
