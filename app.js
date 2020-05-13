@@ -399,8 +399,12 @@ function processNewsTodayNotFR() {
   processNewsToday(false)
 }
 
+function processNewsOldFR() {
+  //processNewsToday(true)
+}
+
 function strToFloatFR(str) {
-  let strNum = str.replace(/,/g,'').replace(/(แก้ไข)/g,'')
+  let strNum = str.replace(/,/g,'').replace(/\(แก้ไข\)/g,'')
   const isNegative = (strNum.indexOf('(')>=0)? true : false
   strNum = strNum.replace('(','').replace(')','')
   let numFloat = shareFunc.textToFloat(strNum)
@@ -960,7 +964,7 @@ function Showtab(tabName){
   const tabSet100 = document.getElementById("set100tContainer")
   const tabSetMai = document.getElementById("resultContainer")
   const tabNews = document.getElementById("newscontainer")
-   tabSet100.classList.add('hide')
+  tabSet100.classList.add('hide')
   tabSetMai.classList.add('hide')
   tabNews.classList.add('hide')
 
@@ -999,6 +1003,8 @@ function startProgram() {
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
   document.getElementById("btnRefreshTodayNewsFR").addEventListener("click", processNewsTodayFR)
+  document.getElementById("btnRefreshOldNewsFR").addEventListener("click", processNewsOldFR)
+  
 
   document.getElementById("btnHideSetMai").addEventListener("click", hideunhideSetMai)
   document.getElementById("btnHideSet100").addEventListener("click", hideunhideSet100)

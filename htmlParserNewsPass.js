@@ -1,4 +1,8 @@
 const urlnews =  'https://www.set.or.th/set/newslist.do?headline=&source=&symbol=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&newsGroupId=&securityType=&language=th&country=TH'
+
+const urlnewsFR =  'https://www.set.or.th/set/newslist.do?headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&symbol=&source=&newsGroupId=&securityType=&country=TH&language=th&' 
+              + 'from=01%2F04%2F2020&to=08%2F05%2F2020&currentpage=0'
+
 const htmlparser = require('htmlparser2')
 const shareFunc = require('./sharevariables')
 

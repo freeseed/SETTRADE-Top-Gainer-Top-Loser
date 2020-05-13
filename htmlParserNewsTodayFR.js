@@ -47,15 +47,13 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           //console.log(textintd)
                           const strLink = textintd[6].attribs.href
 
-                          //const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
-
                           let boolAddToArray = false
 
                           if ( shareFunc.isNeedTopicsFR(strTitle) )  {
                             boolAddToArray = true
                           }
 
-                          if (boolAddToArray)  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink) )
+                          if (boolAddToArray )  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink) )  //&& strSymbol === 'MC' for fix bug
   
                         }
   
