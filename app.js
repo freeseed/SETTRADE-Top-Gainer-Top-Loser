@@ -391,8 +391,18 @@ function showNewsTodayFR(arrNewsToday){
   document.getElementById('newstodaylistFR').innerHTML = strTableNews
 }
 
-function processNewsTodayFR() {
-  processNewsToday(true)
+function processNewsTodayFR(period) {
+  processNewsToday(true,period)
+}
+
+function processNewsTodayFR1() {
+  processNewsTodayFR(1)
+}
+function processNewsTodayFR2() {
+  processNewsTodayFR(2)
+}
+function processNewsTodayFR3() {
+  processNewsTodayFR(3)
 }
 
 function processNewsTodayNotFR() {
@@ -424,7 +434,7 @@ function searchFRprofit(str,element,i) {
   let posBegin = str.indexOf(strFix1)
   let posEnd = str.indexOf('\n',posBegin)
   let subString = str.slice(posBegin + strFix1.length, posEnd).trim()
-  console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
+  //console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
   let posSpace = subString.indexOf(' ')
   let strProfitCurrent = subString.slice(0,posSpace).trim()
   let strProfitLast = subString.slice(posSpace).trim()
@@ -435,14 +445,14 @@ function searchFRprofit(str,element,i) {
   let posBeginEPS = str.indexOf(strFixEPS,posEnd)
   let posEndEPS = str.indexOf('\n',posBeginEPS)
   let subStringEPS = str.slice(posBeginEPS + strFixEPS.length, posEndEPS).trim()
-  console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
+  //console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
   let posSpaceEPS = subStringEPS.indexOf(' ')
   let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim()
   let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim()
   let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
   let numEPSLast = strToFloatFR(strProfitLastEPS)
   let objStock = getStockPrice(element.symbol)
-  console.log('objStock',objStock)
+  //console.log('objStock',objStock)
   let stockPrice = ( objStock != undefined)? objStock.price : 0
 
 
@@ -461,7 +471,7 @@ function searchFRprofit(str,element,i) {
   element.curEPS = numEPSCurrent
   element.price = stockPrice
 
-  console.log(i, element.symbol,'element.lastProfit',element.lastProfit,'element.curProfit',element.curProfit,'element.lastEPS',element.lastEPS,'element.curEPS',element.curEPS,'element.improvementFR',element.improvementFR,'element.curPE',element.curPE,'stockPrice',stockPrice)
+  //console.log(i, element.symbol,'element.lastProfit',element.lastProfit,'element.curProfit',element.curProfit,'element.lastEPS',element.lastEPS,'element.curEPS',element.curEPS,'element.improvementFR',element.improvementFR,'element.curPE',element.curPE,'stockPrice',stockPrice)
 
 }
 
@@ -490,13 +500,13 @@ function getAndCalFRImprove(arr,delayGetDetailFR){
 }
 
 function getAllStockLastPrice(){
-  const url1 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=SET&type=S'
-  const url2 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=mai&type=S'
+  const url1 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=SET&type=S'  // set ตอนเช้า ยังมีราคาอยู่
+  const url2 = 'https://www.settrade.com/C13_MarketSummary.jsp?detail=STOCK_TYPE&order=N&market=mai&type=S'  // mai ตอนเช้า ไม่มีราคา
   arrAllStockPrice = []
   axios(url1).then(function (response){
 
       arrAllStockPrice = arrAllStockPrice.concat(set100.wrapHtmlParserSet100(response.data))
-      console.log('arrAllStockPrice',arrAllStockPrice)
+      //console.log('arrAllStockPrice',arrAllStockPrice)
 
   }).catch(function (error){
       console.log('getAllStockLastPrice axios error 1',error.message,url1)
@@ -505,7 +515,7 @@ function getAllStockLastPrice(){
   axios(url2).then(function (response){
 
     arrAllStockPrice = arrAllStockPrice.concat(set100.wrapHtmlParserSet100(response.data)) 
-    console.log('arrAllStockPrice',arrAllStockPrice)
+    //console.log('arrAllStockPrice',arrAllStockPrice)
 
   }).catch(function (error){
     console.log('getAllStockLastPrice axios error 2',error.message,url2)
@@ -513,7 +523,7 @@ function getAllStockLastPrice(){
 
 }
 
-function processNewsToday(FRflag=false) {
+function processNewsToday(FRflag=false,period) {
   let xhttp = new XMLHttpRequest()
   const delayGetDetailFR = 200 //milisecs
   const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market='
@@ -526,10 +536,10 @@ function processNewsToday(FRflag=false) {
         showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ])
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
-        let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText)
+        let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText,false,period)
         //arrNewsTodayFR = arrNewsTodayFR.filter(function(s) { return s.symbol == 'WORLD'})
-        getAllStockLastPrice()
-        console.log('onreadystatechange arrAllStockPrice',arrAllStockPrice)
+        if (arrAllStockPrice.length === 0)  getAllStockLastPrice()
+        //console.log('processNewsToday arrAllStockPrice',arrAllStockPrice)
         getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
         setTimeout(showNewsTodayFR, (arrNewsTodayFR.length+4) * delayGetDetailFR,arrNewsTodayFR)
       }
@@ -1002,7 +1012,9 @@ function startProgram() {
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
-  document.getElementById("btnRefreshTodayNewsFR").addEventListener("click", processNewsTodayFR)
+  document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", processNewsTodayFR1)
+  document.getElementById("btnRefreshTodayNewsFR2").addEventListener("click", processNewsTodayFR2)
+  document.getElementById("btnRefreshTodayNewsFR3").addEventListener("click", processNewsTodayFR3)
   document.getElementById("btnRefreshOldNewsFR").addEventListener("click", processNewsOldFR)
   
 

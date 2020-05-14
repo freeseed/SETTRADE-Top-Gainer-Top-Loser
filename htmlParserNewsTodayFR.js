@@ -3,9 +3,11 @@ const shareFunc = require('./sharevariables')
 
 
 
-function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
+function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai,period) {
 
     filterOutOnlyDWSETTSDmai = typeof filterOutOnlyDWSETTSDmai !== 'undefined' ? filterOutOnlyDWSETTSDmai : false
+    period = typeof period !== 'undefined' ? period : 2  // 1=morning 2=noon 3=evening
+
     let arrNewsToday = []
     const handler = new htmlparser.DomHandler(function (error, dom) {
       if (error)
@@ -43,17 +45,31 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           const strSymbol =  textintd[2].data.trim()
                           const strSource =  textintd[3].data.trim()
                           const strTitle =  textintd[4].data.trim()
+                          let posColon = strTime.indexOf(':') // time format is 14 พ.ค. 2563 12:31:04
+                          const strHour = strTime.slice(posColon-2,posColon) // to get hours
+                          let criteriaHourBegin,criteriaHourEnd
+                          if (period === 1) {
+                            criteriaHourBegin='01'
+                            criteriaHourEnd = '10'
+                          }else if (period === 2) {
+                            criteriaHourBegin='12'
+                            criteriaHourEnd = '15'
+                          }else if (period === 3 ){
+                            criteriaHourBegin='16'
+                            criteriaHourEnd = '23'
+                          }
+                          //console.log(strTime,strHour)
 
                           //console.log(textintd)
                           const strLink = textintd[6].attribs.href
 
                           let boolAddToArray = false
 
-                          if ( shareFunc.isNeedTopicsFR(strTitle) )  {
+                          if ( shareFunc.isNeedTopicsFR(strTitle) && (strHour >= criteriaHourBegin && strHour <= criteriaHourEnd) )  {
                             boolAddToArray = true
                           }
 
-                          if (boolAddToArray )  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink) )  //&& strSymbol === 'MC' for fix bug
+                          if (boolAddToArray )  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour) )  //&& strSymbol === 'MC' for fix bug
   
                         }
   
