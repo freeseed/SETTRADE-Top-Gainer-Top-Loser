@@ -3,6 +3,7 @@
 (function(){
 
 const axios = require('axios')
+const fs = require('fs')
 const newsToday = require('./htmlParserNewsToday')
 const newsTodayFR = require('./htmlParserNewsTodayFR')
 const newsPass = require('./htmlParserNewsPass')
@@ -350,11 +351,21 @@ function showNewsToday(arrNewsToday){
   document.getElementById('numOfTodayNews').innerHTML = arrNewsToday.length.toString() + ' news'
 }
 
-function showNewsTodayFR(arrNewsToday){
+function showNewsTodayFR(arrNewsToday,period){
 
-  arrNewsToday = arrNewsToday.sort(function(a,b){ return b.improvementFR - a.improvementFR})
-  
-  const strRows = arrNewsToday.map((objNews,i) => `<tr> 
+  let arrNewsTodaySeparetedByPeriod1 = arrNewsToday.filter( (t)=> { return (t.hour >= '01' && t.hour <= '10') })
+  let arrNewsTodaySeparetedByPeriod2 = arrNewsToday.filter( (t)=> { return (t.hour >= '12' && t.hour <= '15') })
+  let arrNewsTodaySeparetedByPeriod3 = arrNewsToday.filter( (t)=> { return (t.hour >= '16' && t.hour <= '23') })
+
+  arrNewsTodaySeparetedByPeriod1 = arrNewsTodaySeparetedByPeriod1.sort(function(a,b){ return b.improvementFR - a.improvementFR})
+  arrNewsTodaySeparetedByPeriod2 = arrNewsTodaySeparetedByPeriod2.sort(function(a,b){ return b.improvementFR - a.improvementFR})
+  arrNewsTodaySeparetedByPeriod3 = arrNewsTodaySeparetedByPeriod3.sort(function(a,b){ return b.improvementFR - a.improvementFR})
+
+  const arrWrap = [arrNewsTodaySeparetedByPeriod1,arrNewsTodaySeparetedByPeriod2,arrNewsTodaySeparetedByPeriod3]
+
+  for (let x =0;  x < arrWrap.length; x++){
+
+    const strRows = arrWrap[x].map((objNews,i) => `<tr> 
                 <td>${i+1}</td> 
                 <td>${objNews.time}</td> 
                 <td>${objNews.symbol}</td> 
@@ -367,28 +378,41 @@ function showNewsTodayFR(arrNewsToday){
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
 
-  const strTableNews = `
-      <table>
-        <thead>
-          <tr> 
-          <th>No.</th>
-          <th style="width:150px;">Time</th>
-          <th style="width:60px;">Symbol</th>
-          <th>Title</th>
-          <th>Profit From</th>
-          <th>Profit To</th> 
-          <th>%Improvement</th>
-          <th>Cur PE</th>
-          <th>Price</th>
-          <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${strRows}
-        </tbody>
-        </table>
-  `
-  document.getElementById('newstodaylistFR').innerHTML = strTableNews
+    const strTableNews = `
+        <table>
+          <thead>
+            <tr> 
+            <th>No.</th>
+            <th style="width:150px;">Time</th>
+            <th style="width:60px;">Symbol</th>
+            <th>Title</th>
+            <th>Profit From</th>
+            <th>Profit To</th> 
+            <th>%Improvement</th>
+            <th>Cur PE</th>
+            <th>Price</th>
+            <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${strRows}
+          </tbody>
+          </table>
+    `
+    document.getElementById('newstodaylistFR' + (x+1) ).innerHTML = strTableNews
+  }
+  
+  if (period === 4) {
+
+    const strJson = JSON.stringify(arrNewsToday)
+    const d = new Date()
+    const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
+    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + '.json'
+    fs.writeFileSync(filename, strJson)
+    console.log('Save successfully', strDate)
+
+  }
+
 }
 
 function processNewsTodayFR(period) {
@@ -403,6 +427,35 @@ function processNewsTodayFR2() {
 }
 function processNewsTodayFR3() {
   processNewsTodayFR(3)
+}
+
+function processNewsTodayFR4() {
+  processNewsTodayFR(4)
+}
+
+function processNewsTodayFR5() {
+  const filename = document.getElementById('jsonFileName').value.trim()
+  const displayError = document.getElementById('progressFR')
+
+  if (filename === '') {
+    displayError.innerHTML = 'please input file name'
+    return
+  }
+  const fullfilename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\' + filename + '.json'
+
+  let arrNewsTodayFR
+  try {
+    const jsonString = fs.readFileSync(fullfilename)
+    arrNewsTodayFR = JSON.parse(jsonString)
+    showNewsTodayFR(arrNewsTodayFR,0)
+
+  } catch(err) {
+    console.log(err)
+    displayError.innerHTML = err
+  }
+
+
+
 }
 
 function processNewsTodayNotFR() {
@@ -541,7 +594,7 @@ function processNewsToday(FRflag=false,period) {
         if (arrAllStockPrice.length === 0)  getAllStockLastPrice()
         //console.log('processNewsToday arrAllStockPrice',arrAllStockPrice)
         getAndCalFRImprove(arrNewsTodayFR,delayGetDetailFR)
-        setTimeout(showNewsTodayFR, (arrNewsTodayFR.length+4) * delayGetDetailFR,arrNewsTodayFR)
+        setTimeout(showNewsTodayFR, (arrNewsTodayFR.length+4) * delayGetDetailFR,arrNewsTodayFR,period)
       }
 
 
@@ -992,7 +1045,7 @@ function ShowSet100Tab() {
 }
 
 function ShowSetMaiTab() {
-  console.log('click  ShowSetMaiTab')
+  //console.log('click  ShowSetMaiTab')
   Showtab('SETMAI')
 }
 
@@ -1015,6 +1068,10 @@ function startProgram() {
   document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", processNewsTodayFR1)
   document.getElementById("btnRefreshTodayNewsFR2").addEventListener("click", processNewsTodayFR2)
   document.getElementById("btnRefreshTodayNewsFR3").addEventListener("click", processNewsTodayFR3)
+
+  document.getElementById("btnRefreshTodayNewsFR4").addEventListener("click", processNewsTodayFR4)
+  document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", processNewsTodayFR5)
+
   document.getElementById("btnRefreshOldNewsFR").addEventListener("click", processNewsOldFR)
   
 

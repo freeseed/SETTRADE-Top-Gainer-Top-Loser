@@ -57,6 +57,9 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai,period) {
                           }else if (period === 3 ){
                             criteriaHourBegin='16'
                             criteriaHourEnd = '23'
+                          }else if (period === 4){
+                            criteriaHourBegin='00'
+                            criteriaHourEnd = '24'
                           }
                           //console.log(strTime,strHour)
 

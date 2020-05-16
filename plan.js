@@ -22,7 +22,8 @@ const errorNotFollowBuySetup = [
     {date:'8-Apr-2020',desc:'ฺBank แท่งสอง Set เปิดลง ตัวมันก็เปิดลง แล้ววิ่ง มา 11:20 ',setup: buySetupArr[10]},
     {date:'15-Apr-2020',desc:'ฺEA TASCO ยังไม่วิ่งตลาดโดดลง มันยืนแล้วเด้งพร้อมตลาด TASCO เปิดโดดวิ่งเลย ',setup: buySetupArr[11]},
     {date:'12-May-2020',desc:'ฺTHAI มันลงมาหลายวัน เช้านี้มันตกใจต้องเล่น มันเด้งแรงเลย ',setup: buySetupArr[12]},
-    {date:'13-May-2020',desc:'ฺWIIK WIIK-W2 งบดี เปิดโดด volume เยอะซ์้อ ATO มันไม่เล่นมาก่อนเลย',setup: buySetupArr[9]}
+    {date:'13-May-2020',desc:'ฺWIIK WIIK-W2 งบดี เปิดโดด volume เยอะซ์้อ ATO มันไม่เล่นมาก่อนเลย',setup: buySetupArr[9]},
+    {date:'14-May-2020',desc:'ฺPDI PDI-W1 งบดี เปิดโดด volume เยอะซ์้อ ATO มันไม่เล่นมาก่อนเลย',setup: buySetupArr[9]}
 ]
 
 const saleSetupArr = [
