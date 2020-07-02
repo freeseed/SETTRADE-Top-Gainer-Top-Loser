@@ -340,7 +340,7 @@ function showNewsToday(arrNewsToday){
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
+          <tr> <th>No.</th> <th style="width:180px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
         </thead>
         <tbody>
           ${strRows}
@@ -579,8 +579,9 @@ function getAllStockLastPrice(){
 function processNewsToday(FRflag=false,period) {
   let xhttp = new XMLHttpRequest()
   const delayGetDetailFR = 200 //milisecs
-  const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market='
-  const urlTodayNewsFR = 'https://www.set.or.th/set/searchtodaynews.do?source=&symbol=&securityType=&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
+  //const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market=' //actualy this is start page with no parameter. when search it will goto page searchtodaynews.do
+  const urlTodayNews   = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
+  const urlTodayNewsFR = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
 
@@ -625,7 +626,7 @@ function showNewsPass(arrNews){
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th>No.</th> <th style="width:150px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
+          <tr> <th>No.</th> <th style="width:180px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> </tr>
         </thead>
         <tbody>
           ${strRows}
