@@ -25,6 +25,8 @@ let topLoss="<h3>�Ҥ�Ŵŧ 20 �ѹ�Ѻ</h3>"
 //topGain="<h3>Top 20 Gainers</h3>"
 //topLoss="<h3>Top 20 Losers</h3>"
 
+const delayGetDetailFR = 200 //milisecs
+
 const endofTopLoss="</body>"
 const objFilterParam = {minVolume: 900000, minLastPrice: 0.1 ,minUpDownStep : 2 }
 
@@ -351,7 +353,12 @@ function showNewsToday(arrNewsToday){
   document.getElementById('numOfTodayNews').innerHTML = arrNewsToday.length.toString() + ' news'
 }
 
-function showNewsTodayFR(arrNewsToday,period){
+function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
+  let div = ''
+  if (FlagToday) 
+    div = 'newstodaylistFR'
+  else
+    div = 'newsoldlistFR'
 
   let arrNewsTodaySeparetedByPeriod1 = arrNewsToday.filter( (t)=> { return (t.hour >= '01' && t.hour <= '10') })
   let arrNewsTodaySeparetedByPeriod2 = arrNewsToday.filter( (t)=> { return (t.hour >= '12' && t.hour <= '15') })
@@ -399,7 +406,7 @@ function showNewsTodayFR(arrNewsToday,period){
           </tbody>
           </table>
     `
-    document.getElementById('newstodaylistFR' + (x+1) ).innerHTML = strTableNews
+    document.getElementById(div + (x+1) ).innerHTML = strTableNews
   }
   
   if (period === 4) {
@@ -408,7 +415,7 @@ function showNewsTodayFR(arrNewsToday,period){
     const d = new Date()
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
     const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + '.json'
-    fs.writeFileSync(filename, strJson)
+    //fs.writeFileSync(filename, strJson)
     console.log('Save successfully', strDate)
 
   }
@@ -463,7 +470,7 @@ function processNewsTodayNotFR() {
 }
 
 function processNewsOldFR() {
-  //processNewsToday(true)
+  processNewsPass(true)
 }
 
 function strToFloatFR(str) {
@@ -529,9 +536,10 @@ function searchFRprofit(str,element,i) {
 }
 
 
-function getAndCalFRImprove(arr,delayGetDetailFR){
+function getAndCalFRImprove(arr,delayGetDetailFR,FRflag=false){
 
-  const progressFR = document.getElementById('progressFR')
+  const progressdiv = FRflag ? 'progressOldFR' : 'progressFR'
+  const progressFR = document.getElementById(progressdiv)
   const lenFR = arr.length
   arr.forEach((element,i) => {
     
@@ -578,7 +586,7 @@ function getAllStockLastPrice(){
 
 function processNewsToday(FRflag=false,period) {
   let xhttp = new XMLHttpRequest()
-  const delayGetDetailFR = 200 //milisecs
+
   //const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market=' //actualy this is start page with no parameter. when search it will goto page searchtodaynews.do
   const urlTodayNews   = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
   const urlTodayNewsFR = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
@@ -636,21 +644,48 @@ function showNewsPass(arrNews){
   document.getElementById('newspasslist').innerHTML = strTableNews
   document.getElementById('numOfPassNews').innerHTML = arrNews.length.toString() + ' news'
 }
+async function processNewsPassFlagFalse() {
+  console.log('arguments',arguments)
+  processNewsPass(false)
+}
 
-async function processNewsPass(){
+async function processNewsPass(FRflag=false){
+
   // know bug เนื่องจากหน้าจอ ค้นหาของจริง จะใส่วันหยุด เป็น from to ไม่ได้ แต่ program กำหนดวันเอง จากจำนวนวันย้อนหลัง ทำให้มีวันหยุด ทำให้ข้อมูลเบิ้ล เช่น วันนี้วันอาทิตย์แล้วค้นย้อน 2 วันใน เพื่อให้ได้ข้อมูลวันศุกร์ เอ๊ะ หรือว่าเพราะ 29-feb-2020 
-  document.getElementById('btnRefreshPassNews').disabled =true
-  showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','') ])
+  let strBtn = ''
+  let strInputDays = ''
+  if (!FRflag){
+    strBtn = 'btnRefreshPassNews'
+    strInputDays = 'passday'
+  }else{
+    strBtn = 'btnRefreshOldNewsFR'
+    strInputDays = 'passdayFR'
+  }
 
-  const inputPassDay = document.getElementById('passday')
+  document.getElementById(strBtn).disabled =true
+  if(!FRflag){
+    showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ])
+  }else{
+    showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ],4,false)
+  }
+  
+  const inputPassDay = document.getElementById(strInputDays)
 
   const intPassDay = isNaN(parseInt(inputPassDay.value)) ? 0 : parseInt(inputPassDay.value)
 
-  const arrPassNews = intPassDay == 0 ? [shareFunc.newsTodayObject('Invalid number of days.','','','') ] : await newsPass.getAllNumberOfPageAndProcess(intPassDay)
+  const arrPassNews = intPassDay == 0 ? [shareFunc.newsTodayObject('Invalid number of days.','','','',0,'','00') ] : await newsPass.getAllNumberOfPageAndProcess(intPassDay,FRflag)
 
-  showNewsPass(arrPassNews) 
+  if(!FRflag){
+    showNewsPass(arrPassNews) 
+  }else{
+    if (arrAllStockPrice.length === 0)  getAllStockLastPrice()
+    getAndCalFRImprove(arrPassNews,delayGetDetailFR,true)
+    setTimeout(showNewsTodayFR, (arrPassNews.length+4) * delayGetDetailFR,arrPassNews,4,false)
+  }
+  
+  document.getElementById(strBtn).disabled =false
 
-  document.getElementById('btnRefreshPassNews').disabled =false
+
 }
 
 function showNewsStock(arrNews){
@@ -1018,7 +1053,9 @@ function clearAllData() {
     document.getElementById(recToProcess[i].displayDiv2).innerHTML = ''
   }
 
-  const arrDivToShowData = ['set100col1','set100col2','set50col1','set50col2','newstodaylist','newspasslist','newsstocklist','newstodaylistFR','set100swingcol1','set100swingcol2','stockCalendar']
+  const arrDivToShowData = ['set100col1','set100col2','set50col1','set50col2','newstodaylist','newspasslist','newsstocklist'
+                            ,'newstodaylistFR1','newstodaylistFR2','newstodaylistFR3','set100swingcol1','set100swingcol2','stockCalendar'
+                            ,'newsoldlistFR1','newsoldlistFR2','newsoldlistFR3']
   arrDivToShowData.forEach(div => document.getElementById(div).innerHTML = '' )
 
 
@@ -1063,7 +1100,7 @@ function startProgram() {
 
 
   document.getElementById("btnRefreshTodayNews").addEventListener("click", processNewsTodayNotFR)
-  document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPass)
+  document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPassFlagFalse)
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
   document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", processNewsTodayFR1)

@@ -1,7 +1,7 @@
 const urlnews =  'https://www.set.or.th/set/newslist.do?headline=&source=company&symbol=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&newsGroupId=&securityType=S&language=th&country=TH'
 
-const urlnewsFR =  'https://www.set.or.th/set/newslist.do?headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&symbol=&source=company&newsGroupId=&securityType=S&country=TH&language=th&' 
-              + 'from=01%2F04%2F2020&to=08%2F05%2F2020&currentpage=0'
+const urlnewsFR =  'https://www.set.or.th/set/newslist.do?headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&symbol=&source=company&newsGroupId=&securityType=S&country=TH&language=th' 
+              //+ 'from=01%2F04%2F2020&to=08%2F05%2F2020&currentpage=0&'
 
 const htmlparser = require('htmlparser2')
 const shareFunc = require('./sharevariables')
@@ -53,13 +53,16 @@ function wrapHtmlParser (html,intPage) {
                           const strSource =  textintd[3].data.trim()
                           const strTitle =  textintd[4].data.trim()
                           //console.log(textintd)
+                          let posColon = strTime.indexOf(':') // time format is 14 พ.ค. 2563 12:31:04
+                          const strHour = strTime.slice(posColon-2,posColon) // to get hours
+
                           const strLink = textintd[6].attribs.href
   
                           //const rowString = `Page ${intPage+1}-${itr} / ${strTime} ${strSymbol} ${strSource} ${strTitle}`
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
   
                           if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink))
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink,strHour))
                             //console.log(rowString)
                           }
   
@@ -102,18 +105,19 @@ async function processNewsByPage(url,intPage){
 
 }
 
-async function processPassNews(intPage){
+async function processPassNews(intPage,FRflag=false){
+  let url = FRflag ? urlnewsFR : urlnews
     for(let i =0; i < intPage  ; i++){
         let paranews = `&from=${fd}%2F${fm}%2F${fy}&to=${td}%2F${tm}%2F${ty}&currentpage=${i}`
   
-        await processNewsByPage(urlnews+paranews,i)
+        await processNewsByPage( url + paranews,i)
   
     }
     
 }
 
-async function getAllNumberOfPageAndProcess(inputPassDay){
-  
+async function getAllNumberOfPageAndProcess(inputPassDay,FRflag=false){
+
   arrAllPassNews = []
   passdaysDate = new Date()
   passdaysDate.setDate(passdaysDate.getDate()-(inputPassDay));
@@ -125,7 +129,10 @@ async function getAllNumberOfPageAndProcess(inputPassDay){
     let paranews =  `&from=${fd}%2F${fm}%2F${fy}&to=${td}%2F${tm}%2F${ty}&currentpage=0`
     //console.log('param', paranews)
 
-    const res = await fetch(urlnews+paranews)
+    let url = FRflag ? urlnewsFR : urlnews
+    url = url + paranews
+
+    const res = await fetch(url) //currentpage=0&
     const body = await res.text()
     let intPage 
     try {
@@ -135,7 +142,7 @@ async function getAllNumberOfPageAndProcess(inputPassDay){
     }
     
 
-    await processPassNews(intPage)
+    await processPassNews(intPage,FRflag)
 
     // fetch(urlnews+paranews)
     //     .then(res => res.text())
