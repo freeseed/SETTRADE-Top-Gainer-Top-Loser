@@ -377,10 +377,10 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
                 <td>${objNews.time}</td> 
                 <td>${objNews.symbol}</td> 
                 <td>${objNews.title}</td> 
-                <td>${objNews.lastProfit}</td>
-                <td>${objNews.curProfit}</td>
-                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR}</td>
-                <td>${objNews.curPE}</td>
+                <td>${objNews.lastProfit.toLocaleString()}</td>
+                <td>${objNews.curProfit.toLocaleString()}</td>
+                <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR.toLocaleString()}</td>
+                <td>${objNews.curPE.toLocaleString()}</td>
                 <td>${objNews.price}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
@@ -416,7 +416,7 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
     const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + '.json'
     //fs.writeFileSync(filename, strJson)
-    console.log('Save successfully', strDate)
+    //console.log('Save successfully', strDate)
 
   }
 
@@ -495,9 +495,11 @@ function searchFRprofit(str,element,i) {
   let posEnd = str.indexOf('\n',posBegin)
   let subString = str.slice(posBegin + strFix1.length, posEnd).trim()
   //console.log('posBegin',posBegin,'posEnd',posEnd,'subString',subString)
-  let posSpace = subString.indexOf(' ')
-  let strProfitCurrent = subString.slice(0,posSpace).trim()
-  let strProfitLast = subString.slice(posSpace).trim()
+  //let posSpace = subString.indexOf(' ')
+  let arrstr = subString.split(/\s+/)
+  let strProfitCurrent =  arrstr[0] ? arrstr[0] : "0" //subString.slice(0,posSpace).trim()
+  let strProfitLast = arrstr[1] ? arrstr[1] : "0" //subString.slice(posSpace).trim()
+
   let numProfitCurrent = strToFloatFR(strProfitCurrent)
   let numProfitLast = strToFloatFR(strProfitLast)
 
@@ -506,9 +508,10 @@ function searchFRprofit(str,element,i) {
   let posEndEPS = str.indexOf('\n',posBeginEPS)
   let subStringEPS = str.slice(posBeginEPS + strFixEPS.length, posEndEPS).trim()
   //console.log('posBeginEPS',posBeginEPS,'posEndEPS',posEndEPS,'subStringEPS',subStringEPS)
-  let posSpaceEPS = subStringEPS.indexOf(' ')
-  let strProfitCurrentEPS = subStringEPS.slice(0,posSpaceEPS).trim()
-  let strProfitLastEPS = subStringEPS.slice(posSpaceEPS).trim()
+  //let posSpaceEPS = subStringEPS.indexOf(' ')
+  let arrstrEPS = subStringEPS.split(/\s+/)
+  let strProfitCurrentEPS = arrstrEPS[0] ? arrstrEPS[0] : "0" //subStringEPS.slice(0,posSpaceEPS).trim()
+  let strProfitLastEPS = arrstrEPS[1] ? arrstrEPS[1] : "0" //subStringEPS.slice(posSpaceEPS).trim()
   let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
   let numEPSLast = strToFloatFR(strProfitLastEPS)
   let objStock = getStockPrice(element.symbol)
@@ -520,8 +523,8 @@ function searchFRprofit(str,element,i) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
     element.curPE = (stockPrice >0)? stockPrice/numEPSCurrent : 0
   } else {
-    element.improvementFR = parseFloat('-100.00')
-    element.curPE = parseFloat('-10.00')
+    element.improvementFR = 0 //parseFloat('-100.00')
+    element.curPE = 0 //parseFloat('-10.00')
   }
 
   element.improvementFR 

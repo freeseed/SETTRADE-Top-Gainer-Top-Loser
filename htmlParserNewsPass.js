@@ -62,7 +62,7 @@ function wrapHtmlParser (html,intPage) {
                           const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)
   
                           if ( shareFunc.isNeedTopics(strTitle) && !isDWSETTSDmai )  {
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink,strHour))
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour))
                             //console.log(rowString)
                           }
   
