@@ -369,8 +369,9 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
   arrNewsTodaySeparetedByPeriod3 = arrNewsTodaySeparetedByPeriod3.sort(function(a,b){ return b.improvementFR - a.improvementFR})
 
   const arrWrap = [arrNewsTodaySeparetedByPeriod1,arrNewsTodaySeparetedByPeriod2,arrNewsTodaySeparetedByPeriod3]
-
+  let strperoid = ['Morning','Noon','Evening']
   for (let x =0;  x < arrWrap.length; x++){
+    
 
     const strRows = arrWrap[x].map((objNews,i) => `<tr> 
                 <td>${i+1}</td> 
@@ -387,12 +388,12 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
 
     const strTableNews = `
         <table>
-          <thead>
+          <thead style="color:white;text-align: center;">
             <tr> 
             <th>No.</th>
             <th style="width:150px;">Time</th>
             <th style="width:60px;">Symbol</th>
-            <th>Title</th>
+            <th>Title ${strperoid[x]}</th>
             <th>Profit From</th>
             <th>Profit To</th> 
             <th>%Improvement</th>
@@ -415,8 +416,8 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
     const d = new Date()
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
     const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + '.json'
-    //fs.writeFileSync(filename, strJson)
-    //console.log('Save successfully', strDate)
+    fs.writeFileSync(filename, strJson)
+    console.log('Save successfully', strDate)
 
   }
 
