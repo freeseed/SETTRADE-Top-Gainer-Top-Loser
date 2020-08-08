@@ -1,9 +1,9 @@
 'use strict';
 const regexDW = /\d\d\d\d\w/
-const regexSET = /SET/
-const regexTSD = /TSD/
-const regexmai = /mai/
-const regTHAINVDR = /THAINVDR/
+const regexSET = /^SET/    //bug if not pu ^ in isDWSETTSDmai it will remove stock such as INSET
+const regexTSD = /^TSD/
+const regexmai = /^mai/
+const regTHAINVDR = /^THAINVDR/
 const regexNewsSource = [regexDW,regexSET,regexTSD,regexmai,regTHAINVDR]
 
 

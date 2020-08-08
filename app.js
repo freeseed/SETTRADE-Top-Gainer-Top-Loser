@@ -670,7 +670,8 @@ async function processNewsPass(FRflag=false){
   if(!FRflag){
     showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ])
   }else{
-    showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ],4,false)
+    // now enable save file then below show will create file
+    //showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ],4,false)
   }
   
   const inputPassDay = document.getElementById(strInputDays)
@@ -678,7 +679,8 @@ async function processNewsPass(FRflag=false){
   const intPassDay = isNaN(parseInt(inputPassDay.value)) ? 0 : parseInt(inputPassDay.value)
 
   const arrPassNews = intPassDay == 0 ? [shareFunc.newsTodayObject('Invalid number of days.','','','',0,'','00') ] : await newsPass.getAllNumberOfPageAndProcess(intPassDay,FRflag)
-
+  
+  //console.log('arrPassNews',arrPassNews)
   if(!FRflag){
     showNewsPass(arrPassNews) 
   }else{

@@ -66,13 +66,11 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai,period) {
                           //console.log(textintd)
                           const strLink = textintd[6].attribs.href
 
-                          let boolAddToArray = false
 
                           if ( shareFunc.isNeedTopicsFR(strTitle) && (strHour >= criteriaHourBegin && strHour <= criteriaHourEnd) )  {
-                            boolAddToArray = true
+                            arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour) )  //&& strSymbol === 'MC' for fix bug
                           }
 
-                          if (boolAddToArray )  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour) )  //&& strSymbol === 'MC' for fix bug
   
                         }
   
