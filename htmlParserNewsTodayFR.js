@@ -47,6 +47,7 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai,period) {
                           const strTitle =  textintd[4].data.trim()
                           let posColon = strTime.indexOf(':') // time format is 14 พ.ค. 2563 12:31:04
                           const strHour = strTime.slice(posColon-2,posColon) // to get hours
+                          /*
                           let criteriaHourBegin,criteriaHourEnd
                           if (period === 1) {
                             criteriaHourBegin='01'
@@ -61,15 +62,18 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai,period) {
                             criteriaHourBegin='00'
                             criteriaHourEnd = '24'
                           }
+                          */
                           //console.log(strTime,strHour)
 
                           //console.log(textintd)
                           const strLink = textintd[6].attribs.href
 
-
+                          arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour) )
+                          /*
                           if ( shareFunc.isNeedTopicsFR(strTitle) && (strHour >= criteriaHourBegin && strHour <= criteriaHourEnd) )  {
                             arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour) )  //&& strSymbol === 'MC' for fix bug
                           }
+                          */
 
   
                         }

@@ -427,6 +427,7 @@ function processNewsTodayFR(period) {
   processNewsToday(true,period)
 }
 
+
 function processNewsTodayFR1() {
   processNewsTodayFR(1)
 }
@@ -1111,9 +1112,7 @@ function startProgram() {
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPassFlagFalse)
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
-  document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", processNewsTodayFR1)
-  document.getElementById("btnRefreshTodayNewsFR2").addEventListener("click", processNewsTodayFR2)
-  document.getElementById("btnRefreshTodayNewsFR3").addEventListener("click", processNewsTodayFR3)
+  document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", function() {processNewsTodayFR(1)} )
 
   document.getElementById("btnRefreshTodayNewsFR4").addEventListener("click", processNewsTodayFR4)
   document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", function() {processNewsTodayFR5(true)})
