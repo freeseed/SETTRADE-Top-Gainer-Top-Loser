@@ -441,9 +441,11 @@ function processNewsTodayFR4() {
   processNewsTodayFR(4)
 }
 
-function processNewsTodayFR5() {
-  const filename = document.getElementById('jsonFileName').value.trim()
-  const displayError = document.getElementById('progressFR')
+function processNewsTodayFR5(FlagToday=false) {
+  const textinputname = FlagToday ? 'jsonFileName' : 'jsonFileName2'
+  const progresstextname = FlagToday ? 'progressFR' : 'progressOldFR'
+  const filename = document.getElementById(textinputname).value.trim()
+  const displayError = document.getElementById(progresstextname)
 
   if (filename === '') {
     displayError.innerHTML = 'please input file name'
@@ -455,7 +457,7 @@ function processNewsTodayFR5() {
   try {
     const jsonString = fs.readFileSync(fullfilename)
     arrNewsTodayFR = JSON.parse(jsonString)
-    showNewsTodayFR(arrNewsTodayFR,0)
+    showNewsTodayFR(arrNewsTodayFR,0,FlagToday)
 
   } catch(err) {
     console.log(err)
@@ -1114,9 +1116,10 @@ function startProgram() {
   document.getElementById("btnRefreshTodayNewsFR3").addEventListener("click", processNewsTodayFR3)
 
   document.getElementById("btnRefreshTodayNewsFR4").addEventListener("click", processNewsTodayFR4)
-  document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", processNewsTodayFR5)
+  document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", function() {processNewsTodayFR5(true)})
 
   document.getElementById("btnRefreshOldNewsFR").addEventListener("click", processNewsOldFR)
+  document.getElementById("btnPassNewsLoadfile").addEventListener("click", function() {processNewsTodayFR5(false)})
   
 
   document.getElementById("btnHideSetMai").addEventListener("click", hideunhideSetMai)
