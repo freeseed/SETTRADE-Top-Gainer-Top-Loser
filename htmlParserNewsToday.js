@@ -60,7 +60,7 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                             
                           }
 
-                          if (boolAddToArray)  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle),0,strLink) )
+                          if (boolAddToArray)  arrNewsToday.push( shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle.slice(0,70)),0,strLink) )
   
                         }
   

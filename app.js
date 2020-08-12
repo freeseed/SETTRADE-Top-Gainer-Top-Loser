@@ -354,6 +354,8 @@ function showNewsToday(arrNewsToday){
 }
 
 function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
+  //know bug in set result of today fr result will not include TDEX ENGY
+  //but set result of pass fr will include TDEX ENGY even 
   let div = ''
   if (FlagToday) 
     div = 'newstodaylistFR'
@@ -381,11 +383,15 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
                 <td>${objNews.lastProfit.toLocaleString()}</td>
                 <td>${objNews.curProfit.toLocaleString()}</td>
                 <td class="${(objNews.improvementFR>0)? 'colorGreen':'colorRed'}">${objNews.improvementFR.toLocaleString()}</td>
-                <td>${objNews.curPE.toLocaleString()}</td>
-                <td>${objNews.price}</td>
                 <td><a href="https://www.set.or.th${objNews.link}" onclick="window.open(this.href,'_blank','width=900,height=900'); return false;">รายละเอียด ${objNews.symbol}</a></td> 
                 </tr>`).join('')
+    /*   
+    <td>${objNews.curPE.toLocaleString()}</td>
+    <td>${objNews.price}</td>
 
+    <th>Cur PE</th>
+    <th>Price</th>
+    */
     const strTableNews = `
         <table>
           <thead style="color:white;text-align: center;">
@@ -397,8 +403,6 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
             <th>Profit From</th>
             <th>Profit To</th> 
             <th>%Improvement</th>
-            <th>Cur PE</th>
-            <th>Price</th>
             <th>Link</th>
             </tr>
           </thead>
@@ -415,7 +419,7 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
     const strJson = JSON.stringify(arrNewsToday)
     const d = new Date()
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
-    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + '.json'
+    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + FlagToday?'-today':'-pass' + '.json'
     fs.writeFileSync(filename, strJson)
     console.log('Save successfully', strDate)
 
@@ -431,6 +435,8 @@ function processNewsTodayFR(period) {
 function processNewsTodayFR1() {
   processNewsTodayFR(1)
 }
+
+/*
 function processNewsTodayFR2() {
   processNewsTodayFR(2)
 }
@@ -441,8 +447,8 @@ function processNewsTodayFR3() {
 function processNewsTodayFR4() {
   processNewsTodayFR(4)
 }
-
-function processNewsTodayFR5(FlagToday=false) {
+*/
+function loodFrFromFile(FlagToday=false) {
   const textinputname = FlagToday ? 'jsonFileName' : 'jsonFileName2'
   const progresstextname = FlagToday ? 'progressFR' : 'progressOldFR'
   const filename = document.getElementById(textinputname).value.trim()
@@ -454,11 +460,11 @@ function processNewsTodayFR5(FlagToday=false) {
   }
   const fullfilename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\' + filename + '.json'
 
-  let arrNewsTodayFR
   try {
     const jsonString = fs.readFileSync(fullfilename)
-    arrNewsTodayFR = JSON.parse(jsonString)
+    let arrNewsTodayFR = JSON.parse(jsonString)
     showNewsTodayFR(arrNewsTodayFR,0,FlagToday)
+    displayError.innerHTML = arrNewsTodayFR.length.toString()
 
   } catch(err) {
     console.log(err)
@@ -481,7 +487,8 @@ function strToFloatFR(str) {
   let strNum = str.replace(/,/g,'').replace(/\(แก้ไข\)/g,'')
   const isNegative = (strNum.indexOf('(')>=0)? true : false
   strNum = strNum.replace('(','').replace(')','')
-  let numFloat = shareFunc.textToFloat(strNum)
+  let temp = parseFloat(strNum);
+  let numFloat = temp ? temp : 0.0
   return (isNegative) ? -numFloat : numFloat
 }
 
@@ -527,8 +534,8 @@ function searchFRprofit(str,element,i) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
     element.curPE = (stockPrice >0)? stockPrice/numEPSCurrent : 0
   } else {
-    element.improvementFR = 0 //parseFloat('-100.00')
-    element.curPE = 0 //parseFloat('-10.00')
+    element.improvementFR = -100.00 //parseFloat('-100.00')
+    element.curPE = -100.00 //parseFloat('-10.00')
   }
 
   element.improvementFR 
@@ -547,7 +554,7 @@ function getAndCalFRImprove(arr,delayGetDetailFR,FRflag=false){
 
   const progressdiv = FRflag ? 'progressOldFR' : 'progressFR'
   const progressFR = document.getElementById(progressdiv)
-  const lenFR = arr.length
+  const lenFR = arr.length.toString()
   arr.forEach((element,i) => {
     
     setTimeout(() => {
@@ -556,7 +563,7 @@ function getAndCalFRImprove(arr,delayGetDetailFR,FRflag=false){
 
         searchFRprofit(response.data,element,i)
 
-        progressFR.innerHTML=(i+1).toString() + '/' + lenFR.toString()
+        progressFR.innerHTML=(i+1).toString() + '/' + lenFR //.toString()
 
       }).catch(function (error){
         console.log(element.symbol, 'getAndCalFRImprove axios error',error.message)
@@ -1087,19 +1094,6 @@ function Showtab(tabName){
 
 }
 
-function ShowSet100Tab() {
-  Showtab('SET100')
-}
-
-function ShowSetMaiTab() {
-  //console.log('click  ShowSetMaiTab')
-  Showtab('SETMAI')
-}
-
-function ShowNewsTab () {
-  Showtab('NEWS')
-}
-
 
 function startProgram() {
 
@@ -1112,13 +1106,13 @@ function startProgram() {
   document.getElementById("btnRefreshPassNews").addEventListener("click", processNewsPassFlagFalse)
   document.getElementById("btnRefreshStockNews").addEventListener("click", processNewsStock)
   document.getElementById("btnRefreshSet100").addEventListener("click", processSet100Set50Call)
-  document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", function() {processNewsTodayFR(1)} )
 
-  document.getElementById("btnRefreshTodayNewsFR4").addEventListener("click", processNewsTodayFR4)
-  document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", function() {processNewsTodayFR5(true)})
+  document.getElementById("btnRefreshTodayNewsFR1").addEventListener("click", function() {processNewsTodayFR(1)} )
+  document.getElementById("btnRefreshTodayNewsFR4").addEventListener("click",  function() {processNewsTodayFR(4)})
+  document.getElementById("btnRefreshTodayNewsFR5").addEventListener("click", function() {loodFrFromFile(true)})
 
   document.getElementById("btnRefreshOldNewsFR").addEventListener("click", processNewsOldFR)
-  document.getElementById("btnPassNewsLoadfile").addEventListener("click", function() {processNewsTodayFR5(false)})
+  document.getElementById("btnPassNewsLoadfile").addEventListener("click", function() {loodFrFromFile(false)})
   
 
   document.getElementById("btnHideSetMai").addEventListener("click", hideunhideSetMai)
@@ -1133,11 +1127,11 @@ function startProgram() {
 
   document.getElementById("btnClear").addEventListener("click", clearAllData)
 
-  document.getElementById("btnShowSet100").addEventListener("click", ShowSet100Tab)
+  document.getElementById("btnShowSet100").addEventListener("click", function() { Showtab('SET100') })
 
-  document.getElementById("btnShowSetMai").addEventListener("click", ShowSetMaiTab)
+  document.getElementById("btnShowSetMai").addEventListener("click", function() { Showtab('SETMAI') })
 
-  document.getElementById("btnShowNews").addEventListener("click", ShowNewsTab)
+  document.getElementById("btnShowNews").addEventListener("click", function() { Showtab('NEWS') })
   
   Showtab('SET100')
   //startProcessDataWithDelay() 

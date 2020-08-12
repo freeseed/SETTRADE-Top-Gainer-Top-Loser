@@ -10,7 +10,7 @@ const regexNewsSource = [regexDW,regexSET,regexTSD,regexmai,regTHAINVDR]
 const regex1 = /(เริ่มซื้อขาย)/
 const regex2 = /(-W)/
 const regex3 = /(วันซื้อขายวันสุดท้ายของ)/
-const regex4 = /(สรุปผลการดำเนินงาน)/
+const regex4 = /(^สรุปผลการดำเนินงาน)/
 const regex5 = /(การห้ามซื้อหรือขาย)/
 const regex6 = /(ปันผล)/
 const regex7 = /(พ้นเหตุ)/
@@ -100,27 +100,20 @@ function highlightNewsTopic(strTopic){
 
 }
 
-function textToFloat(str){
-  //str = str.trim().replace(/,/g,'')
-  let temp = parseFloat(str);
-  return temp.toFixed ? temp : 0.0
-  //return isNaN(parseFloat(str)) ? 0.00 : parseFloat(str)
 
-}
-
+/*
 function textToInt(str){
   str = str.trim().replace(/,/g,'')
   return isNaN(parseInt(str)) ? 0 : parseInt(str)
 }
-
+*/
 module.exports.isNeedTopics = isNeedTopics
 module.exports.isNeedTopicsFR = isNeedTopicsFR
 module.exports.isDWSETTSDmai = isDWSETTSDmai
 module.exports.newsTodayObject = newsTodayObject
 module.exports.highlightNewsTopic = highlightNewsTopic
 module.exports.stockObject = stockObject
-module.exports.textToFloat = textToFloat
-module.exports.textToInt = textToInt
+//module.exports.textToInt = textToInt
 module.exports.calendarObject = calendarObject
 
 

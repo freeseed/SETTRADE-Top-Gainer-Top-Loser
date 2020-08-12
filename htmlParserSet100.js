@@ -23,6 +23,12 @@ function calStepPrice(low, high){
   return parseInt((high-low)/stepPrice) 
 }
 
+function textToFloat(str){
+  str = str.trim().replace(/,/g,'')
+  let temp = parseFloat(str);
+  return temp.toFixed ? temp : 0.0
+}
+
 //parse price table get from settrade.com
 function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
 
@@ -66,11 +72,11 @@ function wrapHtmlParser (html,filterOutOnlyDWSETTSDmai) {
                           const strSymbol =  textintd[0].data.trim()
                           const strFlag =  textintd[1].data.trim()
                           const strVolume =  textintd[10].data.trim()
-                          const numPrice =  shareFunc.textToFloat(textintd[5].data.trim())
+                          const numPrice =  textToFloat(textintd[5].data.trim())
                           const strChange =  textintd[6].data.trim()
-                          const numPercentChange =  shareFunc.textToFloat(textintd[7].data.trim()) 
-                          const numhigh = shareFunc.textToFloat(textintd[3].data.trim())
-                          const numlow = shareFunc.textToFloat(textintd[4].data.trim())
+                          const numPercentChange =  textToFloat(textintd[7].data.trim()) 
+                          const numhigh = textToFloat(textintd[3].data.trim())
+                          const numlow = textToFloat(textintd[4].data.trim())
                           const numSwingPercent = (numhigh - numlow)/numlow*100
                           const stepPrice = calStepPrice(numlow,numhigh)
 

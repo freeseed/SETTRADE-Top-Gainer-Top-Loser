@@ -60,12 +60,11 @@ function wrapHtmlParser (html,intPage) {
   
                           //const rowString = `Page ${intPage+1}-${itr} / ${strTime} ${strSymbol} ${strSource} ${strTitle}`
                           //const isDWSETTSDmai = shareFunc.isDWSETTSDmai(strSymbol)  //remove this now url specific source of news from company only 
-  
+                          
                           if ( shareFunc.isNeedTopics(strTitle) )  {  //&& !isDWSETTSDmai 
-                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,strTitle,0,strLink,strHour))
-                            //console.log(rowString)
+                            arrNews.push(shareFunc.newsTodayObject(strTime,strSymbol,strSource,shareFunc.highlightNewsTopic(strTitle.slice(0,70)),0,strLink,strHour))
                           }
-  
+
                         }
   
                       }
