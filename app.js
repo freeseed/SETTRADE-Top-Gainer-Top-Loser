@@ -419,9 +419,10 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
     const strJson = JSON.stringify(arrNewsToday)
     const d = new Date()
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
-    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + FlagToday?'-today':'-pass' + '.json'
+    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + (FlagToday?'-today':'-pass') + '.json'
+    console.log('filename save' ,filename)
     fs.writeFileSync(filename, strJson)
-    console.log('Save successfully', strDate)
+    console.log('Save successfully', filename)
 
   }
 
@@ -525,25 +526,27 @@ function searchFRprofit(str,element,i) {
   let strProfitLastEPS = arrstrEPS[1] ? arrstrEPS[1] : "0" //subStringEPS.slice(posSpaceEPS).trim()
   let numEPSCurrent = strToFloatFR(strProfitCurrentEPS)
   let numEPSLast = strToFloatFR(strProfitLastEPS)
-  let objStock = getStockPrice(element.symbol)
+  //let objStock = getStockPrice(element.symbol)
   //console.log('objStock',objStock)
-  let stockPrice = ( objStock != undefined)? objStock.price : 0
+  //let stockPrice = ( objStock != undefined)? objStock.price : 0
 
-
+/*
   if (numProfitCurrent > 0) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
     element.curPE = (stockPrice >0)? stockPrice/numEPSCurrent : 0
   } else {
-    element.improvementFR = -100.00 //parseFloat('-100.00')
-    element.curPE = -100.00 //parseFloat('-10.00')
+    element.improvementFR = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)  //-100.00
+    element.curPE = -100.00 
   }
+  */
 
-  element.improvementFR 
+  element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)
+  element.curPE = 0
   element.lastProfit = numProfitLast
   element.curProfit = numProfitCurrent
   element.lastEPS = numEPSLast
   element.curEPS = numEPSCurrent
-  element.price = stockPrice
+  element.price = 0 //stockPrice
 
   //console.log(i, element.symbol,'element.lastProfit',element.lastProfit,'element.curProfit',element.curProfit,'element.lastEPS',element.lastEPS,'element.curEPS',element.curEPS,'element.improvementFR',element.improvementFR,'element.curPE',element.curPE,'stockPrice',stockPrice)
 
