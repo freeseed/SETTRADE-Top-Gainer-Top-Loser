@@ -530,17 +530,15 @@ function searchFRprofit(str,element,i) {
   //console.log('objStock',objStock)
   //let stockPrice = ( objStock != undefined)? objStock.price : 0
 
-/*
+
   if (numProfitCurrent > 0) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
-    element.curPE = (stockPrice >0)? stockPrice/numEPSCurrent : 0
   } else {
-    element.improvementFR = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)  //-100.00
-    element.curPE = -100.00 
+    element.improvementFR = -(numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)  //-100.00  cannot combine must be minus to push loss less than before.
   }
-  */
+  
 
-  element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)
+  //element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)
   element.curPE = 0
   element.lastProfit = numProfitLast
   element.curProfit = numProfitCurrent
