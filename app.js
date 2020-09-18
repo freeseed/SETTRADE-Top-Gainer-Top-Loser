@@ -798,7 +798,8 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
 
   idDivLoss.innerHTML = strTableLoss
 }
-const arrFixSet50 = ['ADVANC','AOT','AWC','BANPU','BBL','BDMS','BEM','BGRIM','BH','BJC','BTS','CBG','CPALL','CPF','CPN','CRC','DELTA','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','TCAP','TISCO','TMB','TOA','TOP','TRUE','TU','VGI','WHA']
+const arrFixSet50 = []  // fix some move between from set50 set100 and  array is not updated then it remove from set100 list
+//['ADVANC','AOT','AWC','BBL','BDMS','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CPALL','CPF','CPN','CRC','DELTA','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','TCAP','TISCO','TMB','TOA','TOP','TRUE','TU','VGI','WHA']
 
 function processSet100Set50(url,idDivGain,idDivLoss,titleGain,titleLoss){
   let xhttp = new XMLHttpRequest()
