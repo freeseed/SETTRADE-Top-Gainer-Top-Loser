@@ -534,7 +534,7 @@ function searchFRprofit(str,element,i) {
   if (numProfitCurrent > 0) {
     element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
   } else {
-    element.improvementFR = -(numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)  //-100.00  cannot combine must be minus to push loss less than before.
+    element.improvementFR = -(Math.abs(numProfitCurrent)-Math.abs(numProfitLast))*100/ Math.abs(numProfitLast)  //-100.00  cannot combine must be minus to push loss less than before.
   }
   
 
@@ -768,7 +768,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
       <tablerow/>
   </tbody>
   </table> `
-  const rectoshow = 20
+  const rectoshow = 10 //20
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
   const arrTop10Gain = arrTopGain.length >= rectoshow ? arrTopGain.slice(0,rectoshow) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
@@ -863,7 +863,7 @@ function processSet100Set50Call() {
   const divSet50Gain = document.getElementById('set50col1')
   const divSet50Loss = document.getElementById('set50col2')
   processSet100Set50(urlSet100,divSet100Gain,divSet100Loss,'SET 100 Top Gainer','SET 100 Top Losser')
-  processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
+  //processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
   const d = new Date()
   document.getElementById("labelTimeSet100").innerHTML = "Data as of: " + d.toLocaleString()
 }
