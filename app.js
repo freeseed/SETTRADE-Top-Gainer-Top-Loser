@@ -532,9 +532,10 @@ function searchFRprofit(str,element,i) {
 
 
   if (numProfitCurrent > 0) {
-    element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast) 
+    element.improvementFR  = parseFloat((numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast))
   } else {
-    element.improvementFR = -(Math.abs(numProfitCurrent)-Math.abs(numProfitLast))*100/ Math.abs(numProfitLast)  //-100.00  cannot combine must be minus to push loss less than before.
+    element.improvementFR =parseFloat( -Math.abs(Math.abs(numProfitCurrent)-Math.abs(numProfitLast))*100/ Math.abs(numProfitLast) ) //-100.00  cannot combine must be minus to push loss less than before.
+    if (numProfitLast < 0) element.improvementFR = element.improvementFR + -100.00
   }
   
 
