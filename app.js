@@ -353,7 +353,7 @@ function showNewsToday(arrNewsToday){
   document.getElementById('numOfTodayNews').innerHTML = arrNewsToday.length.toString() + ' news'
 }
 
-function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
+function showNewsTodayFR(arrNewsToday,period,FlagToday = true,minusDay = 0){
   //know bug in set result of today fr result will not include TDEX ENGY
   //but set result of pass fr will include TDEX ENGY even 
   let div = ''
@@ -419,7 +419,7 @@ function showNewsTodayFR(arrNewsToday,period,FlagToday = true){
     const strJson = JSON.stringify(arrNewsToday)
     const d = new Date()
     const strDate = d.toLocaleString().replace(/[,:\/]/g,'-')
-    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + (FlagToday?'-today':'-pass') + '.json'
+    const filename = 'C:\\Users\\nevada\\Documents\\Yodchai\\dataFR\\datafr-' + strDate + (FlagToday?'-today':'-pass') + minusDay.toString() + '.json'
     console.log('filename save' ,filename)
     fs.writeFileSync(filename, strJson)
     console.log('Save successfully', filename)
@@ -437,18 +437,7 @@ function processNewsTodayFR1() {
   processNewsTodayFR(1)
 }
 
-/*
-function processNewsTodayFR2() {
-  processNewsTodayFR(2)
-}
-function processNewsTodayFR3() {
-  processNewsTodayFR(3)
-}
 
-function processNewsTodayFR4() {
-  processNewsTodayFR(4)
-}
-*/
 function loodFrFromFile(FlagToday=false) {
   const textinputname = FlagToday ? 'jsonFileName' : 'jsonFileName2'
   const progresstextname = FlagToday ? 'progressFR' : 'progressOldFR'
@@ -464,6 +453,9 @@ function loodFrFromFile(FlagToday=false) {
   try {
     const jsonString = fs.readFileSync(fullfilename)
     let arrNewsTodayFR = JSON.parse(jsonString)
+    const arrTempFixSet100 = ['AAV','ACE','ADVANC','AEONTS','AMATA','AOT','AP','AWC','BANPU','BBL','BCH','BCP','BCPG','BDMS','BEC','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CENTEL','CHG','CK','CKP','COM7','CPALL','CPF','CPN','CRC','DOHOME','DTAC','EA','EGCO','EPG','ESSO','GFPT','GLOBAL','GPSC','GULF','GUNKUL','HANA','HMPRO','INTUCH','IRPC','IVL','JAS','JMT','KBANK','KCE','KKP','KTB','KTC','LH','MAJOR','MEGA','MINT','MTC','ORI','OSP','PLANB','PRM','PSH','PTG','PTT','PTTEP','PTTGC','QH','RATCH','RBF','RS','SAWAD','SCB','SCC','SCGP','SGP','SIRI','SPALI','SPRC','STA','STEC','SUPER','TASCO','TCAP','THANI','TISCO','TKN','TMB','TOA','TOP','TPIPP','TQM','TRUE','TTW','TU','TVO','VGI','WHA','WHAUP','BAM','DELTA','STGT','NER']
+    const arrTempFixSet50 = ['ADVANC','AOT','AWC','BBL','BDMS','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CPALL','CPF','CPN','CRC','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','SCGP <ST>','TISCO','TMB','TOA','TOP','TRUE','TTW','TU','VGI','WHA','BAM','DELTA','STGT']
+    arrNewsTodayFR = arrNewsTodayFR.filter(function(a){return  arrTempFixSet100.find(function(b){return b==a.symbol}) })
     showNewsTodayFR(arrNewsTodayFR,0,FlagToday)
     displayError.innerHTML = arrNewsTodayFR.length.toString()
 
@@ -683,7 +675,6 @@ async function processNewsPass(FRflag=false){
     showNewsPass([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ])
   }else{
     // now enable save file then below show will create file
-    //showNewsTodayFR([shareFunc.newsTodayObject('Retriving data..','','','',0,'','00') ],4,false)
   }
   
   const inputPassDay = document.getElementById(strInputDays)
@@ -698,7 +689,7 @@ async function processNewsPass(FRflag=false){
   }else{
     if (arrAllStockPrice.length === 0)  getAllStockLastPrice()
     getAndCalFRImprove(arrPassNews,delayGetDetailFR,true)
-    setTimeout(showNewsTodayFR, (arrPassNews.length+4) * delayGetDetailFR,arrPassNews,4,false)
+    setTimeout(showNewsTodayFR, (arrPassNews.length+4) * delayGetDetailFR,arrPassNews,4,false,-intPassDay)
   }
   
   document.getElementById(strBtn).disabled =false
@@ -769,7 +760,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
       <tablerow/>
   </tbody>
   </table> `
-  const rectoshow = 10 //20
+  const rectoshow = 15 //20
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
   const arrTop10Gain = arrTopGain.length >= rectoshow ? arrTopGain.slice(0,rectoshow) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
@@ -864,7 +855,7 @@ function processSet100Set50Call() {
   const divSet50Gain = document.getElementById('set50col1')
   const divSet50Loss = document.getElementById('set50col2')
   processSet100Set50(urlSet100,divSet100Gain,divSet100Loss,'SET 100 Top Gainer','SET 100 Top Losser')
-  //processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
+  processSet100Set50(urlSet50,divSet50Gain,divSet50Loss,'SET 50 Top Gainer','SET 50 Top Losser')
   const d = new Date()
   document.getElementById("labelTimeSet100").innerHTML = "Data as of: " + d.toLocaleString()
 }
