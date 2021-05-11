@@ -169,11 +169,11 @@
     </div>
         
     <div class="center-align hide">
-      <p>
+<!--       <p>
           We are using node <script>document.write(process.versions.node)</script>,
           Chrome <script>document.write(process.versions.chrome)</script>,
           and Electron <script>document.write(process.versions.electron)</script>
-      </p>
+      </p> -->
       <p>
           This page will error if open on browser because process object is not defined. And if remove process object, it still error about cross-domain AJAX request.
           CORS จริงๆ ขึ้นกับ server ว่าอนุญาติให้ สร้าง ajax request จาก JavaScript ของ web อื่นไปขอ resource ได้หรือไม่ อย่างตัว App นี้ ตัว web เป็น local host ทำการ request ไปยัง settrade 

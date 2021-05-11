@@ -1,6 +1,6 @@
 'use strict';
 
-(function(){
+//(function(){
 
 const axios = require('axios')
 const fs = require('fs')
@@ -760,7 +760,7 @@ function ShowSet100Set50(arrObjSet,idDivGain,idDivLoss,titleGain,titleLoss){
       <tablerow/>
   </tbody>
   </table> `
-  const rectoshow = 15 //20
+  const rectoshow = 20 //15
   const arrTopGain = arrObjSet.filter(function(a){return a.percentChange > 0})
   const arrTop10Gain = arrTopGain.length >= rectoshow ? arrTopGain.slice(0,rectoshow) : arrTopGain
   const strRowsGain = arrTop10Gain.map(obj => `<tr> 
@@ -1138,4 +1138,4 @@ document.addEventListener('DOMContentLoaded', startProgram)
 
 
 
-})()
+//})()
