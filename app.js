@@ -342,7 +342,7 @@ function showNewsToday(arrNewsToday){
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th>No.</th> <th style="width:180px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
+          <tr> <th>No.</th> <th style="width:210px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
         </thead>
         <tbody>
           ${strRows}
@@ -453,9 +453,9 @@ function loodFrFromFile(FlagToday=false) {
   try {
     const jsonString = fs.readFileSync(fullfilename)
     let arrNewsTodayFR = JSON.parse(jsonString)
-    const arrTempFixSet100 = ['AAV','ACE','ADVANC','AEONTS','AMATA','AOT','AP','AWC','BANPU','BBL','BCH','BCP','BCPG','BDMS','BEC','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CENTEL','CHG','CK','CKP','COM7','CPALL','CPF','CPN','CRC','DOHOME','DTAC','EA','EGCO','EPG','ESSO','GFPT','GLOBAL','GPSC','GULF','GUNKUL','HANA','HMPRO','INTUCH','IRPC','IVL','JAS','JMT','KBANK','KCE','KKP','KTB','KTC','LH','MAJOR','MEGA','MINT','MTC','ORI','OSP','PLANB','PRM','PSH','PTG','PTT','PTTEP','PTTGC','QH','RATCH','RBF','RS','SAWAD','SCB','SCC','SCGP','SGP','SIRI','SPALI','SPRC','STA','STEC','SUPER','TASCO','TCAP','THANI','TISCO','TKN','TMB','TOA','TOP','TPIPP','TQM','TRUE','TTW','TU','TVO','VGI','WHA','WHAUP','BAM','DELTA','STGT','NER']
-    const arrTempFixSet50 = ['ADVANC','AOT','AWC','BBL','BDMS','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CPALL','CPF','CPN','CRC','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','SCGP <ST>','TISCO','TMB','TOA','TOP','TRUE','TTW','TU','VGI','WHA','BAM','DELTA','STGT']
-    arrNewsTodayFR = arrNewsTodayFR.filter(function(a){return  arrTempFixSet100.find(function(b){return b==a.symbol}) })
+    //const arrTempFixSet100 = ['AAV','ACE','ADVANC','AEONTS','AMATA','AOT','AP','AWC','BANPU','BBL','BCH','BCP','BCPG','BDMS','BEC','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CENTEL','CHG','CK','CKP','COM7','CPALL','CPF','CPN','CRC','DOHOME','DTAC','EA','EGCO','EPG','ESSO','GFPT','GLOBAL','GPSC','GULF','GUNKUL','HANA','HMPRO','INTUCH','IRPC','IVL','JAS','JMT','KBANK','KCE','KKP','KTB','KTC','LH','MAJOR','MEGA','MINT','MTC','ORI','OSP','PLANB','PRM','PSH','PTG','PTT','PTTEP','PTTGC','QH','RATCH','RBF','RS','SAWAD','SCB','SCC','SCGP','SGP','SIRI','SPALI','SPRC','STA','STEC','SUPER','TASCO','TCAP','THANI','TISCO','TKN','TMB','TOA','TOP','TPIPP','TQM','TRUE','TTW','TU','TVO','VGI','WHA','WHAUP','BAM','DELTA','STGT','NER']
+    //const arrTempFixSet50 = ['ADVANC','AOT','AWC','BBL','BDMS','BEM','BGRIM','BH','BJC','BPP','BTS','CBG','CPALL','CPF','CPN','CRC','DTAC','EA','EGCO','GLOBAL','GPSC','GULF','HMPRO','INTUCH','IRPC','IVL','KBANK','KTB','KTC','LH','MINT','MTC','OSP','PTT','PTTEP','PTTGC','RATCH','SAWAD','SCB','SCC','SCGP <ST>','TISCO','TMB','TOA','TOP','TRUE','TTW','TU','VGI','WHA','BAM','DELTA','STGT']
+    //arrNewsTodayFR = arrNewsTodayFR.filter(function(a){return  arrTempFixSet100.find(function(b){return b==a.symbol}) })
     showNewsTodayFR(arrNewsTodayFR,0,FlagToday)
     displayError.innerHTML = arrNewsTodayFR.length.toString()
 

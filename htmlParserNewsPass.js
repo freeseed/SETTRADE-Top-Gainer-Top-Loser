@@ -27,17 +27,17 @@ function wrapHtmlParser (html,intPage) {
             },dom, true, 1000
         )
   
-  
+        //console.log(alltr)
         alltr.forEach(
           (tr,itr)=> {
                       if(itr < 1000){ 
-                        //console.log(itr, tr)
+                        
   
                          let tds = htmlparser.DomUtils.find( (el)=> {
                               return el.type === 'tag' && el.name === 'td'
                             },[tr], true, 50
                         )
-  
+                        //console.log('tds', tds)
                         //console.log('tds.lenth=', tds.length)
   
                         let textintd = htmlparser.DomUtils.find( (el)=> {
@@ -46,6 +46,7 @@ function wrapHtmlParser (html,intPage) {
                         )
   
                         //console.log('textintd.lenth=', textintd.length)
+                        //console.log('textintd', textintd)
                         if(textintd.length == 9){
   
                           const strTime =  textintd[0].data.trim()
@@ -99,7 +100,9 @@ async function processNewsByPage(url,intPage){
 
     const res = await fetch(url)
     const body = await res.text()
+    //console.log('body->',body)
     let arr = wrapHtmlParser(body,intPage)
+    //console.log(arr)
     arrAllPassNews = [...arrAllPassNews , ...arr]
 
 }
@@ -108,7 +111,7 @@ async function processPassNews(intPage,FRflag=false){
   let url = FRflag ? urlnewsFR : urlnews
     for(let i =0; i < intPage  ; i++){
         let paranews = `&from=${fd}%2F${fm}%2F${fy}&to=${td}%2F${tm}%2F${ty}&currentpage=${i}`
-  
+        //console.log(url + paranews,i)
         await processNewsByPage( url + paranews,i)
   
     }
@@ -130,6 +133,7 @@ async function getAllNumberOfPageAndProcess(inputPassDay,FRflag=false){
 
     let url = FRflag ? urlnewsFR : urlnews
     url = url + paranews
+    //console.log('Url+Param', url)
 
     const res = await fetch(url) //currentpage=0&
     const body = await res.text()
@@ -139,7 +143,7 @@ async function getAllNumberOfPageAndProcess(inputPassDay,FRflag=false){
     } catch (error) {
       intPage = 0
     }
-    
+    //console.log('intPage', intPage)
 
     await processPassNews(intPage,FRflag)
 
