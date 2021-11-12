@@ -342,7 +342,7 @@ function showNewsToday(arrNewsToday){
   const strTableNews = `
       <table>
         <thead>
-          <tr> <th>No.</th> <th style="width:210px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
+          <tr> <th>No.</th> <th style="width:260px;">Time</th> <th style="width:60px;">Symbol</th> <th>Title</th> <th>Link</th></tr>
         </thead>
         <tbody>
           ${strRows}
@@ -527,11 +527,12 @@ function searchFRprofit(str,element,i) {
     element.improvementFR  = parseFloat((numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast))
   } else {
     element.improvementFR =parseFloat( -Math.abs(Math.abs(numProfitCurrent)-Math.abs(numProfitLast))*100/ Math.abs(numProfitLast) ) //-100.00  cannot combine must be minus to push loss less than before.
-    if (numProfitLast < 0) element.improvementFR = element.improvementFR + -100.00
+    if (numProfitLast < 0) element.improvementFR = element.improvementFR + -100.00 
+    else element.improvementFR = element.improvementFR + -200.00;
   }
   
 
-  //element.improvementFR  = (numProfitCurrent-numProfitLast)*100/ Math.abs(numProfitLast)
+  if (Object.is(NaN,element.improvementFR) ) element.improvementFR =0;
   element.curPE = 0
   element.lastProfit = numProfitLast
   element.curProfit = numProfitCurrent

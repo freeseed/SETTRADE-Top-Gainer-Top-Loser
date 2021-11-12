@@ -30,6 +30,7 @@
 .newscontainer {
     margin: 0 0 0 1rem;
     position: absolute;
+    width: 100%;
 }
 
 #divTopGain,#divTopLoss {

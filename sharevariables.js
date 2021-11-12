@@ -7,7 +7,7 @@ const regTHAINVDR = /^THAINVDR/
 const regexNewsSource = [regexDW,regexSET,regexTSD,regexmai,regTHAINVDR]
 
 
-const regex1 = /(สรุปผลการดำเนินงาน)/     //don't remove it use in FR pass news filter
+const regex1 = /(^สรุปผลการดำเนินงาน)/     //don't remove it use in FR pass news filter
 //const regex2 = /(-W)/
 const regex3 = /(วันซื้อขายวันสุดท้ายของ)/
 const regex4 =  /(เพิ่มทุน)/  
