@@ -11,6 +11,7 @@ const newsStock = require('./htmlParserNewsStock')
 const stockCalendar = require('./htmlParserStockCalendar')
 const set100 = require('./htmlParserSet100')
 const shareFunc = require('./sharevariables')
+const stockInfo = require('./htmlParseGetStockInfo')
 const planArr = require('./plan')
 
 //const topValue="<h3>��Ť�ҫ��͢�� 20 �ѹ�Ѻ</h3>"
@@ -597,14 +598,14 @@ function processNewsToday(FRflag=false,period) {
   let xhttp = new XMLHttpRequest()
 
   //const urlTodayNews = 'https://www.set.or.th/set/todaynews.do?period=all&language=th&country=TH&market=' //actualy this is start page with no parameter. when search it will goto page searchtodaynews.do
-  const urlTodayNews   = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
-  const urlTodayNewsFR = 'https://www.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
+  const urlTodayNews   = 'https://classic.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
+  const urlTodayNewsFR = 'https://classic.set.or.th/set/searchtodaynews.do?source=company&symbol=&securityType=S&newsGroupId=&headline=%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99&submit=%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2&language=th&country=TH'
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
 
       if(!FRflag){
         let arrNewsToday = newsToday.wrapHtmlParserNewsToday(this.responseText)
-        showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ])
+        showNewsToday([shareFunc.newsTodayObject('Retriving data..','','','') ]) // call to show retriving data message it will show immedietly 
         setTimeout(showNewsToday, 500,arrNewsToday)
       }else{
         let arrNewsTodayFR = newsTodayFR.wrapHtmlParserNewsTodayFR(this.responseText,false,period)
@@ -1058,6 +1059,57 @@ function refreshStockCalendar() {
   })
 }
 
+function showStockInfo(arrStockInfoObj) {
+    console.log(arrStockInfoObj)
+    const strRows = arrStockInfoObj.map((objStockInfo,i) => `<tr> 
+                <td>${i+1}</td> 
+                <td>${objStockInfo.symbol}</td> 
+                <td>${objStockInfo.businessType}</td> 
+                </tr>`).join('')
+ 
+    const strTableNews = `
+        <table>
+          <thead style="color:white;text-align: center;">
+            <tr> 
+            <th>No.</th>
+            <th style="width:150px;">Symbol</th>
+            <th style="width:600px;">Business</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${strRows}
+          </tbody>
+          </table>
+    `
+    document.getElementById('divStockInfo').innerHTML = strTableNews
+}
+
+function GetStockInfo(paraSymblo) {
+  let arrAllSymbol = ['2S','3K-BAT','7UP','A','A5','AAV','ABICO','ABM','ABPIF','ACAP','ACC','ACE','ACG','ADB','ADD','ADVANC','AEONTS','AF','AFC','AGE','AH','AHC','AI','AIE','AIMCG','AIMIRT','AIRA','AIT','AJ','AJA','AKP','AKR','ALL','ALLA','ALLY','ALPHAX','ALT','ALUCON','AMA','AMANAH','AMARIN','AMATA','AMATAR','AMATAV','AMC','AMR','ANAN','AOT','AP','APCO','APCS','APEX','APP','APURE','AQ','AQUA','ARIN','ARIP','ARROW','AS','ASAP','ASEFA','ASIA','ASIAN','ASIMAR','ASK','ASN','ASP','ASW','ATP30','AU','AUCT','AWC','AYUD','B','B52','BA','BAFS','BAM','BANPU','BAY','BBGI','BBIK','BBL','BC','BCH','BCP','BCPG','BCT','BDMS','BE8','BEAUTY','BEC','BEM','BEYOND','BFIT','BGC','BGRIM','BGT','BH','BIG','BIOTEC','BIS','BIZ','BJC','BJCHI','BKD','BKI','BKKCP','BLA','BLAND','BLESS','BLISS','BM','BOFFICE','BOL','BPP','BR','BRI','BROCK','BROOK','BRR','BRRGIF','BSBM','BSM','BTNC','BTS','BTSGIF','BTW','BUI','BWG','B-WORK','BYD','CAZ','CBG','CCET','CCP','CEN','CENTEL','CEYE','CFRESH','CGD','CGH','CHARAN','CHAYO','CHEWA','CHG','CHIC','CHO','CHOTI','CHOW','CI','CIG','CIMBT','CITY','CIVIL','CK','CKP','CM','CMAN','CMC','CMO','CMR','CNT','COLOR','COM7','COMAN','COTTO','CPALL','CPANEL','CPF','CPH','CPI','CPL','CPN','CPNCG','CPNREIT','CPR','CPT','CPTGF','CPW','CRANE','CRC','CRD','CSC','CSP','CSR','CSS','CTARAF','CTW','CV','CWT','D','DCC','DCON','DDD','DELTA','DEMCO','DHOUSE','DIF','DIMET','DITTO','DMT','DOD','DOHOME','DPAINT','DREIT','DRT','DTAC','DTCI','DUSIT','DV8','EA','EASON','EASTW','ECF','ECL','EE','EFORL','EGATIF','EGCO','EKH','EMC','EP','EPG','ERW','ERWPF','ESSO','ESTAR','ETC','ETE','EVER','F&D','FANCY','FE','FLOYD','FMT','FN','FNS','FORTH','FPI','FPT','FSMART','FSS','FTE','FTI','FTREIT','FUTUREPF','FVC','GAHREIT','GBX','GC','GCAP','GEL','GENCO','GFPT','GGC','GIFT','GJS','GL','GLAND','GLOBAL','GLOCON','GLORY','GPI','GPSC','GRAMMY','GRAND','GREEN','GROREIT','GSC','GSTEEL','GTB','GULF','GUNKUL','GVREIT','GYT','HANA','HARN','HEMP','HENG','HFT','HL','HMPRO','HPF','HPT','HTC','HTECH','HUMAN','HYDRO','ICC','ICHI','ICN','IFEC','IFS','IHL','IIG','III','ILINK','ILM','IMH','IMPACT','IND','INET','INETREIT','INGRS','INOX','INSET','INSURE','INTUCH','IP','IRC','IRCP','IRPC','IT','ITD','ITEL','IVL','J','JAK','JAS','JASIF','JCK','JCKH','JCT','JDF','JKN','JMART','JMT','JP','JR','JTS','JUBILE','JWD','K','KAMART','KASET','KBANK','KBS','KBSPIF','KC','KCAR','KCC','KCE','KCM','KDH','KEX','KGI','KIAT','KISS','KK','KKC','KKP','KOOL','KPNPF','KSL','KTB','KTBSTMR','KTC','KTIS','KUMWEL','KUN','KWC','KWI','KWM','KYE','L&E','LALIN','LANNA','LDC','LEE','LEO','LH','LHFG','LHHOTEL','LHK','LHPF','LHSC','LIT','LOXLEY','LPF','LPH','LPN','LRH','LST','LUXF','M','MACO','MAJOR','MAKRO','MALEE','MANRIN','MATCH','MATI','MAX','MBAX','MBK','MC','M-CHAI','MCOT','MCS','MDX','MEGA','MENA','META','METCO','MFC','MFEC','MGT','MICRO','MIDA','M-II','MILL','MINT','MIPF','MIT','MITSIB','MJD','MJLF','MK','ML','MNIT','MNIT2','MNRF','MODERN','MONO','MOONG','MORE','M-PAT','MPIC','MSC','MST','M-STOR','MTC','MTI','MUD','MVP','NATION','NBC','NC','NCAP','NCH','NCL','NDR','NEP','NER','NETBAY','NEW','NEWS','NEX','NFC','NINE','NKI','NNCL','NOBLE','NOK','NOVA','NPK','NRF','NSI','NSL','NTV','NUSA','NV','NVD','NWR','NYT','OCC','OGC','OHTL','OISHI','ONEE','OR','ORI','OSP','OTO','PACE','PACO','PAF','PAP','PATO','PB','PCSGH','PDG','PDJ','PEACE','PERM','PF','PG','PHOL','PICO','PIMO','PIN','PJW','PK','PL','PLANB','PLANET','PLAT','PLE','PLUS','PM','PMTA','POLAR','POMPUI','POPF','PORT','POST','PPF','PPM','PPP','PPPM','PPS','PR9','PRAKIT','PRAPAT','PREB','PRECHA','PRG','PRIME','PRIN','PRINC','PRM','PRO','PROEN','PROS','PROSPECT','PROUD','PSG','PSH','PSL','PSTC','PT','PTC','PTECH','PTG','PTL','PTT','PTTEP','PTTGC','PYLON','Q-CON','QH','QHHR','QHOP','QHPF','QLT','QTC','RAM','RATCH','RBF','RCL','RICHY','RJH','RML','ROCK','ROH','ROJNA','RP','RPC','RPH','RS','RSP','RT','RWI','S','S & J','S11','SA','SAAM','SABINA','SABUY','SAFARI','SAK','SALEE','SAM','SAMART','SAMCO','SAMTEL','SANKO','SAPPE','SAT','SAUCE','SAWAD','SAWANG','SC','SCB','SCC','SCCC','SCG','SCGP','SCI','SCM','SCN','SCP','SDC','SE','SEAFCO','SEAOIL','SECURE','SE-ED','SELIC','SENA','SENAJ','SFLEX','SFP','SFT','SGF','SGP','SHANG','SHR','SHREIT','SIAM','SICT','SIMAT','SINGER','SIRI','SIRIP','SIS','SISB','SITHAI','SK','SKE','SKN','SKR','SKY','SLM','SLP','SMART','SMD','SMIT','SMK','SMPC','SMT','SNC','SNNP','SNP','SO','SOLAR','SONIC','SORKON','SPA','SPACK','SPALI','SPC','SPCG','SPG','SPI','SPRC','SPRIME','SPVI','SQ','SR','SRICHA','SRIPANWA','SSC','SSF','SSP','SSPF','SSS','SSSC','SST','SSTRT','STA','STANLY','STARK','STC','STEC','STECH','STGT','STHAI','STI','STOWER','STP','STPI','SUC','SUN','SUPER','SUPEREIF','SUSCO','SUTHA','SVH','SVI','SVOA','SVT','SWC','SYMC','SYNEX','SYNTEC','TACC','TAE','TAKUNI','TAPAC','TASCO','TC','TCAP','TCC','TCCC','TCJ','TCMC','TCOAT','TEAM','TEAMG','TEKA','TFFIF','TFG','TFI','TFM','TFMAMA','TGH','TGPRO','TH','THAI','THANA','THANI','THCOM','THE','THG','THIP','THL','THMUI','THRE','THREL','TIDLOR','TIF1','TIGER','TIPCO','TIPH','TISCO','TITLE','TK','TKC','TKN','TKS','TKT','TLHPF','TLI','TM','TMC','TMD','TMI','TMILL','TMT','TMW','TNDT','TNH','TNITY','TNL','TNP','TNPC','TNPF','TNR','TOA','TOG','TOP','TOPP','TPA','TPAC','TPBI','TPCH','TPCS','TPIPL','TPIPP','TPLAS','TPOLY','TPP','TPRIME','TPS','TQM','TQR','TR','TRC','TRITN','TRT','TRU','TRUBB','TRUE','TRV','TSC','TSE','TSF','TSI','TSR','TSTE','TSTH','TTA','TTB','TTCL','TTI','TTLPF','TTT','TTW','TU','TU-PF','TVDH','TVI','TVO','TVT','TWP','TWPC','TWZ','TYCN','U','UAC','UBE','UBIS','UEC','UKEM','UMI','UMS','UNIQ','UOBKH','UP','UPA','UPF','UPOIC','URBNPF','UREKA','UTP','UV','UVAN','VARO','VCOM','VGI','VIBHA','VIH','VL','VNG','VPO','VRANDA','W','WACOAL','WAVE','WFX','WGE','WHA','WHABT','WHAIR','WHART','WHAUP','WICE','WIIK','WIN','WINMED','WINNER','WORK','WORLD','WP','WPH','XO','XPG','YGG','YONG','YUASA','ZEN','ZIGA']
+  let urlFactSheet = 'https://www.set.or.th/api/set/factsheet/$SYMBOL/profile?lang=th' 
+
+  let arrStockInfoObj = []
+
+  console.log('hello GetStockInfo arrAllSymbol.length =', arrAllSymbol.length)
+  arrAllSymbol.forEach((strSymbol,i) => {
+    
+    setTimeout(() => {
+      axios(urlFactSheet.replace('$SYMBOL',strSymbol)).then(function (response){
+        arrStockInfoObj.push(response.data)
+
+      }).catch(function (error){
+        console.log(strSymbol, ' ',error.message)
+      })
+    }, (i+2)*delayGetDetailFR);
+    console.log(i)
+
+  })
+
+  setTimeout(showStockInfo, (arrAllSymbol.length+4) * delayGetDetailFR,arrStockInfoObj)
+
+
+}
+
 function clearAllData() {
   for(let i=0;i<recToProcess.length;i++){
     document.getElementById(recToProcess[i].displayDiv).innerHTML = ''
@@ -1118,6 +1170,10 @@ function startProgram() {
   document.getElementById("btnRefreshset100swing").addEventListener("click", refreshSet100Swing)
   
   document.getElementById("btnRefreshStockCalendar").addEventListener("click", refreshStockCalendar)
+
+  document.getElementById("btnGetStockInfo").addEventListener("click", GetStockInfo)
+
+  
   
 
   document.getElementById("btnClear").addEventListener("click", clearAllData)
